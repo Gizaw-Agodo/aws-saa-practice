@@ -1,48 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AWS SAA-CO3 Practice</title>
 
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>AWS SAA-CO3 Practice</h1>
 
-<div class="container">
+      <div class="top-bar">
+        <div id="pagination"></div>
 
-    <h1>AWS SAA-CO3 Practice</h1>
+        <div class="search-box">
+          <input id="searchInput" type="number" placeholder="Go to #" />
+          <button id="searchBtn">Go</button>
+        </div>
+      </div>
 
-    <div id="pagination"></div>
-
-    <div id="questionCard" class="question-card">
+      <div id="questionCard" class="question-card">
         <div id="question"></div>
+      </div>
+
+      <div id="options"></div>
+
+      <button id="showAnswerBtn">Show Answer</button>
+
+      <div id="answer"></div>
+
+      <div class="navigation">
+        <button id="prevBtn">Previous</button>
+
+        <button id="nextBtn">Next</button>
+      </div>
     </div>
 
-    <div id="options"></div>
-
-    <button id="showAnswerBtn">
-        Show Answer
-    </button>
-
-    <div id="answer"></div>
-
-    <div class="navigation">
-
-        <button id="prevBtn">
-            Previous
-        </button>
-
-        <button id="nextBtn">
-            Next
-        </button>
-
-    </div>
-
-</div>
-
-<script src="questions.js"></script>
-<script src="script.js"></script>
-
-</body>
+    <script src="questions.js"></script>
+    <script src="script.js"></script>
+  </body>
 </html>

@@ -1,4 +1,5 @@
 const questions = [
+    // question 1
   {
     question:
       "A company collects data for temperature, humidity, and atmospheric pressure in cities across multiple continents. The average volume of data that the company collects from each site daily is 500 GB. Each site has a high-speed Internet connection. The company wants to aggregate the data from all these global sites as quickly as possible in a single Amazon S3 bucket. The solution must minimize operational complexity. Which solution meets these requirements?",
@@ -12,6 +13,7 @@ const questions = [
     explanation:
       "S3 Transfer Acceleration provides fast global uploads directly into S3 with minimal operational overhead.",
   },
+  // question 2 
   {
     question:
       "A company needs the ability to analyze the log files of its proprietary application. The logs are stored in JSON format in an Amazon S3 bucket. Queries will be simple and will run on-demand. A solutions architect needs to perform the analysis with minimal changes to the existing architecture. What should the solutions architect do to meet these requirements with the LEAST amount of operational overhead?",
@@ -25,6 +27,7 @@ const questions = [
     explanation:
       "Amazon Athena allows serverless SQL queries directly on S3 data with minimal operational overhead.",
   },
+  // question 3
   {
     question:
       "A company uses AWS Organizations to manage multiple AWS accounts for different departments. The management account has an Amazon S3 bucket that contains project reports. The company wants to limit access to this S3 bucket to only users of accounts within the organization in AWS Organizations. Which solution meets these requirements with the LEAST amount of operational overhead?",
@@ -423,4 +426,5 @@ const questions = [
   },
 
   // question 31
+
 ];

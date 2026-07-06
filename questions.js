@@ -574,5 +574,138 @@ const questions = [
 }, 
 
 // question 41
+{
+  "question": "A company's application integrates with multiple software-as-a-service (SaaS) sources for data collection. The company runs Amazon EC2 instances to receive the data and to upload the data to an Amazon S3 bucket for analysis. The same EC2 instance that receives and uploads the data also sends a notification to the user when an upload is complete. The company has noticed slow application performance and wants to improve the performance as much as possible. Which solution will meet these requirements with the LEAST operational overhead?",
+  "options": [
+    "Create an Auto Scaling group so that EC2 instances can scale out. Configure an S3 event notification to send events to an Amazon Simple Notification Service (Amazon SNS) topic when the upload to the S3 bucket is complete.",
+    "Create an Amazon AppFlow flow to transfer data between each SaaS source and the S3 bucket. Configure an S3 event notification to send events to an Amazon Simple Notification Service (Amazon SNS) topic when the upload to the S3 bucket is complete.",
+    "Create an Amazon EventBridge (Amazon CloudWatch Events) rule for each SaaS source to send output data. Configure the S3 bucket as the rule's target. Create a second EventBridge (Cloud Watch Events) rule to send events when the upload to the S3 bucket is complete. Configure an Amazon Simple Notification Service (Amazon SNS) topic as the second rule's target.",
+    "Create a Docker container to use instead of an EC2 instance. Host the containerized application on Amazon Elastic Container Service (Amazon ECS). Configure Amazon CloudWatch Container Insights to send events to an Amazon Simple Notification Service (Amazon SNS) topic when the upload to the S3 bucket is complete."
+  ],
+  "answer": 1,
+  "explanation": "Amazon AppFlow is a fully managed service for securely transferring data between SaaS applications and AWS services like S3, removing the need for EC2-based ingestion and improving performance with minimal operational overhead. S3 event notifications to SNS handle the upload completion notification separately."
+}, 
+
+//question 42
+{
+  "question": "A company runs a highly available image-processing application on Amazon EC2 instances in a single VPC. The EC2 instances run inside several subnets across multiple Availability Zones. The EC2 instances do not communicate with each other. However, the EC2 instances download images from Amazon S3 and upload images to Amazon S3 through a single NAT gateway. The company is concerned about data transfer charges. What is the MOST cost-effective way for the company to avoid Regional data transfer charges?",
+  "options": [
+    "Launch the NAT gateway in each Availability Zone.",
+    "Replace the NAT gateway with a NAT instance.",
+    "Deploy a gateway VPC endpoint for Amazon S3.",
+    "Provision an EC2 Dedicated Host to run the EC2 instances"
+  ],
+  "answer": 2,
+  "explanation": "A Gateway VPC Endpoint for Amazon S3 allows private connectivity between EC2 instances and S3 without using a NAT gateway, eliminating NAT data processing and data transfer charges while reducing cost."
+}, 
+
+// question 43
+{
+  "question": "A company has an on-premises application that generates a large amount of time-sensitive data that is backed up to Amazon S3. The application has grown and there are user complaints about internet bandwidth limitations. A solutions architect needs to design a long-term solution that allows for both timely backups to Amazon S3 and with minimal impact on internet connectivity for internal users. Which solution meets these requirements?",
+  "options": [
+    "Establish AWS VPN connections and proxy all traffic through a VPC gateway endpoint.",
+    "Establish a new AWS Direct Connect connection and direct backup traffic through this new connection.",
+    "Order daily AWS Snowball devices. Load the data onto the Snowball devices and return the devices to AWS each day.",
+    "Submit a support ticket through the AWS Management Console. Request the removal of S3 service limits from the account."
+  ],
+  "answer": 1,
+  "explanation": "AWS Direct Connect provides a dedicated private network connection between on-premises and AWS, reducing internet bandwidth usage while ensuring reliable, high-throughput, and consistent backups to Amazon S3."
+}, 
+
+// question 44 
+{
+  "question": "A company has an Amazon S3 bucket that contains critical data. The company must protect the data from accidental deletion. Which combination of steps should a solutions architect take to meet these requirements? (Choose two.)",
+  "options": [
+    "Enable versioning on the S3 bucket.",
+    "Enable MFA Delete on the S3 bucket.",
+    "Create a bucket policy on the S3 bucket.",
+    "Enable default encryption on the S3 bucket.",
+    "Create a lifecycle policy for the objects in the S3 bucket"
+  ],
+  "answer": 1,
+  "explanation": "Enabling versioning protects against accidental deletion by allowing recovery of previous versions of objects, and MFA Delete adds an extra layer of protection by requiring multi-factor authentication to permanently delete objects or disable versioning."
+}, 
+
+// question 45 
+{
+  "question": "A company has a data ingestion workflow that consists of the following: • An Amazon Simple Notification Service (Amazon SNS) topic for notifications about new data deliveries • An AWS Lambda function to process the data and record metadata The company observes that the ingestion workflow fails occasionally because of network connectivity issues. When such a failure occurs, the Lambda function does not ingest the corresponding data unless the company manually reruns the job. Which combination of actions should a solutions architect take to ensure that the Lambda function ingests all data in the future? (Choose two.)",
+  "options": [
+    "Deploy the Lambda function in multiple Availability Zones.",
+    "Create an Amazon Simple Queue Service (Amazon SQS) queue, and subscribe it to the SNS topic.",
+    "Increase the CPU and memory that are allocated to the Lambda function.",
+    "Increase provisioned throughput for the Lambda function.",
+    "Modify the Lambda function to read from an Amazon Simple Queue Service (Amazon SQS) queue."
+  ],
+  "answer": 1,
+  "explanation": "Introducing an SQS queue between SNS and Lambda provides durable message storage and decoupling, preventing data loss during transient failures. Configuring Lambda to poll and process messages from SQS ensures reliable retry and at-least-once processing until successful ingestion."
+},
+
+// question 46
+{
+  "question": "A company has an application that provides marketing services to stores. The services are based on previous purchases by store customers. The stores upload transaction data to the company through SFTP, and the data is processed and analyzed to generate new marketing offers. Some of the files can exceed 200 GB in size. Recently, the company discovered that some of the stores have uploaded files that contain personally identifiable information (PII) that should not have been included. The company wants administrators to be alerted if PII is shared again. The company also wants to automate remediation. What should a solutions architect do to meet these requirements with the LEAST development effort?",
+  "options": [
+    "Use an Amazon S3 bucket as a secure transfer point. Use Amazon Inspector to scan the objects in the bucket. If objects contain PII, trigger an S3 Lifecycle policy to remove the objects that contain PII.",
+    "Use an Amazon S3 bucket as a secure transfer point. Use Amazon Macie to scan the objects in the bucket. If objects contain PII, use Amazon Simple Notification Service (Amazon SNS) to trigger a notification to the administrators to remove the objects that contain PII.",
+    "Implement custom scanning algorithms in an AWS Lambda function. Trigger the function when objects are loaded into the bucket. If objects contain PII, use Amazon Simple Notification Service (Amazon SNS) to trigger a notification to the administrators to remove the objects that contain PII.",
+    "Implement custom scanning algorithms in an AWS Lambda function. Trigger the function when objects are loaded into the bucket. If objects contain PII, use Amazon Simple Email Service (Amazon SES) to trigger a notification to the administrators and trigger an S3 Lifecycle policy to remove the meats that contain PII."
+  ],
+  "answer": 1,
+  "explanation": "Amazon Macie is a fully managed service designed to automatically discover and classify sensitive data (PII) in S3. It integrates with Amazon SNS for alerts and minimizes development and operational effort compared to custom solutions."
+}, 
+
+// question 47 
+{
+  "question": "A company needs guaranteed Amazon EC2 capacity in three specific Availability Zones in a specific AWS Region for an upcoming event that will last 1 week. What should the company do to guarantee the EC2 capacity?",
+  "options": [
+    "Purchase Reserved Instances that specify the Region needed.",
+    "Create an On-Demand Capacity Reservation that specifies the Region needed.",
+    "Purchase Reserved Instances that specify the Region and three Availability Zones needed.",
+    "Create an On-Demand Capacity Reservation that specifies the Region and three Availability Zones needed."
+  ],
+  "answer": 3,
+  "explanation": "On-Demand Capacity Reservations allow you to reserve EC2 capacity in specific Availability Zones for a specific duration, ensuring guaranteed availability for short-term needs like a 1-week event."
+}, 
+
+// question 48 
+{
+  "question": "A company's website uses an Amazon EC2 instance store for its catalog of items. The company wants to make sure that the catalog is highly available and that the catalog is stored in a durable location. What should a solutions architect do to meet these requirements?",
+  "options": [
+    "Move the catalog to Amazon ElastiCache for Redis.",
+    "Deploy a larger EC2 instance with a larger instance store.",
+    "Move the catalog from the instance store to Amazon S3 Glacier Deep Archive.",
+    "Move the catalog to an Amazon Elastic File System (Amazon EFS) file system."
+  ],
+  "answer": 3,
+  "explanation": "Amazon EFS provides a highly available, durable, and scalable shared file storage solution across multiple Availability Zones, making it suitable to replace ephemeral EC2 instance store for persistent data like a catalog."
+}, 
+
+// question 49 
+{
+  "question": "A company stores call transcript files on a monthly basis. Users access the files randomly within 1 year of the call, but users access the files infrequently after 1 year. The company wants to optimize its solution by giving users the ability to query and retrieve files that are less than 1-year-old as quickly as possible. A delay in retrieving older files is acceptable. Which solution will meet these requirements MOST cost-effectively?",
+  "options": [
+    "Store individual files with tags in Amazon S3 Glacier Instant Retrieval. Query the tags to retrieve the files from S3 Glacier Instant Retrieval.",
+    "Store individual files in Amazon S3 Intelligent-Tiering. Use S3 Lifecycle policies to move the files to S3 Glacier Flexible Retrieval after 1 year. Query and retrieve the files that are in Amazon S3 by using Amazon Athena. Query and retrieve the files that are in S3 Glacier by using S3 Glacier Select.",
+    "Store individual files with tags in Amazon S3 Standard storage. Store search metadata for each archive in Amazon S3 Standard storage. Use S3 Lifecycle policies to move the files to S3 Glacier Instant Retrieval after 1 year. Query and retrieve the files by searching for metadata from Amazon S3.",
+    "Store individual files in Amazon S3 Standard storage. Use S3 Lifecycle policies to move the files to S3 Glacier Deep Archive after 1 year. Store search metadata in Amazon RDS. Query the files from Amazon RDS. Retrieve the files from S3 Glacier Deep Archive."
+  ],
+  "answer": 1,
+  "explanation": "S3 Intelligent-Tiering optimizes cost for frequently and infrequently accessed data automatically. Lifecycle policies moving data to Glacier after 1 year reduce long-term cost, while Athena enables fast querying of recent data in S3, and Glacier Select allows limited querying of archived data, balancing performance and cost effectively."
+}, 
+
+// question 50
+{
+  "question": "A company has a production workload that runs on 1,000 Amazon EC2 Linux instances. The workload is powered by third-party software. The company needs to patch the third-party software on all EC2 instances as quickly as possible to remediate a critical security vulnerability. What should a solutions architect do to meet these requirements?",
+  "options": [
+    "Create an AWS Lambda function to apply the patch to all EC2 instances.",
+    "Configure AWS Systems Manager Patch Manager to apply the patch to all EC2 instances.",
+    "Schedule an AWS Systems Manager maintenance window to apply the patch to all EC2 instances.",
+    "Use AWS Systems Manager Run Command to run a custom command that applies the patch to all EC2 instances."
+  ],
+  "answer": 3,
+  "explanation": "AWS Systems Manager Run Command allows immediate, large-scale execution of custom commands across thousands of EC2 instances without waiting for maintenance windows or patch baselines, making it the fastest way to remediate a critical vulnerability."
+}, 
+
+// question 51 
+
 
 ];

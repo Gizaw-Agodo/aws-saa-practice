@@ -21,6 +21,30 @@ h1{
     text-align:center;
 }
 
+.question-card {
+    background: white;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border-left: 4px solid #ff9900; /* AWS orange accent */
+
+    transition: transform 0.2s ease;
+}
+
+.question-card:hover {
+    transform: translateY(-2px);
+}
+
+#question h2 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin: 0;
+    color: #111;
+}
+
 #pagination{
     margin-bottom:20px;
     font-weight:bold;

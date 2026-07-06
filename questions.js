@@ -1,264 +1,226 @@
 const questions = [
  // quesiton 1
-{
-"question": "A company collects data for temperature, humidity, and atmospheric pressure in cities across multiple continents. The average volume of data that the company collects from each site daily is 500 GB. Each site has a high-speed Internet connection. The company wants to aggregate the data from all these global sites as quickly as possible in a single Amazon S3 bucket. The solution must minimize operational complexity.",
-"options": [
-    "Turn on S3 Transfer Acceleration on the destination S3 bucket. Use multipart uploads to directly upload site data to the destination S3 bucket.",
-    "Upload the data from each site to an S3 bucket in the closest Region. Use S3 Cross-Region Replication to copy objects to the destination S3 bucket. Then remove the data from the origin S3 bucket.",
-    "Schedule AWS Snowball Edge Storage Optimized device jobs daily to transfer data from each site to the closest Region. Use S3 CrossRegion Replication to copy objects to the destination S3 bucket.",
-    "Upload the data from each site to an Amazon EC2 instance in the closest Region. Store the data in an Amazon Elastic Block Store (Amazon EBS) volume. At regular intervals, take an EBS snapshot and copy it to the Region that contains the destination S3 bucket. Restore the EBS volume in that Region."
-],
-"answer": 0,
-"explanation": "S3 Transfer Acceleration optimizes global uploads directly into S3 with minimal operational overhead."
-},
-
-// quesiton 2
-{
-"question": "A company needs to analyze JSON log files stored in Amazon S3 with simple on-demand queries and minimal changes to architecture.",
-"options": [
-    "Use Amazon Redshift to load all the content into one place and run the SQL queries as needed.",
-    "Use Amazon CloudWatch Logs to store the logs. Run SQL queries as needed from the Amazon CloudWatch console.",
-    "Use Amazon Athena directly with Amazon S3 to run the queries as needed.",
-    "Use AWS Glue to catalog the logs. Use a transient Apache Spark cluster on Amazon EMR to run the SQL queries as needed."
-],
-"answer": 2,
-"explanation": "Amazon Athena allows serverless SQL queries directly on S3 data with minimal operational overhead."
-},
-
-// quesiton 3
-{
-"question": "A company wants to limit access to an S3 bucket to only users within its AWS Organization.",
-"options": [
-    "Add the aws:PrincipalOrgID global condition key with a reference to the organization ID to the S3 bucket policy.",
-    "Create an organizational unit (OU) for each department. Add the aws:PrincipalOrgPaths global condition key to the S3 bucket policy.",
-    "Use AWS CloudTrail to monitor account events and update the S3 bucket policy accordingly.",
-    "Tag each user and use aws:PrincipalTag in the S3 bucket policy."
-],
-"answer": 0,
-"explanation": "aws:PrincipalOrgID restricts access to principals within an AWS Organization with minimal overhead."
-},
-
-// quesiton 4
-{
-"question": "An EC2 instance needs private access to an S3 bucket without internet connectivity.",
-"options": [
-    "Create a gateway VPC endpoint to the S3 bucket.",
-    "Stream logs to CloudWatch Logs and export to S3.",
-    "Create an instance profile for EC2.",
-    "Create an API Gateway with private link to S3."
-],
-"answer": 0,
-"explanation": "Gateway VPC endpoints provide private connectivity to S3 without internet access."
-},
-
-// quesiton 5
-{
-"question": "Users see only partial documents when using two EC2 instances with separate EBS volumes behind an ALB.",
-"options": [
-    "Copy data so both EBS volumes contain all documents.",
-    "Configure ALB to direct user to correct server.",
-    "Copy data to Amazon EFS and use shared storage.",
-    "Send request to both servers via ALB."
-],
-"answer": 2,
-"explanation": "Amazon EFS provides shared storage across instances ensuring consistent file visibility."
-},
-
-// quesiton 6
-{
-"question": "Migrate 70 TB NFS data to S3 using least bandwidth and fastest method.",
-"options": [
-    "Use AWS CLI over internet.",
-    "Use AWS Snowball Edge device.",
-    "Use S3 File Gateway over public internet.",
-    "Use Direct Connect with File Gateway."
-],
-"answer": 1,
-"explanation": "Snowball Edge is best for large-scale offline migration with minimal bandwidth usage."
-},
-
-// quesiton 7
-{
-"question": "Decouple system handling 100,000 messages/sec with multiple consumers.",
-"options": [
-    "Kinesis Data Analytics",
-    "EC2 Auto Scaling ingestion",
-    "Kinesis Data Streams single shard + DynamoDB",
-    "SNS topic with multiple SQS subscriptions"
-],
-"answer": 3,
-"explanation": "SNS with SQS fanout enables scalable decoupling for multiple consumers."
-},
-
-// quesiton 8
-{
-"question": "Modernize batch job system with queue-based scaling.",
-"options": [
-    "SQS queue + EC2 ASG scheduled scaling",
-    "SQS queue + ASG scaling based on queue size",
-    "CloudTrail as job destination",
-    "EventBridge with compute load scaling"
-],
-"answer": 1,
-"explanation": "Scaling based on SQS queue depth is the most resilient and scalable pattern."
-},
-
-// quesiton 9
-{
-"question": "SMB file server with hot data for 7 days, then infrequent access.",
-"options": [
-    "AWS DataSync",
-    "S3 File Gateway + lifecycle to Glacier Deep Archive",
-    "FSx for Windows File Server",
-    "S3 client per user"
-],
-"answer": 1,
-"explanation": "S3 File Gateway provides SMB access with lifecycle tiering to reduce cost."
-},
-
-// quesiton 10
-{
-"question": "Ensure order processing in exact sequence for ecommerce orders.",
-"options": [
-    "SNS topic",
-    "SQS FIFO queue with Lambda",
-    "API Gateway blocking",
-    "SQS standard queue"
-],
-"answer": 1,
-"explanation": "SQS FIFO guarantees strict ordering and exactly-once processing."
-},
-
-// quesiton 11
-{
-"question": "Minimize overhead for managing database credentials in EC2.",
-"options": [
-    "AWS Secrets Manager with rotation",
-    "SSM Parameter Store with rotation",
-    "Store in S3",
-    "Store in EBS volume"
-],
-"answer": 0,
-"explanation": "Secrets Manager provides secure storage with automatic rotation and low operational overhead."
-},
-
-// quesiton 12
-{
-"question": "Improve performance for static and dynamic content globally.",
-"options": [
-    "CloudFront with S3 and ALB origins + Route 53",
-    "CloudFront + ALB + Global Accelerator + S3 endpoint",
-    "CloudFront ALB + GA endpoints",
-    "Separate domains for static and dynamic content"
-],
-"answer": 0,
-"explanation": "CloudFront caching + ALB origin improves latency for both static and dynamic content."
-},
-
-// quesiton 13
-{
-"question": "Rotate RDS credentials across multiple Regions with least overhead.",
-"options": [
-    "AWS Secrets Manager multi-Region replication",
-    "SSM Parameter Store",
-    "S3 + Lambda rotation",
-    "DynamoDB + KMS keys"
-],
-"answer": 0,
-"explanation": "Secrets Manager supports multi-Region replication and automatic rotation."
-},
-
-// quesiton 14
-{
-"question": "Auto scaling database for read-heavy MySQL workload.",
-"options": [
-    "Redshift single node",
-    "RDS Single-AZ with readers",
-    "Aurora with Auto Scaling replicas",
-    "ElastiCache Memcached"
-],
-"answer": 2,
-"explanation": "Aurora replicas auto scale to handle read-heavy workloads with high availability."
-},
-
-// quesiton 15
-{
-"question": "Implement traffic inspection similar to on-prem firewall appliance.",
-"options": [
-    "GuardDuty",
-    "Traffic Mirroring",
-    "AWS Network Firewall",
-    "Firewall Manager"
-],
-"answer": 2,
-"explanation": "AWS Network Firewall provides managed stateful traffic inspection and filtering."
-},
-
-// quesiton 16
-{
-"question": "Data visualization across S3 and RDS with access control.",
-"options": [
-    "QuickSight with IAM roles",
-    "QuickSight with users and groups",
-    "Glue + ETL + S3 reports",
-    "Glue + Athena + S3 reports"
-],
-"answer": 1,
-"explanation": "QuickSight with users and groups enables fine-grained access control for dashboards."
-},
-
-// quesiton 17
-{
-"question": "Allow EC2 instances to access S3 securely.",
-"options": [
-    "IAM role attached to EC2",
-    "IAM policy attached to EC2",
-    "IAM group",
-    "IAM user on EC2"
-],
-"answer": 0,
-"explanation": "IAM roles for EC2 provide secure temporary credentials for S3 access."
-},
-
-// quesiton 18
-{
-"question": "Serverless image processing pipeline using S3 and Lambda. (Choose two)",
-"options": [
-    "SQS triggered by S3 events",
-    "Lambda uses SQS as event source",
-    "Lambda polls S3 directly",
-    "EC2 monitors SQS",
-    "EventBridge SNS email alert"
-],
-"answer": [0, 1],
-"explanation": "S3 → SQS decouples ingestion and Lambda consumes SQS for scalable processing."
-},
-
-// quesiton 19
-{
-"question": "Inspect all traffic to web application before reaching web servers.",
-"options": [
-    "NLB inspection",
-    "ALB inspection",
-    "Transit Gateway inspection",
-    "Gateway Load Balancer"
-],
-"answer": 3,
-"explanation": "Gateway Load Balancer integrates third-party appliances for traffic inspection."
-},
-
-// quesiton 20
-{
-"question": "Fast cloning of EBS-backed production data for test environment.",
-"options": [
-    "Snapshot to instance store",
-    "EBS Multi-Attach",
-    "Snapshot then restore manually",
-    "Fast Snapshot Restore"
-],
-"answer": 3,
-"explanation": "EBS Fast Snapshot Restore enables immediate volume initialization for fast cloning."
-},
+  {
+    "question": "A company collects data for temperature, humidity, and atmospheric pressure in cities across multiple continents. The average volume of data that the company collects from each site daily is 500 GB. Each site has a high-speed Internet connection. The company wants to aggregate the data from all these global sites as quickly as possible in a single Amazon S3 bucket. The solution must minimize operational complexity.",
+    "options": [
+      "Turn on S3 Transfer Acceleration on the destination S3 bucket. Use multipart uploads to directly upload site data to the destination S3 bucket.",
+      "Upload the data from each site to an S3 bucket in the closest Region. Use S3 Cross-Region Replication to copy objects to the destination S3 bucket. Then remove the data from the origin S3 bucket.",
+      "Schedule AWS Snowball Edge Storage Optimized device jobs daily to transfer data from each site to the closest Region. Use S3 CrossRegion Replication to copy objects to the destination S3 bucket.",
+      "Upload the data from each site to an Amazon EC2 instance in the closest Region. Store the data in an Amazon Elastic Block Store (Amazon EBS) volume. At regular intervals, take an EBS snapshot and copy it to the Region that contains the destination S3 bucket. Restore the EBS volume in that Region."
+    ],
+    "answer": 0,
+    "explanation": "S3 Transfer Acceleration optimizes global uploads directly into S3 with minimal operational overhead."
+  },
+  {
+    "question": "A company needs to analyze JSON log files stored in Amazon S3 with simple on-demand queries and minimal changes to architecture.",
+    "options": [
+      "Use Amazon Redshift to load all the content into one place and run the SQL queries as needed.",
+      "Use Amazon CloudWatch Logs to store the logs. Run SQL queries as needed from the Amazon CloudWatch console.",
+      "Use Amazon Athena directly with Amazon S3 to run the queries as needed.",
+      "Use AWS Glue to catalog the logs. Use a transient Apache Spark cluster on Amazon EMR to run the SQL queries as needed."
+    ],
+    "answer": 2,
+    "explanation": "Amazon Athena allows serverless SQL queries directly on S3 data with minimal operational overhead."
+  },
+  {
+    "question": "A company wants to limit access to an S3 bucket to only users within its AWS Organization.",
+    "options": [
+      "Add the aws:PrincipalOrgID global condition key with a reference to the organization ID to the S3 bucket policy.",
+      "Create an organizational unit (OU) for each department. Add the aws:PrincipalOrgPaths global condition key to the S3 bucket policy.",
+      "Use AWS CloudTrail to monitor account events and update the S3 bucket policy accordingly.",
+      "Tag each user and use aws:PrincipalTag in the S3 bucket policy."
+    ],
+    "answer": 0,
+    "explanation": "aws:PrincipalOrgID restricts access to principals within an AWS Organization with minimal overhead."
+  },
+  {
+    "question": "An EC2 instance needs private access to an S3 bucket without internet connectivity.",
+    "options": [
+      "Create a gateway VPC endpoint to the S3 bucket.",
+      "Stream logs to CloudWatch Logs and export to S3.",
+      "Create an instance profile for EC2.",
+      "Create an API Gateway with private link to S3."
+    ],
+    "answer": 0,
+    "explanation": "Gateway VPC endpoints provide private connectivity to S3 without internet access."
+  },
+  {
+    "question": "Users see only partial documents when using two EC2 instances with separate EBS volumes behind an ALB.",
+    "options": [
+      "Copy data so both EBS volumes contain all documents.",
+      "Configure ALB to direct user to correct server.",
+      "Copy data to Amazon EFS and use shared storage.",
+      "Send request to both servers via ALB."
+    ],
+    "answer": 2,
+    "explanation": "Amazon EFS provides shared storage across instances ensuring consistent file visibility."
+  },
+  {
+    "question": "Migrate 70 TB NFS data to S3 using least bandwidth and fastest method.",
+    "options": [
+      "Use AWS CLI over internet.",
+      "Use AWS Snowball Edge device.",
+      "Use S3 File Gateway over public internet.",
+      "Use Direct Connect with File Gateway."
+    ],
+    "answer": 1,
+    "explanation": "Snowball Edge is best for large-scale offline migration with minimal bandwidth usage."
+  },
+  {
+    "question": "Decouple system handling 100,000 messages/sec with multiple consumers.",
+    "options": [
+      "Kinesis Data Analytics",
+      "EC2 Auto Scaling ingestion",
+      "Kinesis Data Streams single shard + DynamoDB",
+      "SNS topic with multiple SQS subscriptions"
+    ],
+    "answer": 3,
+    "explanation": "SNS with SQS fanout enables scalable decoupling for multiple consumers."
+  },
+  {
+    "question": "Modernize batch job system with queue-based scaling.",
+    "options": [
+      "SQS queue + EC2 ASG scheduled scaling",
+      "SQS queue + ASG scaling based on queue size",
+      "CloudTrail as job destination",
+      "EventBridge with compute load scaling"
+    ],
+    "answer": 1,
+    "explanation": "Scaling based on SQS queue depth is the most resilient and scalable pattern."
+  },
+  {
+    "question": "SMB file server with hot data for 7 days, then infrequent access.",
+    "options": [
+      "AWS DataSync",
+      "S3 File Gateway + lifecycle to Glacier Deep Archive",
+      "FSx for Windows File Server",
+      "S3 client per user"
+    ],
+    "answer": 1,
+    "explanation": "S3 File Gateway provides SMB access with lifecycle tiering to reduce cost."
+  },
+  {
+    "question": "Ensure order processing in exact sequence for ecommerce orders.",
+    "options": [
+      "SNS topic",
+      "SQS FIFO queue with Lambda",
+      "API Gateway blocking",
+      "SQS standard queue"
+    ],
+    "answer": 1,
+    "explanation": "SQS FIFO guarantees strict ordering and exactly-once processing."
+  },
+  {
+    "question": "Minimize overhead for managing database credentials in EC2.",
+    "options": [
+      "AWS Secrets Manager with rotation",
+      "SSM Parameter Store with rotation",
+      "Store in S3",
+      "Store in EBS volume"
+    ],
+    "answer": 0,
+    "explanation": "Secrets Manager provides secure storage with automatic rotation and low operational overhead."
+  },
+  {
+    "question": "Improve performance for static and dynamic content globally.",
+    "options": [
+      "CloudFront with S3 and ALB origins + Route 53",
+      "CloudFront + ALB + Global Accelerator + S3 endpoint",
+      "CloudFront ALB + GA endpoints",
+      "Separate domains for static and dynamic content"
+    ],
+    "answer": 0,
+    "explanation": "CloudFront caching + ALB origin improves latency for both static and dynamic content."
+  },
+  {
+    "question": "Rotate RDS credentials across multiple Regions with least overhead.",
+    "options": [
+      "AWS Secrets Manager multi-Region replication",
+      "SSM Parameter Store",
+      "S3 + Lambda rotation",
+      "DynamoDB + KMS keys"
+    ],
+    "answer": 0,
+    "explanation": "Secrets Manager supports multi-Region replication and automatic rotation."
+  },
+  {
+    "question": "Auto scaling database for read-heavy MySQL workload.",
+    "options": [
+      "Redshift single node",
+      "RDS Single-AZ with readers",
+      "Aurora with Auto Scaling replicas",
+      "ElastiCache Memcached"
+    ],
+    "answer": 2,
+    "explanation": "Aurora replicas auto scale to handle read-heavy workloads with high availability."
+  },
+  {
+    "question": "Implement traffic inspection similar to on-prem firewall appliance.",
+    "options": [
+      "GuardDuty",
+      "Traffic Mirroring",
+      "AWS Network Firewall",
+      "Firewall Manager"
+    ],
+    "answer": 2,
+    "explanation": "AWS Network Firewall provides managed stateful traffic inspection and filtering."
+  },
+  {
+    "question": "Data visualization across S3 and RDS with access control.",
+    "options": [
+      "QuickSight with IAM roles",
+      "QuickSight with users and groups",
+      "Glue + ETL + S3 reports",
+      "Glue + Athena + S3 reports"
+    ],
+    "answer": 1,
+    "explanation": "QuickSight with users and groups enables fine-grained access control for dashboards."
+  },
+  {
+    "question": "Allow EC2 instances to access S3 securely.",
+    "options": [
+      "IAM role attached to EC2",
+      "IAM policy attached to EC2",
+      "IAM group",
+      "IAM user on EC2"
+    ],
+    "answer": 0,
+    "explanation": "IAM roles for EC2 provide secure temporary credentials for S3 access."
+  },
+  {
+    "question": "Serverless image processing pipeline using S3 and Lambda. (Choose two)",
+    "options": [
+      "SQS triggered by S3 events",
+      "Lambda uses SQS as event source",
+      "Lambda polls S3 directly",
+      "EC2 monitors SQS",
+      "EventBridge SNS email alert"
+    ],
+    "answer": [0, 1],
+    "explanation": "S3 → SQS decouples ingestion and Lambda consumes SQS for scalable processing."
+  },
+  {
+    "question": "Inspect all traffic to web application before reaching web servers.",
+    "options": [
+      "NLB inspection",
+      "ALB inspection",
+      "Transit Gateway inspection",
+      "Gateway Load Balancer"
+    ],
+    "answer": 3,
+    "explanation": "Gateway Load Balancer integrates third-party appliances for traffic inspection."
+  },
+  {
+    "question": "Fast cloning of EBS-backed production data for test environment.",
+    "options": [
+      "Snapshot to instance store",
+      "EBS Multi-Attach",
+      "Snapshot then restore manually",
+      "Fast Snapshot Restore"
+    ],
+    "answer": 3,
+    "explanation": "EBS Fast Snapshot Restore enables immediate volume initialization for fast cloning."
+  },
 
 // question 21
 {

@@ -1,4 +1,5 @@
 let currentQuestion = 0;
+const letters = ["A", "B", "C", "D"];
 
 function loadQuestion(){
 
@@ -12,11 +13,15 @@ function loadQuestion(){
 
     let html="";
 
-    q.options.forEach(option=>{
+    q.options.forEach((option, index) => {
 
-        html+=`<div class="option">${option}</div>`;
-
+        html += `
+            <div class="option">
+                <strong>${letters[index]}.</strong> ${option}
+            </div>
+        `;
     });
+
 
     document.getElementById("options").innerHTML=html;
 
@@ -32,7 +37,7 @@ document.getElementById("showAnswerBtn").onclick=function(){
 
     document.getElementById("answer").innerHTML=
     `
-    <strong>Answer:</strong> ${q.options[q.answer]}<br><br>
+    <strong>Answer:</strong> ${letters[q.answer]}. ${q.options[q.answer]}<br><br>
 
     <strong>Explanation:</strong><br>
 

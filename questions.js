@@ -46,6 +46,7 @@ Which solution meets these requirements?`,
         "Amazon S3 is AWS's object storage service."
 },
 
+// question 21
 {
   "question": "An ecommerce company wants to launch a one-deal-a-day website on AWS. Each day will feature exactly one product on sale for a period of 24 hours. The company wants to be able to handle millions of requests each hour with millisecond latency during peak hours. Which solution will meet these requirements with the LEAST operational overhead?",
 
@@ -60,6 +61,26 @@ Which solution meets these requirements?`,
 
   "explanation": "S3, CloudFront, API Gateway, Lambda, and DynamoDB provide a fully serverless, highly scalable solution with minimal operational overhead."
 },
+
+// question 22
+{
+  "question": "A solutions architect is using Amazon S3 to design the storage architecture of a new digital media application. The media files must be resilient to the loss of an Availability Zone. Some files are accessed frequently while other files are rarely accessed in an unpredictable pattern. The solutions architect must minimize the costs of storing and retrieving the media files.",
+
+  "options": [
+    "S3 Standard",
+    "S3 Intelligent-Tiering",
+    "S3 Standard-Infrequent Access (S3 Standard-IA)",
+    "S3 One Zone-Infrequent Access (S3 One Zone-IA)"
+  ],
+
+  "answer": 1,
+
+  "explanation": "S3 Intelligent-Tiering automatically moves objects between access tiers to reduce costs while remaining multi-AZ resilient."
+}
+
+// question 23
+
+
 
 
 

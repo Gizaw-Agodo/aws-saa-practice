@@ -6,11 +6,7 @@ Interactive AWS Certified Solutions Architect Associate practice questions.
 
 👉 **Launch the Practice App**
 
-<p align="center">
-  <a href="https://yourusername.github.io/aws-saa-practice/">
-    <img src="https://img.shields.io/badge/🚀%20Launch-Practice%20App-FF9900?style=for-the-badge" alt="Launch Practice App">
-  </a>
-</p>
+[![Launch Practice App](https://img.shields.io/badge/🚀-Launch%20Practice%20App-FF9900?style=for-the-badge)](https://Gizaw-Agodo.github.io/aws-saa-practice/)
 
 ---
 

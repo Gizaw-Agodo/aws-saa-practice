@@ -706,6 +706,137 @@ const questions = [
 }, 
 
 // question 51 
+{
+  "question": "A company is developing an application that provides order shipping statistics for retrieval by a REST API. The company wants to extract the shipping statistics, organize the data into an easy-to-read HTML format, and send the report to several email addresses at the same time every morning. Which combination of steps should a solutions architect take to meet these requirements? (Choose two.)",
+  "options": [
+    "Configure the application to send the data to Amazon Kinesis Data Firehose.",
+    "Use Amazon Simple Email Service (Amazon SES) to format the data and to send the report by email.",
+    "Create an Amazon EventBridge (Amazon CloudWatch Events) scheduled event that invokes an AWS Glue job to query the application's API for the data.",
+    "Create an Amazon EventBridge (Amazon CloudWatch Events) scheduled event that invokes an AWS Lambda function to query the application's API for the data.",
+    "Store the application data in Amazon S3. Create an Amazon Simple Notification Service (Amazon SNS) topic as an S3 event destination to send the report by email."
+  ],
+  "answer": 3,
+  "explanation": "Use Amazon EventBridge to schedule a daily AWS Lambda invocation that retrieves the statistics from the REST API, formats them into HTML, and uses Amazon SES to send the report to multiple email recipients."
+}, 
+
+// question 52 
+{
+  "question": "A company wants to migrate its on-premises application to AWS. The application produces output files that vary in size from tens of gigabytes to hundreds of terabytes. The application data must be stored in a standard file system structure. The company wants a solution that scales automatically, is highly available, and requires minimum operational overhead. Which solution will meet these requirements?",
+  "options": [
+    "Migrate the application to run as containers on Amazon Elastic Container Service (Amazon ECS). Use Amazon S3 for storage.",
+    "Migrate the application to run as containers on Amazon Elastic Kubernetes Service (Amazon EKS). Use Amazon Elastic Block Store (Amazon EBS) for storage.",
+    "Migrate the application to Amazon EC2 instances in a Multi-AZ Auto Scaling group. Use Amazon Elastic File System (Amazon EFS) for storage.",
+    "Migrate the application to Amazon EC2 instances in a Multi-AZ Auto Scaling group. Use Amazon Elastic Block Store (Amazon EBS) for storage."
+  ],
+  "answer": 2,
+  "explanation": "Amazon EFS provides a scalable, highly available, shared POSIX file system that automatically grows and can be mounted by multiple EC2 instances across multiple Availability Zones, making it ideal for standard file system storage with minimal operational overhead."
+}, 
+
+// question 53
+{
+  "question": "A company needs to store its accounting records in Amazon S3. The records must be immediately accessible for 1 year and then must be archived for an additional 9 years. No one at the company, including administrative users and root users, can be able to delete the records during the entire 10-year period. The records must be stored with maximum resiliency. Which solution will meet these requirements?",
+  "options": [
+    "Store the records in S3 Glacier for the entire 10-year period. Use an access control policy to deny deletion of the records for a period of 10 years.",
+    "Store the records by using S3 Intelligent-Tiering. Use an IAM policy to deny deletion of the records. After 10 years, change the IAM policy to allow deletion.",
+    "Use an S3 Lifecycle policy to transition the records from S3 Standard to S3 Glacier Deep Archive after 1 year. Use S3 Object Lock in compliance mode for a period of 10 years.",
+    "Use an S3 Lifecycle policy to transition the records from S3 Standard to S3 One Zone-Infrequent Access (S3 One Zone-IA) after 1 year. Use S3 Object Lock in governance mode for a period of 10 years."
+  ],
+  "answer": 2,
+  "explanation": "S3 Object Lock in Compliance mode prevents anyone—including root users—from deleting or modifying objects during the retention period. An S3 Lifecycle policy transitions the data from S3 Standard to Glacier Deep Archive after 1 year for cost-effective long-term archival with maximum durability."
+}, 
+
+// question 54
+{
+  "question": "A company runs multiple Windows workloads on AWS. The company's employees use Windows file shares that are hosted on two Amazon EC2 instances. The file shares synchronize data between themselves and maintain duplicate copies. The company wants a highly available and durable storage solution that preserves how users currently access the files. What should a solutions architect do to meet these requirements?",
+  "options": [
+    "Migrate all the data to Amazon S3. Set up IAM authentication for users to access files.",
+    "Set up an Amazon S3 File Gateway. Mount the S3 File Gateway on the existing EC2 instances.",
+    "Extend the file share environment to Amazon FSx for Windows File Server with a Multi-AZ configuration. Migrate all the data to FSx for Windows File Server.",
+    "Extend the file share environment to Amazon Elastic File System (Amazon EFS) with a Multi-AZ configuration. Migrate all the data to Amazon EFS."
+  ],
+  "answer": 2,
+  "explanation": "Amazon FSx for Windows File Server provides fully managed, highly available Windows SMB file shares with Multi-AZ deployment, preserving existing Windows file access while eliminating the need for manual synchronization."
+}, 
+
+// question 55 
+{
+  "question": "A solutions architect is developing a VPC architecture that includes multiple subnets. The architecture will host applications that use Amazon EC2 instances and Amazon RDS DB instances. The architecture consists of six subnets in two Availability Zones. Each Availability Zone includes a public subnet, a private subnet, and a dedicated subnet for databases. Only EC2 instances that run in the private subnets can have access to the RDS databases. Which solution will meet these requirements?",
+  "options": [
+    "Create a new route table that excludes the route to the public subnets' CIDR blocks. Associate the route table with the database subnets.",
+    "Create a security group that denies inbound traffic from the security group that is assigned to instances in the public subnets. Attach the security group to the DB instances.",
+    "Create a security group that allows inbound traffic from the security group that is assigned to instances in the private subnets. Attach the security group to the DB instances.",
+    "Create a new peering connection between the public subnets and the private subnets. Create a different peering connection between the private subnets and the database subnets."
+  ],
+  "answer": 2,
+  "explanation": "Use a security group on the RDS DB instances that allows inbound traffic only from the security group attached to EC2 instances in the private subnets. This restricts database access to only the private application servers."
+}, 
+
+// question 56 
+{
+  "question": "A company has registered its domain name with Amazon Route 53. The company uses Amazon API Gateway in the ca-central-1 Region as a public interface for its backend microservice APIs. Third-party services consume the APIs securely. The company wants to design its API Gateway URL with the company's domain name and corresponding certificate so that the third-party services can use HTTPS. Which solution will meet these requirements?",
+  "options": [
+    "Create stage variables in API Gateway with Name=\"Endpoint-URL\" and Value=\"Company Domain Name\" to overwrite the default URL. Import the public certificate associated with the company's domain name into AWS Certificate Manager (ACM).",
+    "Create Route 53 DNS records with the company's domain name. Point the alias record to the Regional API Gateway stage endpoint. Import the public certificate associated with the company's domain name into AWS Certificate Manager (ACM) in the us-east-1 Region.",
+    "Create a Regional API Gateway endpoint. Associate the API Gateway endpoint with the company's domain name. Import the public certificate associated with the company's domain name into AWS Certificate Manager (ACM) in the same Region. Attach the certificate to the API Gateway endpoint. Configure Route 53 to route traffic to the API Gateway endpoint.",
+    "Create a Regional API Gateway endpoint. Associate the API Gateway endpoint with the company's domain name. Import the public certificate associated with the company's domain name into AWS Certificate Manager (ACM) in the us-east-1 Region. Attach the certificate to the API Gateway APIs. Create Route 53 DNS records with the company's domain name. Point an A record to the company's domain name."
+  ],
+  "answer": 2,
+  "explanation": "For a Regional API Gateway custom domain, the ACM certificate must be in the same AWS Region as the API (ca-central-1). Associate the custom domain with the Regional endpoint and create a Route 53 alias record pointing to the API Gateway endpoint."
+}, 
+
+// question 57 
+{
+  "question": "A company is running a popular social media website. The website gives users the ability to upload images to share with other users. The company wants to make sure that the images do not contain inappropriate content. The company needs a solution that minimizes development effort. What should a solutions architect do to meet these requirements?",
+  "options": [
+    "Use Amazon Comprehend to detect inappropriate content. Use human review for low-confidence predictions.",
+    "Use Amazon Rekognition to detect inappropriate content. Use human review for low-confidence predictions.",
+    "Use Amazon SageMaker to detect inappropriate content. Use ground truth to label low-confidence predictions.",
+    "Use AWS Fargate to deploy a custom machine learning model to detect inappropriate content. Use ground truth to label low-confidence predictions."
+  ],
+  "answer": 1,
+  "explanation": "Amazon Rekognition provides a fully managed image moderation feature that can detect inappropriate or unsafe content with minimal development effort. It also supports confidence scoring, allowing human review for low-confidence predictions."
+}, 
+
+// question 58 
+{
+  "question": "A company wants to run its critical applications in containers to meet requirements for scalability and availability. The company prefers to focus on maintenance of the critical applications. The company does not want to be responsible for provisioning and managing the underlying infrastructure that runs the containerized workload. What should a solutions architect do to meet these requirements?",
+  "options": [
+    "Use Amazon EC2 instances, and install Docker on the instances.",
+    "Use Amazon Elastic Container Service (Amazon ECS) on Amazon EC2 worker nodes.",
+    "Use Amazon Elastic Container Service (Amazon ECS) on AWS Fargate.",
+    "Use Amazon EC2 instances from an Amazon Elastic Container Service (Amazon ECS)-optimized Amazon Machine Image (AMI)."
+  ],
+  "answer": 2,
+  "explanation": "Amazon ECS with AWS Fargate removes the need to manage or provision underlying EC2 instances, allowing the company to focus only on application-level container management while AWS handles infrastructure scaling and availability."
+}, 
+
+// question 59 
+{
+  "question": "A company hosts more than 300 global websites and applications. The company requires a platform to analyze more than 30 TB of clickstream data each day. What should a solutions architect do to transmit and process the clickstream data?",
+  "options": [
+    "Design an AWS Data Pipeline to archive the data to an Amazon S3 bucket and run an Amazon EMR cluster with the data to generate analytics.",
+    "Create an Auto Scaling group of Amazon EC2 instances to process the data and send it to an Amazon S3 data lake for Amazon Redshift to use for analysis.",
+    "Cache the data to Amazon CloudFront. Store the data in an Amazon S3 bucket. When an object is added to the S3 bucket, run an AWS Lambda function to process the data for analysis.",
+    "Collect the data from Amazon Kinesis Data Streams. Use Amazon Kinesis Data Firehose to transmit the data to an Amazon S3 data lake. Load the data in Amazon Redshift for analysis."
+  ],
+  "answer": 3,
+  "explanation": "Amazon Kinesis Data Streams with Kinesis Data Firehose provides a fully managed, highly scalable solution for ingesting and delivering large-scale streaming clickstream data to Amazon S3 and Amazon Redshift for analytics with minimal operational overhead."
+}, 
+
+// question 60 
+{
+  "question": "A company has a website hosted on AWS. The website is behind an Application Load Balancer (ALB) that is configured to handle HTTP and HTTPS separately. The company wants to forward all requests to the website so that the requests will use HTTPS. What should a solutions architect do to meet this requirement?",
+  "options": [
+    "Update the ALB's network ACL to accept only HTTPS traffic.",
+    "Create a rule that replaces the HTTP in the URL with HTTPS.",
+    "Create a listener rule on the ALB to redirect HTTP traffic to HTTPS.",
+    "Replace the ALB with a Network Load Balancer configured to use Server Name Indication (SNI)."
+  ],
+  "answer": 2,
+  "explanation": "An Application Load Balancer can use listener rules to redirect HTTP traffic to HTTPS, ensuring all requests are automatically upgraded to a secure connection without changing the application or infrastructure."
+}, 
+
+// question 61
 
 
 ];

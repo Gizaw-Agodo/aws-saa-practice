@@ -1,5 +1,5 @@
 const questions = [
-    // question 1
+  // question 1
   {
     question:
       "A company collects data for temperature, humidity, and atmospheric pressure in cities across multiple continents. The average volume of data that the company collects from each site daily is 500 GB. Each site has a high-speed Internet connection. The company wants to aggregate the data from all these global sites as quickly as possible in a single Amazon S3 bucket. The solution must minimize operational complexity. Which solution meets these requirements?",
@@ -13,7 +13,7 @@ const questions = [
     explanation:
       "S3 Transfer Acceleration provides fast global uploads directly into S3 with minimal operational overhead.",
   },
-  // question 2 
+  // question 2
   {
     question:
       "A company needs the ability to analyze the log files of its proprietary application. The logs are stored in JSON format in an Amazon S3 bucket. Queries will be simple and will run on-demand. A solutions architect needs to perform the analysis with minimal changes to the existing architecture. What should the solutions architect do to meet these requirements with the LEAST amount of operational overhead?",
@@ -263,6 +263,24 @@ const questions = [
       "Fast Snapshot Restore provides immediate full-performance EBS volumes from snapshots.",
   },
 
+  // question 21
+  {
+    question:
+      "An ecommerce company wants to launch a one-deal-a-day website on AWS. Each day will feature exactly one product on sale for a period of 24 hours. The company wants to be able to handle millions of requests each hour with millisecond latency during peak hours. Which solution will meet these requirements with the LEAST operational overhead?",
+
+    options: [
+      "Use Amazon S3 to host the full website in different S3 buckets. Add Amazon CloudFront distributions. Set the S3 buckets as origins for the distributions. Store the order data in Amazon S3.",
+      "Deploy the full website on Amazon EC2 instances that run in Auto Scaling groups across multiple Availability Zones. Add an Application Load Balancer (ALB) to distribute the website traffic. Add another ALB for the backend APIs. Store the data in Amazon RDS for MySQL.",
+      "Migrate the full application to run in containers. Host the containers on Amazon Elastic Kubernetes Service (Amazon EKS). Use the Kubernetes Cluster Autoscaler to increase and decrease the number of pods to process bursts in traffic. Store the data in Amazon RDS for MySQL.",
+      "Use an Amazon S3 bucket to host the website's static content. Deploy an Amazon CloudFront distribution. Set the S3 bucket as the origin. Use Amazon API Gateway and AWS Lambda functions for the backend APIs. Store the data in Amazon DynamoDB.",
+    ],
+
+    answer: 3,
+
+    explanation:
+      "S3, CloudFront, API Gateway, Lambda, and DynamoDB provide a fully serverless, highly scalable solution with minimal operational overhead.",
+  },
+
   // question 22
   {
     question:
@@ -426,5 +444,135 @@ const questions = [
   },
 
   // question 31
+  {
+  "question": "A company that hosts its web application on AWS wants to ensure all Amazon EC2 instances. Amazon RDS DB instances. and Amazon Redshift clusters are configured with tags. The company wants to minimize the effort of configuring and operating this check. What should a solutions architect do to accomplish this?",
+  "options": [
+    "Use AWS Config rules to define and detect resources that are not properly tagged.",
+    "Use Cost Explorer to display resources that are not properly tagged. Tag those resources manually.",
+    "Write API calls to check all resources for proper tag allocation. Periodically run the code on an EC2 instance.",
+    "Write API calls to check all resources for proper tag allocation. Schedule an AWS Lambda function through Amazon CloudWatch to periodically run the code."
+  ],
+  "answer": 0,
+  "explanation": "AWS Config provides managed rules to automatically evaluate and detect non-compliant resources based on tagging policies with minimal operational overhead."
+},
+
+// question 32 
+{
+  "question": "A development team needs to host a website that will be accessed by other teams. The website contents consist of HTML, CSS, client-side JavaScript, and images. Which method is the MOST cost-effective for hosting the website?",
+  "options": [
+    "Containerize the website and host it in AWS Fargate.",
+    "Create an Amazon S3 bucket and host the website there.",
+    "Deploy a web server on an Amazon EC2 instance to host the website.",
+    "Configure an Application Load Balancer with an AWS Lambda target that uses the Express.js framework."
+  ],
+  "answer": 1,
+  "explanation": "Amazon S3 static website hosting is the most cost-effective option for static content like HTML, CSS, JavaScript, and images because it has no server management overhead and very low operational cost."
+},
+
+// question 33 
+{
+  "question": "A company runs an online marketplace web application on AWS. The application serves hundreds of thousands of users during peak hours. The company needs a scalable, near-real-time solution to share the details of millions of financial transactions with several other internal applications. Transactions also need to be processed to remove sensitive data before being stored in a document database for low-latency retrieval. What should a solutions architect recommend to meet these requirements?",
+  "options": [
+    "Store the transactions data into Amazon DynamoDB. Set up a rule in DynamoDB to remove sensitive data from every transaction upon write. Use DynamoDB Streams to share the transactions data with other applications.",
+    "Stream the transactions data into Amazon Kinesis Data Firehose to store data in Amazon DynamoDB and Amazon S3. Use AWS Lambda integration with Kinesis Data Firehose to remove sensitive data. Other applications can consume the data stored in Amazon S3.",
+    "Stream the transactions data into Amazon Kinesis Data Streams. Use AWS Lambda integration to remove sensitive data from every transaction and then store the transactions data in Amazon DynamoDB. Other applications can consume the transactions data off the Kinesis data stream.",
+    "Store the batched transactions data in Amazon S3 as files. Use AWS Lambda to process every file and remove sensitive data before updating the files in Amazon S3. The Lambda function then stores the data in Amazon DynamoDB. Other applications can consume transaction files stored in Amazon S3"
+  ],
+  "answer": 2,
+  "explanation": "Amazon Kinesis Data Streams with AWS Lambda enables real-time processing at scale, allowing sensitive data to be removed before storing into DynamoDB while also supporting near-real-time sharing with multiple consumers."
+},
+
+// question 34 
+{
+  "question": "A company hosts its multi-tier applications on AWS. For compliance, governance, auditing, and security, the company must track configuration changes on its AWS resources and record a history of API calls made to these resources. What should a solutions architect do to meet these requirements?",
+  "options": [
+    "Use AWS CloudTrail to track configuration changes and AWS Config to record API calls.",
+    "Use AWS Config to track configuration changes and AWS CloudTrail to record API calls.",
+    "Use AWS Config to track configuration changes and Amazon CloudWatch to record API calls.",
+    "Use AWS CloudTrail to track configuration changes and Amazon CloudWatch to record API calls."
+  ],
+  "answer": 1,
+  "explanation": "AWS Config is used to track configuration changes of AWS resources, while AWS CloudTrail records API calls and account activity for auditing and compliance."
+}, 
+
+// question 35 
+{
+  "question": "A company is preparing to launch a public-facing web application in the AWS Cloud. The architecture consists of Amazon EC2 instances within a VPC behind an Elastic Load Balancer (ELB). A third-party service is used for the DNS. The company's solutions architect must recommend a solution to detect and protect against large-scale DDoS attacks. Which solution meets these requirements?",
+  "options": [
+    "Enable Amazon GuardDuty on the account.",
+    "Enable Amazon Inspector on the EC2 instances.",
+    "Enable AWS Shield and assign Amazon Route 53 to it.",
+    "Enable AWS Shield Advanced and assign the ELB to it."
+  ],
+  "answer": 3,
+  "explanation": "AWS Shield Advanced provides enhanced DDoS protection for internet-facing resources such as Elastic Load Balancers, offering detection and mitigation for large-scale attacks."
+},
+
+// question 36
+{
+  "question": "A company is building an application in the AWS Cloud. The application will store data in Amazon S3 buckets in two AWS Regions. The company must use an AWS Key Management Service (AWS KMS) customer managed key to encrypt all data that is stored in the S3 buckets. The data in both S3 buckets must be encrypted and decrypted with the same KMS key. The data and the key must be stored in each of the two Regions. Which solution will meet these requirements with the LEAST operational overhead?",
+  "options": [
+    "Create an S3 bucket in each Region. Configure the S3 buckets to use server-side encryption with Amazon S3 managed encryption keys (SSE-S3). Configure replication between the S3 buckets.",
+    "Create a customer managed multi-Region KMS key. Create an S3 bucket in each Region. Configure replication between the S3 buckets. Configure the application to use the KMS key with client-side encryption.",
+    "Create a customer managed KMS key and an S3 bucket in each Region. Configure the S3 buckets to use server-side encryption with Amazon S3 managed encryption keys (SSE-S3). Configure replication between the S3 buckets.",
+    "Create a customer managed KMS key and an S3 bucket in each Region. Configure the S3 buckets to use server-side encryption with AWS KMS keys (SSE-KMS). Configure replication between the S3 buckets."
+  ],
+  "answer": 1,
+  "explanation": "A multi-Region customer managed AWS KMS key is designed for exactly this use case, allowing the same key material to be used across Regions with low operational overhead while supporting S3 replication and encryption/decryption consistency."
+}, 
+
+// question 37 
+{
+  "question": "A company recently launched a variety of new workloads on Amazon EC2 instances in its AWS account. The company needs to create a strategy to access and administer the instances remotely and securely. The company needs to implement a repeatable process that works with native AWS services and follows the AWS Well-Architected Framework. Which solution will meet these requirements with the LEAST operational overhead?",
+  "options": [
+    "Use the EC2 serial console to directly access the terminal interface of each instance for administration.",
+    "Attach the appropriate IAM role to each existing instance and new instance. Use AWS Systems Manager Session Manager to establish a remote SSH session.",
+    "Create an administrative SSH key pair. Load the public key into each EC2 instance. Deploy a bastion host in a public subnet to provide a tunnel for administration of each instance.",
+    "Establish an AWS Site-to-Site VPN connection. Instruct administrators to use their local on-premises machines to connect directly to the instances by using SSH keys across the VPN tunnel."
+  ],
+  "answer": 1,
+  "explanation": "AWS Systems Manager Session Manager provides secure, auditable, and agent-based access to EC2 instances without requiring SSH keys, bastion hosts, or inbound ports, making it the lowest operational overhead option aligned with AWS best practices."
+}, 
+
+// question 38 
+{
+  "question": "A company is hosting a static website on Amazon S3 and is using Amazon Route 53 for DNS. The website is experiencing increased demand from around the world. The company must decrease latency for users who access the website. Which solution meets these requirements MOST cost-effectively?",
+  "options": [
+    "Replicate the S3 bucket that contains the website to all AWS Regions. Add Route 53 geolocation routing entries.",
+    "Provision accelerators in AWS Global Accelerator. Associate the supplied IP addresses with the S3 bucket. Edit the Route 53 entries to point to the IP addresses of the accelerators.",
+    "Add an Amazon CloudFront distribution in front of the S3 bucket. Edit the Route 53 entries to point to the CloudFront distribution.",
+    "Enable S3 Transfer Acceleration on the bucket. Edit the Route 53 entries to point to the new endpoint."
+  ],
+  "answer": 2,
+  "explanation": "Amazon CloudFront is the most cost-effective solution for global content delivery of static websites hosted on S3, as it caches content at edge locations, reducing latency and origin load."
+}, 
+
+// question 39
+{
+  "question": "A company maintains a searchable repository of items on its website. The data is stored in an Amazon RDS for MySQL database table that contains more than 10 million rows. The database has 2 TB of General Purpose SSD storage. There are millions of updates against this data every day through the company's website. The company has noticed that some insert operations are taking 10 seconds or longer. The company has determined that the database storage performance is the problem. Which solution addresses this performance issue?",
+  "options": [
+    "Change the storage type to Provisioned IOPS SSD.",
+    "Change the DB instance to a memory optimized instance class.",
+    "Change the DB instance to a burstable performance instance class.",
+    "Enable Multi-AZ RDS read replicas with MySQL native asynchronous replication"
+  ],
+  "answer": 0,
+  "explanation": "Provisioned IOPS SSD (io1/io2) provides consistent high-performance storage with guaranteed IOPS, which resolves storage bottlenecks causing slow insert operations in RDS."
+}, 
+
+// question 40 
+{
+  "question": "A company has thousands of edge devices that collectively generate 1 TB of status alerts each day. Each alert is approximately 2 KB in size. A solutions architect needs to implement a solution to ingest and store the alerts for future analysis. The company wants a highly available solution. However, the company needs to minimize costs and does not want to manage additional infrastructure. Additionally, the company wants to keep 14 days of data available for immediate analysis and archive any data older than 14 days. What is the MOST operationally efficient solution that meets these requirements?",
+  "options": [
+    "Create an Amazon Kinesis Data Firehose delivery stream to ingest the alerts. Configure the Kinesis Data Firehose stream to deliver the alerts to an Amazon S3 bucket. Set up an S3 Lifecycle configuration to transition data to Amazon S3 Glacier after 14 days.",
+    "Launch Amazon EC2 instances across two Availability Zones and place them behind an Elastic Load Balancer to ingest the alerts. Create a script on the EC2 instances that will store the alerts in an Amazon S3 bucket. Set up an S3 Lifecycle configuration to transition data to Amazon S3 Glacier after 14 days.",
+    "Create an Amazon Kinesis Data Firehose delivery stream to ingest the alerts to an Amazon OpenSearch Service cluster. Set up the OpenSearch cluster to take manual snapshots every day and delete data older than 14 days.",
+    "Create an Amazon Simple Queue Service (Amazon SQS) standard queue to ingest the alerts, set the message retention period to 14 days, and use consumers to process and archive messages to Amazon S3."
+  ],
+  "answer": 0,
+  "explanation": "Amazon Kinesis Data Firehose provides a fully managed, highly available ingestion service that automatically delivers streaming data to Amazon S3. Using S3 Lifecycle policies allows automatic archival to Glacier after 14 days with minimal operational overhead."
+}, 
+
+// question 41
 
 ];

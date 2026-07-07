@@ -1500,4 +1500,155 @@ const questions = [
   },
 
   // question 101
+  {
+    question:
+      "A solutions architect is designing a VPC with public and private subnets. The VPC and subnets use IPv4 CIDR blocks. There is one public subnet and one private subnet in each of three Availability Zones (AZs) for high availability. An internet gateway is used to provide internet access for the public subnets. The private subnets require access to the internet to allow Amazon EC2 instances to download software updates. What should the solutions architect do to enable Internet access for the private subnets?",
+    options: [
+      "Create three NAT gateways, one for each public subnet in each AZ. Create a private route table for each AZ that forwards non-VPC traffic to the NAT gateway in its AZ.",
+      "Create three NAT instances, one for each private subnet in each AZ. Create a private route table for each AZ that forwards non-VPC traffic to the NAT instance in its AZ.",
+      "Create a second internet gateway on one of the private subnets. Update the route table for the private subnets that forward non-VPC traffic to the private internet gateway.",
+      "Create an egress-only internet gateway on one of the public subnets. Update the route table for the private subnets that forward non-VPC traffic to the egress-only Internet gateway.",
+    ],
+    answer: 0,
+    explanation:
+      "Private subnets with IPv4 addresses require a NAT gateway in a public subnet to access the internet while preventing inbound internet connections. For high availability, AWS recommends deploying one NAT gateway per Availability Zone and configuring each private subnet route table to use the NAT gateway in the same AZ. Egress-only internet gateways are only for IPv6 traffic, not IPv4.",
+  },
+
+  // question 102
+  {
+    question:
+      "A company wants to migrate an on-premises data center to AWS. The data center hosts an SFTP server that stores its data on an NFS-based file system. The server holds 200 GB of data that needs to be transferred. The server must be hosted on an Amazon EC2 instance that uses an Amazon Elastic File System (Amazon EFS) file system. Which combination of steps should a solutions architect take to automate this task? (Choose two.)",
+    options: [
+      "Launch the EC2 instance into the same Availability Zone as the EFS file system.",
+      "Install an AWS DataSync agent in the on-premises data center.",
+      "Create a secondary Amazon Elastic Block Store (Amazon EBS) volume on the EC2 instance for the data.",
+      "Manually use an operating system copy command to push the data to the EC2 instance.",
+      "Use AWS DataSync to create a suitable location configuration for the on-premises SFTP server.",
+    ],
+    answer: 4,
+    explanation:
+      "AWS DataSync is designed to automate and accelerate data transfers between on-premises storage and AWS storage services such as Amazon EFS. Because the source is an on-premises NFS-based file system, the correct approach is to deploy a DataSync agent in the on-premises environment and configure a DataSync location for the NFS/SFTP server. Manual copy commands and EBS volumes do not provide an automated migration solution.",
+  },
+
+  // question 103
+  {
+    question:
+      "A company has an AWS Glue extract, transform, and load (ETL) job that runs every day at the same time. The job processes XML data that is in an Amazon S3 bucket. New data is added to the S3 bucket every day. A solutions architect notices that AWS Glue is processing all the data during each run. What should the solutions architect do to prevent AWS Glue from reprocessing old data?",
+    options: [
+      "Edit the job to use job bookmarks.",
+      "Edit the job to delete data after the data is processed.",
+      "Edit the job by setting the NumberOfWorkers field to 1.",
+      "Use a FindMatches machine learning (ML) transform.",
+    ],
+    answer: 0,
+    explanation:
+      "AWS Glue job bookmarks track the data that has already been processed during previous runs. When enabled, Glue remembers the state of the job and processes only new data added since the last successful run. This avoids reprocessing old files without requiring manual deletion or additional infrastructure.",
+  },
+
+  // question 104
+  {
+    question:
+      "A solutions architect must design a highly available infrastructure for a website. The website is powered by Windows web servers that run on Amazon EC2 instances. The solutions architect must implement a solution that can mitigate a large-scale DDoS attack that originates from thousands of IP addresses. Downtime is not acceptable for the website. Which actions should the solutions architect take to protect the website from such an attack? (Choose two.)",
+    options: [
+      "Use AWS Shield Advanced to stop the DDoS attack.",
+      "Configure Amazon GuardDuty to automatically block the attackers.",
+      "Configure the website to use Amazon CloudFront for both static and dynamic content.",
+      "Use an AWS Lambda function to automatically add attacker IP addresses to VPC network ACLs.",
+      "Use EC2 Spot Instances in an Auto Scaling group with a target tracking scaling policy that is set to 80% CPU utilization.",
+    ],
+    answer: 0,
+    explanation:
+      "AWS Shield Advanced provides enhanced DDoS protection for AWS resources such as EC2, Elastic Load Balancing, CloudFront, and Route 53. Amazon CloudFront helps absorb and distribute traffic across AWS edge locations, reducing the impact of large-scale DDoS attacks. GuardDuty detects threats but does not automatically block DDoS attackers, and manually blocking thousands of IP addresses is not scalable.",
+  },
+
+  // question 105
+  {
+    question:
+      "A company is preparing to deploy a new serverless workload. A solutions architect must use the principle of least privilege to configure permissions that will be used to run an AWS Lambda function. An Amazon EventBridge (Amazon CloudWatch Events) rule will invoke the function. Which solution meets these requirements?",
+    options: [
+      "Add an execution role to the function with lambda:InvokeFunction as the action and * as the principal.",
+      "Add an execution role to the function with lambda:InvokeFunction as the action and Service: lambda.amazonaws.com as the principal.",
+      "Add a resource-based policy to the function with lambda:* as the action and Service: events.amazonaws.com as the principal.",
+      "Add a resource-based policy to the function with lambda:InvokeFunction as the action and Service: events.amazonaws.com as the principal.",
+    ],
+    answer: 3,
+    explanation:
+      "When an AWS service such as Amazon EventBridge invokes a Lambda function, the permission is granted through a Lambda resource-based policy, not the Lambda execution role. The policy should allow only the required action (lambda:InvokeFunction) and only the required principal (events.amazonaws.com). This follows the principle of least privilege.",
+  },
+
+  // question 106
+  {
+    question:
+      "A company is preparing to store confidential data in Amazon S3. For compliance reasons, the data must be encrypted at rest. Encryption key usage must be logged for auditing purposes. Keys must be rotated every year. Which solution meets these requirements and is the MOST operationally efficient?",
+    options: [
+      "Server-side encryption with customer-provided keys (SSE-C)",
+      "Server-side encryption with Amazon S3 managed keys (SSE-S3)",
+      "Server-side encryption with AWS KMS keys (SSE-KMS) with manual rotation",
+      "Server-side encryption with AWS KMS keys (SSE-KMS) with automatic rotation",
+    ],
+    answer: 3,
+    explanation:
+      "SSE-KMS provides encryption at rest using AWS Key Management Service. AWS KMS automatically logs key usage through AWS CloudTrail, supporting auditing requirements. Automatic key rotation can be enabled to rotate customer managed KMS keys every year, minimizing operational overhead. SSE-S3 does not provide customer-controlled key usage auditing, and SSE-C requires manual key management.",
+  },
+
+  // question 107
+  {
+    question:
+      "A bicycle sharing company is developing a multi-tier architecture to track the location of its bicycles during peak operating hours. The company wants to use these data points in its existing analytics platform. A solutions architect must determine the most viable multi-tier option to support this architecture. The data points must be accessible from the REST API. Which action meets these requirements for storing and retrieving location data?",
+    options: [
+      "Use Amazon Athena with Amazon S3.",
+      "Use Amazon API Gateway with AWS Lambda.",
+      "Use Amazon QuickSight with Amazon Redshift.",
+      "Use Amazon API Gateway with Amazon Kinesis Data Analytics.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon API Gateway provides a REST API interface, and AWS Lambda can process incoming requests and retrieve/store location data in a serverless architecture. This combination supports the application tier requirement with minimal operational overhead. Athena, QuickSight, and Redshift are analytics services and do not directly provide REST API access for real-time application requests.",
+  },
+
+  //question 108
+  {
+    question:
+      "A company has an automobile sales website that stores its listings in a database on Amazon RDS. When an automobile is sold, the listing needs to be removed from the website and the data must be sent to multiple target systems. Which design should a solutions architect recommend?",
+    options: [
+      "Create an AWS Lambda function triggered when the database on Amazon RDS is updated to send the information to an Amazon Simple Queue Service (Amazon SQS) queue for the targets to consume.",
+      "Create an AWS Lambda function triggered when the database on Amazon RDS is updated to send the information to an Amazon Simple Queue Service (Amazon SQS FIFO queue) for the targets to consume.",
+      "Subscribe to an RDS event notification and send an Amazon Simple Queue Service (Amazon SQS) queue fanned out to multiple Amazon Simple Notification Service (Amazon SNS) topics. Use AWS Lambda functions to update the targets.",
+      "Subscribe to an RDS event notification and send an Amazon Simple Notification Service (Amazon SNS) topic fanned out to multiple Amazon Simple Queue Service (Amazon SQS) queues. Use AWS Lambda functions to update the targets.",
+    ],
+    answer: 3,
+    explanation:
+      "Amazon SNS with multiple SQS subscriptions is the standard fan-out pattern. SNS can distribute a single event to multiple SQS queues, allowing each target system to process the message independently. Lambda functions can then consume from each queue and update the target systems. RDS event notifications are for operational events (such as backups or failures), not for detecting row-level database changes, so in a real architecture this would typically use database change streams or application events.",
+  },
+
+  // question 109
+  {
+    question:
+      "A company needs to store data in Amazon S3 and must prevent the data from being changed. The company wants new objects that are uploaded to Amazon S3 to remain unchangeable for a nonspecific amount of time until the company decides to modify the objects. Only specific users in the company's AWS account can have the ability to delete the objects. What should a solutions architect do to meet these requirements?",
+    options: [
+      "Create an S3 Glacier vault. Apply a write-once, read-many (WORM) vault lock policy to the objects.",
+      "Create an S3 bucket with S3 Object Lock enabled. Enable versioning. Set a retention period of 100 years. Use governance mode as the S3 bucket’s default retention mode for new objects.",
+      "Create an S3 bucket. Use AWS CloudTrail to track any S3 API events that modify the objects. Upon notification, restore the modified objects from any backup versions that the company has.",
+      "Create an S3 bucket with S3 Object Lock enabled. Enable versioning. Add a legal hold to the objects. Add the s3:PutObjectLegalHold permission to the IAM policies of users who need to delete the objects.",
+    ],
+    answer: 3,
+    explanation:
+      "S3 Object Lock with legal hold is designed for situations where objects must remain immutable for an unknown period of time. A legal hold prevents deletion or modification until it is explicitly removed. By granting only specific users the s3:PutObjectLegalHold permission, the company controls who can remove the hold and then delete the objects. Governance mode with a fixed retention period does not satisfy the requirement because the retention duration is unspecified.",
+  },
+
+  // question 110
+  {
+    question:
+      "A social media company allows users to upload images to its website. The website runs on Amazon EC2 instances. During upload requests, the website resizes the images to a standard size and stores the resized images in Amazon S3. Users are experiencing slow upload requests to the website. The company needs to reduce coupling within the application and improve website performance. A solutions architect must design the most operationally efficient process for image uploads. Which combination of actions should the solutions architect take to meet these requirements? (Choose two.)",
+    options: [
+      "Configure the application to upload images to S3 Glacier.",
+      "Configure the web server to upload the original images to Amazon S3.",
+      "Configure the application to upload images directly from each user's browser to Amazon S3 through the use of a presigned URL.",
+      "Configure S3 Event Notifications to invoke an AWS Lambda function when an image is uploaded. Use the function to resize the image.",
+      "Create an Amazon EventBridge (Amazon CloudWatch Events) rule that invokes an AWS Lambda function on a schedule to resize uploaded images.",
+    ],
+    answer: 3,
+    explanation:
+      "Using S3 presigned URLs allows users to upload images directly to Amazon S3, removing the EC2 web servers from the upload path and improving performance by reducing application coupling. S3 Event Notifications can trigger a Lambda function immediately after upload to resize the image asynchronously. This serverless event-driven design reduces operational overhead and improves scalability.",
+  },
 ];

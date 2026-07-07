@@ -1651,4 +1651,157 @@ const questions = [
     explanation:
       "Using S3 presigned URLs allows users to upload images directly to Amazon S3, removing the EC2 web servers from the upload path and improving performance by reducing application coupling. S3 Event Notifications can trigger a Lambda function immediately after upload to resize the image asynchronously. This serverless event-driven design reduces operational overhead and improves scalability.",
   },
+
+  // question 111
+  {
+    question:
+      "A company recently migrated a message processing system to AWS. The system receives messages into an ActiveMQ queue running on an Amazon EC2 instance. Messages are processed by a consumer application running on Amazon EC2. The consumer application processes the messages and writes results to a MySQL database running on Amazon EC2. The company wants this application to be highly available with low operational complexity. Which architecture offers the HIGHEST availability?",
+    options: [
+      "Add a second ActiveMQ server to another Availability Zone. Add an additional consumer EC2 instance in another Availability Zone. Replicate the MySQL database to another Availability Zone.",
+      "Use Amazon MQ with active/standby brokers configured across two Availability Zones. Add an additional consumer EC2 instance in another Availability Zone. Replicate the MySQL database to another Availability Zone.",
+      "Use Amazon MQ with active/standby brokers configured across two Availability Zones. Add an additional consumer EC2 instance in another Availability Zone. Use Amazon RDS for MySQL with Multi-AZ enabled.",
+      "Use Amazon MQ with active/standby brokers configured across two Availability Zones. Add an Auto Scaling group for the consumer EC2 instances across two Availability Zones. Use Amazon RDS for MySQL with Multi-AZ enabled.",
+    ],
+    answer: 3,
+    explanation:
+      "Amazon MQ with active/standby brokers provides a highly available managed message broker across multiple Availability Zones. An Auto Scaling group running consumer EC2 instances across multiple AZs ensures consumers remain available and can automatically replace failed instances. Amazon RDS for MySQL Multi-AZ provides automatic failover for the database with minimal operational overhead. This combination delivers the highest availability while using managed AWS services.",
+  },
+
+  // question 112
+  {
+    question:
+      "A company hosts a containerized web application on a fleet of on-premises servers that process incoming requests. The number of requests is growing quickly. The on-premises servers cannot handle the increased number of requests. The company wants to move the application to AWS with minimum code changes and minimum development effort. Which solution will meet these requirements with the LEAST operational overhead?",
+    options: [
+      "Use AWS Fargate on Amazon Elastic Container Service (Amazon ECS) to run the containerized web application with Service Auto Scaling. Use an Application Load Balancer to distribute the incoming requests.",
+      "Use two Amazon EC2 instances to host the containerized web application. Use an Application Load Balancer to distribute the incoming requests.",
+      "Use AWS Lambda with new code that uses one of the supported languages. Create multiple Lambda functions to support the load. Use Amazon API Gateway as an entry point to the Lambda functions.",
+      "Use a high performance computing (HPC) solution such as AWS ParallelCluster to establish an HPC cluster that can process the incoming requests at the appropriate scale.",
+    ],
+    answer: 0,
+    explanation:
+      "AWS Fargate lets the company run existing containers without managing EC2 instances. Amazon ECS with Fargate supports Service Auto Scaling and integrates with an Application Load Balancer for high availability and scalability. This approach requires minimal code changes and the least operational overhead. Using EC2 requires server management, Lambda requires application redesign, and AWS ParallelCluster is intended for HPC workloads rather than web applications.",
+  },
+
+  // question 113
+  {
+    question:
+      "A company uses 50 TB of data for reporting. The company wants to move this data from on premises to AWS. A custom application in the company’s data center runs a weekly data transformation job. The company plans to pause the application until the data transfer is complete and needs to begin the transfer process as soon as possible. The data center does not have any available network bandwidth for additional workloads. A solutions architect must transfer the data and must configure the transformation job to continue to run in the AWS Cloud. Which solution will meet these requirements with the LEAST operational overhead?",
+    options: [
+      "Use AWS DataSync to move the data. Create a custom transformation job by using AWS Glue.",
+      "Order an AWS Snowcone device to move the data. Deploy the transformation application to the device.",
+      "Order an AWS Snowball Edge Storage Optimized device. Copy the data to the device. Create a custom transformation job by using AWS Glue.",
+      "Order an AWS Snowball Edge Storage Optimized device that includes Amazon EC2 compute. Copy the data to the device. Create a new EC2 instance on AWS to run the transformation application.",
+    ],
+    answer: 3,
+    explanation:
+      "The company has no available network bandwidth, so a physical device is required. A 50 TB dataset is too large for Snowcone, making Snowball Edge Storage Optimized the appropriate choice. Because the transformation job is a custom application (not an ETL job suitable for AWS Glue), the simplest approach is to migrate the data with Snowball Edge and then run the existing application on an Amazon EC2 instance in AWS. This minimizes development effort and operational overhead.",
+  },
+
+  // question 114
+  {
+    question:
+      "A company has created an image analysis application in which users can upload photos and add photo frames to their images. The users upload images and metadata to indicate which photo frames they want to add to their images. The application uses a single Amazon EC2 instance and Amazon DynamoDB to store the metadata. The application is becoming more popular, and the number of users is increasing. The company expects the number of concurrent users to vary significantly depending on the time of day and day of week. The company must ensure that the application can scale to meet the needs of the growing user base. Which solution meets these requirements?",
+    options: [
+      "Use AWS Lambda to process the photos. Store the photos and metadata in DynamoDB.",
+      "Use Amazon Kinesis Data Firehose to process the photos and to store the photos and metadata.",
+      "Use AWS Lambda to process the photos. Store the photos in Amazon S3. Retain DynamoDB to store the metadata.",
+      "Increase the number of EC2 instances to three. Use Provisioned IOPS SSD (io2) Amazon Elastic Block Store (Amazon EBS) volumes to store the photos and metadata.",
+    ],
+    answer: 2,
+    explanation:
+      "AWS Lambda automatically scales to handle varying numbers of image-processing requests without requiring server management. Amazon S3 is the ideal storage service for image files because it is highly durable, scalable, and cost-effective. Amazon DynamoDB remains the appropriate choice for storing image metadata. This serverless architecture provides the best scalability with the least operational overhead.",
+  },
+
+  // question 115
+  {
+    question:
+      "A medical records company is hosting an application on Amazon EC2 instances. The application processes customer data files that are stored on Amazon S3. The EC2 instances are hosted in public subnets. The EC2 instances access Amazon S3 over the internet, but they do not require any other network access. A new requirement mandates that the network traffic for file transfers take a private route and not be sent over the internet. Which change to the network architecture should a solutions architect recommend to meet this requirement?",
+    options: [
+      "Create a NAT gateway. Configure the route table for the public subnets to send traffic to Amazon S3 through the NAT gateway.",
+      "Configure the security group for the EC2 instances to restrict outbound traffic so that only traffic to the S3 prefix list is permitted.",
+      "Move the EC2 instances to private subnets. Create a VPC endpoint for Amazon S3, and link the endpoint to the route table for the private subnets.",
+      "Remove the internet gateway from the VPC. Set up an AWS Direct Connect connection, and route traffic to Amazon S3 over the Direct Connect connection.",
+    ],
+    answer: 2,
+    explanation:
+      "An Amazon S3 VPC gateway endpoint allows EC2 instances to access Amazon S3 entirely over the AWS private network without traversing the public internet. Because the instances require no other internet access, moving them to private subnets and using an S3 VPC endpoint satisfies the security requirement. NAT gateways still use the internet gateway for S3 access, security groups do not change the network path, and AWS Direct Connect is intended for on-premises connectivity, not VPC-to-S3 communication.",
+  },
+
+  // question 116
+  {
+    question:
+      "A company uses a popular content management system (CMS) for its corporate website. However, the required patching and maintenance are burdensome. The company is redesigning its website and wants a new solution. The website will be updated four times a year and does not need to have any dynamic content available. The solution must provide high scalability and enhanced security. Which combination of changes will meet these requirements with the LEAST operational overhead? (Choose two.)",
+    options: [
+      "Configure Amazon CloudFront in front of the website to use HTTPS functionality.",
+      "Deploy an AWS WAF web ACL in front of the website to provide HTTPS functionality.",
+      "Create and deploy an AWS Lambda function to manage and serve the website content.",
+      "Create the new website and an Amazon S3 bucket. Deploy the website on the S3 bucket with static website hosting enabled.",
+      "Create the new website. Deploy the website by using an Auto Scaling group of Amazon EC2 instances behind an Application Load Balancer.",
+    ],
+    answer: 3,
+    explanation:
+      "A static website hosted on Amazon S3 eliminates the need to manage CMS servers, operating systems, and patching, resulting in very low operational overhead. Placing Amazon CloudFront in front of the S3 website provides HTTPS support, global caching, DDoS protection through AWS Shield Standard, improved performance, and enhanced security. AWS WAF does not provide HTTPS, Lambda is unnecessary for a static site, and EC2 with Auto Scaling requires significantly more management.",
+  },
+
+  // question 117
+  {
+    question:
+      "A company stores its application logs in an Amazon CloudWatch Logs log group. A new policy requires the company to store all application logs in Amazon OpenSearch Service (Amazon Elasticsearch Service) in near-real time. Which solution will meet this requirement with the LEAST operational overhead?",
+    options: [
+      "Configure a CloudWatch Logs subscription to stream the logs to Amazon OpenSearch Service (Amazon Elasticsearch Service).",
+      "Create an AWS Lambda function. Use the log group to invoke the function to write the logs to Amazon OpenSearch Service (Amazon Elasticsearch Service).",
+      "Create an Amazon Kinesis Data Firehose delivery stream. Configure the log group as the delivery stream's source. Configure Amazon OpenSearch Service (Amazon Elasticsearch Service) as the delivery stream's destination.",
+      "Install and configure Amazon Kinesis Agent on each application server to deliver the logs to Amazon Kinesis Data Streams. Configure Kinesis Data Streams to deliver the logs to Amazon OpenSearch Service (Amazon Elasticsearch Service).",
+    ],
+    answer: 0,
+    explanation:
+      "CloudWatch Logs subscription filters can stream log events from a CloudWatch Logs log group directly to Amazon OpenSearch Service in near real time. This requires the least operational overhead because the logs are already stored in CloudWatch Logs and no additional application changes, custom Lambda code, or log agents are required.",
+  },
+
+  // question 118
+  {
+    question:
+      "A company is building a web-based application running on Amazon EC2 instances in multiple Availability Zones. The web application will provide access to a repository of text documents totaling about 900 TB in size. The company anticipates that the web application will experience periods of high demand. A solutions architect must ensure that the storage component for the text documents can scale to meet the demand of the application at all times. The company is concerned about the overall cost of the solution. Which storage solution meets these requirements MOST cost-effectively?",
+    options: [
+      "Amazon Elastic Block Store (Amazon EBS)",
+      "Amazon Elastic File System (Amazon EFS)",
+      "Amazon OpenSearch Service (Amazon Elasticsearch Service)",
+      "Amazon S3",
+    ],
+    answer: 3,
+    explanation:
+      "Amazon S3 is the most cost-effective solution for storing 900 TB of text documents because it provides virtually unlimited scalability, high durability, and automatic scaling without requiring storage management. S3 is designed for large-scale object storage and can handle unpredictable access patterns and high demand. EBS is tied to individual EC2 instances and does not scale easily to hundreds of terabytes, EFS is a shared file system but is more expensive, and OpenSearch Service is for search and analytics workloads rather than document storage.",
+  },
+
+  // question 119
+  {
+    question:
+      "A global company is using Amazon API Gateway to design REST APIs for its loyalty club users in the us-east-1 Region and the ap-southeast-2 Region. A solutions architect must design a solution to protect these API Gateway managed REST APIs across multiple accounts from SQL injection and cross-site scripting attacks. Which solution will meet these requirements with the LEAST amount of administrative effort?",
+    options: [
+      "Set up AWS WAF in both Regions. Associate Regional web ACLs with an API stage.",
+      "Set up AWS Firewall Manager in both Regions. Centrally configure AWS WAF rules.",
+      "Set up AWS Shield in both Regions. Associate Regional web ACLs with an API stage.",
+      "Set up AWS Shield in one of the Regions. Associate Regional web ACLs with an API stage.",
+    ],
+    answer: 0,
+    explanation:
+      "AWS WAF provides protection against SQL injection and cross-site scripting (XSS) attacks. For Amazon API Gateway Regional endpoints, create AWS WAF Regional web ACLs in each Region and associate them with the API Gateway stages. AWS Shield is for DDoS protection and does not provide SQL injection or XSS filtering. AWS Firewall Manager can centrally manage WAF rules across accounts, but it adds additional setup requirements and is not the expected solution for this scenario.",
+  },
+
+  // question 120
+  {
+    question:
+      "A company has implemented a self-managed DNS solution on three Amazon EC2 instances behind a Network Load Balancer (NLB) in the us-west-2 Region. Most of the company's users are located in the United States and Europe. The company wants to improve the performance and availability of the solution. The company launches and configures three EC2 instances in the eu-west-1 Region and adds the EC2 instances as targets for a new NLB. Which solution can the company use to route traffic to all the EC2 instances?",
+    options: [
+      "Create an Amazon Route 53 geolocation routing policy to route requests to one of the two NLBs. Create an Amazon CloudFront distribution. Use the Route 53 record as the distribution’s origin.",
+      "Create a standard accelerator in AWS Global Accelerator. Create endpoint groups in us-west-2 and eu-west-1. Add the two NLBs as endpoints for the endpoint groups.",
+      "Attach Elastic IP addresses to the six EC2 instances. Create an Amazon Route 53 geolocation routing policy to route requests to one of the six EC2 instances. Create an Amazon CloudFront distribution. Use the Route 53 record as the distribution's origin.",
+      "Replace the two NLBs with two Application Load Balancers (ALBs). Create an Amazon Route 53 latency routing policy to route requests to one of the two ALBs. Create an Amazon CloudFront distribution. Use the Route 53 record as the distribution’s origin.",
+    ],
+    answer: 1,
+    explanation:
+      "AWS Global Accelerator is designed to improve availability and performance for global applications by providing static anycast IP addresses and routing traffic to optimal regional endpoints over the AWS global network. It supports Network Load Balancers as endpoints and can distribute traffic across multiple Regions. This solution allows users in the US and Europe to reach the closest healthy NLB while maintaining high availability.",
+  },
+
+  // question 121
 ];

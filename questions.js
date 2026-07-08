@@ -1804,4 +1804,156 @@ const questions = [
   },
 
   // question 121
+  {
+    question:
+      "A company is running an online transaction processing (OLTP) workload on AWS. This workload uses an unencrypted Amazon RDS DB instance in a Multi-AZ deployment. Daily database snapshots are taken from this instance. What should a solutions architect do to ensure the database and snapshots are always encrypted moving forward?",
+    options: [
+      "Encrypt a copy of the latest DB snapshot. Replace the existing DB instance by restoring the encrypted snapshot.",
+      "Create a new encrypted Amazon Elastic Block Store (Amazon EBS) volume and copy the snapshots to it. Enable encryption on the DB instance.",
+      "Copy the snapshots and enable encryption using AWS Key Management Service (AWS KMS). Restore the encrypted snapshot to an existing DB instance.",
+      "Copy the snapshots to an Amazon S3 bucket that is encrypted using server-side encryption with AWS Key Management Service (AWS KMS) managed keys (SSE-KMS).",
+    ],
+    answer: 0,
+    explanation:
+      "Amazon RDS encryption cannot be enabled on an existing unencrypted DB instance. The correct approach is to create an encrypted copy of the latest DB snapshot by using AWS KMS and then restore that encrypted snapshot to create a new encrypted DB instance. Replace the original DB instance with the new encrypted instance. Future automated snapshots of the encrypted DB instance will also be encrypted automatically.",
+  },
+
+  // question 122
+  {
+    question:
+      "A company wants to build a scalable key management infrastructure to support developers who need to encrypt data in their applications. What should a solutions architect do to reduce the operational burden?",
+    options: [
+      "Use multi-factor authentication (MFA) to protect the encryption keys.",
+      "Use AWS Key Management Service (AWS KMS) to protect the encryption keys.",
+      "Use AWS Certificate Manager (ACM) to create, store, and assign the encryption keys.",
+      "Use an IAM policy to limit the scope of users who have access permissions to protect the encryption keys.",
+    ],
+    answer: 1,
+    explanation:
+      "AWS Key Management Service (AWS KMS) is a fully managed key management service that enables developers to create, store, rotate, and use encryption keys with minimal operational overhead. KMS integrates with many AWS services and provides centralized key management, auditing through AWS CloudTrail, and fine-grained access control using IAM policies. MFA and IAM help secure access but do not manage encryption keys, and ACM is designed for SSL/TLS certificates rather than data encryption keys.",
+  },
+
+  // question 123
+  {
+    question:
+      "A company has a dynamic web application hosted on two Amazon EC2 instances. The company has its own SSL certificate, which is on each instance to perform SSL termination. There has been an increase in traffic recently, and the operations team determined that SSL encryption and decryption is causing the compute capacity of the web servers to reach their maximum limit. What should a solutions architect do to increase the application's performance?",
+    options: [
+      "Create a new SSL certificate using AWS Certificate Manager (ACM). Install the ACM certificate on each instance.",
+      "Create an Amazon S3 bucket. Migrate the SSL certificate to the S3 bucket. Configure the EC2 instances to reference the bucket for SSL termination.",
+      "Create another EC2 instance as a proxy server. Migrate the SSL certificate to the new instance and configure it to direct connections to the existing EC2 instances.",
+      "Import the SSL certificate into AWS Certificate Manager (ACM). Create an Application Load Balancer with an HTTPS listener that uses the SSL certificate from ACM.",
+    ],
+    answer: 3,
+    explanation:
+      "Import the existing SSL certificate into AWS Certificate Manager (ACM) and configure an Application Load Balancer (ALB) with an HTTPS listener to perform SSL/TLS termination. The ALB offloads encryption and decryption from the EC2 instances, reducing CPU utilization and improving application performance. This is the AWS-recommended approach for SSL offloading.",
+  },
+
+  // question 124
+  {
+    question:
+      "A company has a highly dynamic batch processing job that uses many Amazon EC2 instances to complete it. The job is stateless in nature, can be started and stopped at any given time with no negative impact, and typically takes upwards of 60 minutes total to complete. The company has asked a solutions architect to design a scalable and cost-effective solution that meets the requirements of the job. What should the solutions architect recommend?",
+    options: [
+      "Implement EC2 Spot Instances.",
+      "Purchase EC2 Reserved Instances.",
+      "Implement EC2 On-Demand Instances.",
+      "Implement the processing on AWS Lambda.",
+    ],
+    answer: 0,
+    explanation:
+      "EC2 Spot Instances are ideal for fault-tolerant, stateless, interruptible batch workloads. Because the job can be stopped and restarted without negative impact, it can tolerate Spot Instance interruptions while benefiting from significant cost savings. Reserved Instances are intended for predictable long-running workloads, On-Demand Instances are more expensive, and AWS Lambda has a maximum execution time of 15 minutes, which cannot support a job that typically runs for over 60 minutes.",
+  },
+
+  // question 125
+  {
+    question:
+      "A company runs its two-tier ecommerce website on AWS. The web tier consists of a load balancer that sends traffic to Amazon EC2 instances. The database tier uses an Amazon RDS DB instance. The EC2 instances and the RDS DB instance should not be exposed to the public internet. The EC2 instances require internet access to complete payment processing of orders through a third-party web service. The application must be highly available. Which combination of configuration options will meet these requirements? (Choose two.)",
+    options: [
+      "Use an Auto Scaling group to launch the EC2 instances in private subnets. Deploy an RDS Multi-AZ DB instance in private subnets.",
+      "Configure a VPC with two private subnets and two NAT gateways across two Availability Zones. Deploy an Application Load Balancer in the private subnets.",
+      "Use an Auto Scaling group to launch the EC2 instances in public subnets across two Availability Zones. Deploy an RDS Multi-AZ DB instance in private subnets.",
+      "Configure a VPC with one public subnet, one private subnet, and two NAT gateways across two Availability Zones. Deploy an Application Load Balancer in the public subnet.",
+      "Configure a VPC with two public subnets, two private subnets, and two NAT gateways across two Availability Zones. Deploy an Application Load Balancer in the public subnets.",
+    ],
+    answer: 0,
+    explanation:
+      "The EC2 instances and RDS database should not be publicly accessible, so the EC2 instances should run in private subnets and the RDS Multi-AZ database should also be deployed in private subnets. The Application Load Balancer must be internet-facing, so it should be placed in public subnets across multiple Availability Zones. The private EC2 instances can access the internet for payment processing through NAT gateways located in the public subnets. This provides high availability and keeps backend resources private.",
+  },
+
+  // question 126
+  {
+    question:
+      "A solutions architect needs to implement a solution to reduce a company's storage costs. All the company's data is in the Amazon S3 Standard storage class. The company must keep all data for at least 25 years. Data from the most recent 2 years must be highly available and immediately retrievable. Which solution will meet these requirements?",
+    options: [
+      "Set up an S3 Lifecycle policy to transition objects to S3 Glacier Deep Archive immediately.",
+      "Set up an S3 Lifecycle policy to transition objects to S3 Glacier Deep Archive after 2 years.",
+      "Use S3 Intelligent-Tiering. Activate the archiving option to ensure that data is archived in S3 Glacier Deep Archive.",
+      "Set up an S3 Lifecycle policy to transition objects to S3 One Zone-Infrequent Access (S3 One Zone-IA) immediately and to S3 Glacier Deep Archive after 2 years.",
+    ],
+    answer: 1,
+    explanation:
+      "The data from the most recent 2 years must remain highly available and immediately retrievable, so it should stay in S3 Standard. After 2 years, the data can be moved to S3 Glacier Deep Archive, which is designed for long-term retention at the lowest storage cost. S3 Glacier Deep Archive is suitable for data that must be retained for many years but does not require frequent access. Moving data immediately would violate the availability requirement, and S3 One Zone-IA does not provide the required maximum resiliency.",
+  },
+
+  // question 127
+  {
+    question:
+      "A media company is evaluating the possibility of moving its systems to the AWS Cloud. The company needs at least 10 TB of storage with the maximum possible I/O performance for video processing, 300 TB of very durable storage for storing media content, and 900 TB of storage to meet requirements for archival media that is not in use anymore. Which set of services should a solutions architect recommend to meet these requirements?",
+    options: [
+      "Amazon EBS for maximum performance, Amazon S3 for durable data storage, and Amazon S3 Glacier for archival storage",
+      "Amazon EBS for maximum performance, Amazon EFS for durable data storage, and Amazon S3 Glacier for archival storage",
+      "Amazon EC2 instance store for maximum performance, Amazon EFS for durable data storage, and Amazon S3 for archival storage",
+      "Amazon EC2 instance store for maximum performance, Amazon S3 for durable data storage, and Amazon S3 Glacier for archival storage",
+    ],
+    answer: 0,
+    explanation:
+      "Amazon EBS provides high-performance block storage suitable for intensive video processing workloads requiring maximum I/O performance. Amazon S3 provides highly durable, scalable object storage for large amounts of media content. Amazon S3 Glacier is designed for low-cost long-term archival storage. EC2 instance store provides very high performance but is temporary storage and not suitable for durable data. EFS is a shared file system but is not the best choice for the required durable object storage scale.",
+  },
+
+  // question 128
+  {
+    question:
+      "A company wants to run applications in containers in the AWS Cloud. These applications are stateless and can tolerate disruptions within the underlying infrastructure. The company needs a solution that minimizes cost and operational overhead. What should a solutions architect do to meet these requirements?",
+    options: [
+      "Use Spot Instances in an Amazon EC2 Auto Scaling group to run the application containers.",
+      "Use Spot Instances in an Amazon Elastic Kubernetes Service (Amazon EKS) managed node group.",
+      "Use On-Demand Instances in an Amazon EC2 Auto Scaling group to run the application containers.",
+      "Use On-Demand Instances in an Amazon Elastic Kubernetes Service (Amazon EKS) managed node group.",
+    ],
+    answer: 0,
+    explanation:
+      "Spot Instances provide significant cost savings and are appropriate for stateless, fault-tolerant workloads that can handle interruptions. An EC2 Auto Scaling group can automatically launch and replace instances as needed, reducing operational overhead. Amazon EKS managed node groups add Kubernetes management complexity and are unnecessary when the requirement is simply to run containers cost-effectively.",
+  },
+
+  // question 129
+  {
+    question:
+      "A company is running a multi-tier web application on premises. The web application is containerized and runs on a number of Linux hosts connected to a PostgreSQL database that contains user records. The operational overhead of maintaining the infrastructure and capacity planning is limiting the company's growth. A solutions architect must improve the application's infrastructure. Which combination of actions should the solutions architect take to accomplish this? (Choose two.)",
+    options: [
+      "Migrate the PostgreSQL database to Amazon Aurora.",
+      "Migrate the web application to be hosted on Amazon EC2 instances.",
+      "Set up an Amazon CloudFront distribution for the web application content.",
+      "Set up Amazon ElastiCache between the web application and the PostgreSQL database.",
+      "Migrate the web application to be hosted on AWS Fargate with Amazon Elastic Container Service (Amazon ECS).",
+    ],
+    answer: 0,
+    explanation:
+      "AWS Fargate with Amazon ECS removes the need to manage container hosts, allowing the company to run containers without managing servers or capacity planning. Amazon Aurora PostgreSQL-compatible edition is a managed relational database service that reduces database administration overhead while providing scalability and high availability. EC2 would still require infrastructure management, CloudFront only improves content delivery, and ElastiCache may improve performance but does not address the main operational overhead problem.",
+  },
+
+  // question 130
+  {
+    question:
+      "An application runs on Amazon EC2 instances across multiple Availability Zones. The instances run in an Amazon EC2 Auto Scaling group behind an Application Load Balancer. The application performs best when the CPU utilization of the EC2 instances is at or near 40%. What should a solutions architect do to maintain the desired performance across all instances in the group?",
+    options: [
+      "Use a simple scaling policy to dynamically scale the Auto Scaling group.",
+      "Use a target tracking policy to dynamically scale the Auto Scaling group.",
+      "Use an AWS Lambda function to update the desired Auto Scaling group capacity.",
+      "Use scheduled scaling actions to scale up and scale down the Auto Scaling group.",
+    ],
+    answer: 1,
+    explanation:
+      "A target tracking scaling policy is designed to maintain a specific metric value, such as average CPU utilization at 40%. Amazon EC2 Auto Scaling automatically adjusts the number of instances to keep the target metric near the desired value. Simple scaling requires manually defined CloudWatch alarms and scaling adjustments, Lambda adds unnecessary complexity, and scheduled scaling is only suitable for predictable usage patterns.",
+  },
+
+  // question 131
 ];

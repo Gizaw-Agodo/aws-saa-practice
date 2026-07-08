@@ -2258,4 +2258,158 @@ const questions = [
   },
 
   // question 151
+  {
+    question:
+      "A company wants to migrate its on-premises data center to AWS. According to the company's compliance requirements, the company can use only the ap-northeast-3 Region. Company administrators are not permitted to connect VPCs to the internet. Which solutions will meet these requirements? (Choose two.)",
+    options: [
+      "Use AWS Control Tower to implement data residency guardrails to deny internet access and deny access to all AWS Regions except ap-northeast-3.",
+      "Use rules in AWS WAF to prevent internet access. Deny access to all AWS Regions except ap-northeast-3 in the AWS account settings.",
+      "Use AWS Organizations to configure service control policies (SCPs) that prevent VPCs from gaining internet access. Deny access to all AWS Regions except ap-northeast-3.",
+      "Create an outbound rule for the network ACL in each VPC to deny all traffic from 0.0.0.0/0. Create an IAM policy for each user to prevent the use of any AWS Region other than ap-northeast-3.",
+      "Use AWS Config to activate managed rules to detect and alert for internet gateways and to detect and alert for new resources deployed outside of ap-northeast-3.",
+    ],
+    answer: 0,
+    explanation:
+      "AWS Control Tower provides preventive guardrails, including Region deny (data residency) guardrails, built on AWS Organizations. AWS Organizations SCPs can also enforce restrictions that prevent VPCs from gaining internet access and limit the use of AWS Regions to only ap-northeast-3. AWS WAF does not control VPC internet connectivity, network ACLs are not an organization-wide preventive control, and AWS Config only detects noncompliance rather than preventing it.",
+  },
+
+  // question 152
+  {
+    question:
+      "A company uses a three-tier web application to provide training to new employees. The application is accessed for only 12 hours every day. The company is using an Amazon RDS for MySQL DB instance to store information and wants to minimize costs. What should a solutions architect do to meet these requirements?",
+    options: [
+      "Configure an IAM policy for AWS Systems Manager Session Manager. Create an IAM role for the policy. Update the trust relationship of the role. Set up automatic start and stop for the DB instance.",
+      "Create an Amazon ElastiCache for Redis cache cluster that gives users the ability to access the data from the cache when the DB instance is stopped. Invalidate the cache after the DB instance is started.",
+      "Launch an Amazon EC2 instance. Create an IAM role that grants access to Amazon RDS. Attach the role to the EC2 instance. Configure a cron job to start and stop the EC2 instance on the desired schedule.",
+      "Create AWS Lambda functions to start and stop the DB instance. Create Amazon EventBridge (Amazon CloudWatch Events) scheduled rules to invoke the Lambda functions. Configure the Lambda functions as event targets for the rules.",
+    ],
+    answer: 3,
+    explanation:
+      "Use EventBridge scheduled rules to invoke Lambda functions that start and stop the Amazon RDS DB instance automatically based on the application's usage schedule. This serverless approach minimizes operational overhead and reduces database costs by running the DB instance only during the required 12-hour period each day.",
+  },
+
+  // question 153
+  {
+    question:
+      "A company sells ringtones created from clips of popular songs. The files containing the ringtones are stored in Amazon S3 Standard and are at least 128 KB in size. The company has millions of files, but downloads are infrequent for ringtones older than 90 days. The company needs to save money on storage while keeping the most accessed files readily available for its users. Which action should the company take to meet these requirements MOST cost-effectively?",
+    options: [
+      "Configure S3 Standard-Infrequent Access (S3 Standard-IA) storage for the initial storage tier of the objects.",
+      "Move the files to S3 Intelligent-Tiering and configure it to move objects to a less expensive storage tier after 90 days.",
+      "Configure S3 Inventory to manage objects and move them to S3 Standard-Infrequent Access (S3 Standard-IA) after 90 days.",
+      "Implement an S3 Lifecycle policy that moves the objects from S3 Standard to S3 Standard-Infrequent Access (S3 Standard-IA) after 90 days.",
+    ],
+    answer: 3,
+    explanation:
+      "The access pattern is known: objects are frequently accessed for the first 90 days and infrequently accessed afterward. An S3 Lifecycle policy can automatically transition objects from S3 Standard to S3 Standard-IA after 90 days, providing the lowest-cost solution with minimal operational overhead. S3 Intelligent-Tiering is more appropriate when access patterns are unknown or unpredictable.",
+  },
+
+  // question 154
+  {
+    question:
+      "A company needs to save the results from a medical trial to an Amazon S3 repository. The repository must allow a few scientists to add new files and must restrict all other users to read-only access. No users can have the ability to modify or delete any files in the repository. The company must keep every file in the repository for a minimum of 1 year after its creation date. Which solution will meet these requirements?",
+    options: [
+      "Use S3 Object Lock in governance mode with a legal hold of 1 year.",
+      "Use S3 Object Lock in compliance mode with a retention period of 365 days.",
+      "Use an IAM role to restrict all users from deleting or changing objects in the S3 bucket. Use an S3 bucket policy to only allow the IAM role.",
+      "Configure the S3 bucket to invoke an AWS Lambda function every time an object is added. Configure the function to track the hash of the saved object so that modified objects can be marked accordingly.",
+    ],
+    answer: 1,
+    explanation:
+      "S3 Object Lock in Compliance mode enforces write-once-read-many (WORM) protection. Objects cannot be modified or deleted by any user, including the root user, until the retention period expires. Setting a retention period of 365 days satisfies the requirement to retain every file for at least 1 year while preventing modification or deletion.",
+  },
+
+  // question 155
+  {
+    question:
+      "A large media company hosts a web application on AWS. The company wants to start caching confidential media files so that users around the world will have reliable access to the files. The content is stored in Amazon S3 buckets. The company must deliver the content quickly, regardless of where the requests originate geographically. Which solution will meet these requirements?",
+    options: [
+      "Use AWS DataSync to connect the S3 buckets to the web application.",
+      "Deploy AWS Global Accelerator to connect the S3 buckets to the web application.",
+      "Deploy Amazon CloudFront to connect the S3 buckets to CloudFront edge servers.",
+      "Use Amazon Simple Queue Service (Amazon SQS) to connect the S3 buckets to the web application.",
+    ],
+    answer: 2,
+    explanation:
+      "Amazon CloudFront is the ideal solution for caching content stored in Amazon S3 and delivering it with low latency through a global network of edge locations. CloudFront also supports secure delivery of confidential content by using features such as Origin Access Control (OAC) or Origin Access Identity (OAI), signed URLs, and signed cookies.",
+  },
+
+  // question 156
+  {
+    question:
+      "A company produces batch data that comes from different databases. The company also produces live stream data from network sensors and application APIs. The company needs to consolidate all the data into one place for business analytics. The company needs to process the incoming data and then stage the data in different Amazon S3 buckets. Teams will later run one-time queries and import the data into a business intelligence tool to show key performance indicators (KPIs). Which combination of steps will meet these requirements with the LEAST operational overhead? (Choose two.)",
+    options: [
+      "Use Amazon Athena for one-time queries. Use Amazon QuickSight to create dashboards for KPIs.",
+      "Use Amazon Kinesis Data Analytics for one-time queries. Use Amazon QuickSight to create dashboards for KPIs.",
+      "Create custom AWS Lambda functions to move the individual records from the databases to an Amazon Redshift cluster.",
+      "Use an AWS Glue extract, transform, and load (ETL) job to convert the data into JSON format. Load the data into multiple Amazon OpenSearch Service (Amazon Elasticsearch Service) clusters.",
+      "Use blueprints in AWS Lake Formation to identify the data that can be ingested into a data lake. Use AWS Glue to crawl the source, extract the data, and load the data into Amazon S3 in Apache Parquet format.",
+    ],
+    answer: 0,
+    explanation:
+      "AWS Lake Formation with AWS Glue provides a managed, low-operational-overhead way to ingest, catalog, transform, and store data from multiple batch and streaming sources into Amazon S3 in an optimized format such as Apache Parquet. Amazon Athena is ideal for running one-time SQL queries directly against the data in S3, and Amazon QuickSight can use the queried data to create KPI dashboards.",
+  },
+
+  // question 157
+  {
+    question:
+      "A company stores data in an Amazon Aurora PostgreSQL DB cluster. The company must store all the data for 5 years and must delete all the data after 5 years. The company also must indefinitely keep audit logs of actions that are performed within the database. Currently, the company has automated backups configured for Aurora. Which combination of steps should a solutions architect take to meet these requirements? (Choose two.)",
+    options: [
+      "Take a manual snapshot of the DB cluster.",
+      "Create a lifecycle policy for the automated backups.",
+      "Configure automated backup retention for 5 years.",
+      "Configure an Amazon CloudWatch Logs export for the DB cluster.",
+      "Use AWS Backup to take the backups and to keep the backups for 5 years.",
+    ],
+    answer: 3,
+    explanation:
+      "AWS Backup can be used to create and manage backups with a defined retention period of 5 years, meeting the requirement to store database data for 5 years and automatically delete backups afterward. Amazon CloudWatch Logs export should be enabled for Aurora PostgreSQL audit logs so database activity logs can be retained indefinitely. Aurora automated backups cannot be retained for 5 years, and manual snapshots do not provide automatic expiration.",
+  },
+
+  // question 158
+  {
+    question:
+      "A solutions architect is optimizing a website for an upcoming musical event. Videos of the performances will be streamed in real time and then will be available on demand. The event is expected to attract a global online audience. Which service will improve the performance of both the real-time and on-demand streaming?",
+    options: [
+      "Amazon CloudFront",
+      "AWS Global Accelerator",
+      "Amazon Route 53",
+      "Amazon S3 Transfer Acceleration",
+    ],
+    answer: 0,
+    explanation:
+      "Amazon CloudFront is a content delivery network (CDN) that uses a global network of edge locations to deliver content with low latency. It supports both live streaming and on-demand video streaming by caching and delivering content closer to viewers around the world. AWS Global Accelerator improves performance for TCP/UDP applications but does not cache video content, making it less suitable for streaming workloads.",
+  },
+
+  // question 159
+  {
+    question:
+      "A company is running a publicly accessible serverless application that uses Amazon API Gateway and AWS Lambda. The application’s traffic recently spiked due to fraudulent requests from botnets. Which steps should a solutions architect take to block requests from unauthorized users? (Choose two.)",
+    options: [
+      "Create a usage plan with an API key that is shared with genuine users only.",
+      "Integrate logic within the Lambda function to ignore the requests from fraudulent IP addresses.",
+      "Implement an AWS WAF rule to target malicious requests and trigger actions to filter them out.",
+      "Convert the existing public API to a private API. Update the DNS records to redirect users to the new API endpoint.",
+      "Create an IAM role for each user attempting to access the API. A user will assume the role when making the API call.",
+    ],
+    answer: 0,
+    explanation:
+      "API Gateway usage plans with API keys can control and limit access for known, legitimate users. AWS WAF can inspect incoming requests and block malicious traffic such as botnet-generated requests before they reach API Gateway and Lambda. Lambda-side filtering is inefficient because the requests already consume resources, private APIs are not suitable for public applications, and creating IAM roles for every user is not a scalable authentication approach.",
+  },
+
+  // question 160
+  {
+    question:
+      "An ecommerce company hosts its analytics application in the AWS Cloud. The application generates about 300 MB of data each month. The data is stored in JSON format. The company is evaluating a disaster recovery solution to back up the data. The data must be accessible in milliseconds if it is needed, and the data must be kept for 30 days. Which solution meets these requirements MOST cost-effectively?",
+    options: [
+      "Amazon OpenSearch Service (Amazon Elasticsearch Service)",
+      "Amazon S3 Glacier",
+      "Amazon S3 Standard",
+      "Amazon RDS for PostgreSQL",
+    ],
+    answer: 2,
+    explanation:
+      "Amazon S3 Standard is the most cost-effective choice because the data is small (300 MB/month), needs immediate access in milliseconds, and only needs to be retained for 30 days. S3 Glacier is designed for archival data and has retrieval delays, while OpenSearch and RDS are unnecessary for simple JSON backup storage.",
+  },
+
+  // question 161
 ];

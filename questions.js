@@ -2108,4 +2108,154 @@ const questions = [
   },
 
   // question 141
+  {
+    question:
+      "A company runs a web-based portal that provides users with global breaking news, local alerts, and weather updates. The portal delivers each user a personalized view by using mixture of static and dynamic content. Content is served over HTTPS through an API server running on an Amazon EC2 instance behind an Application Load Balancer (ALB). The company wants the portal to provide this content to its users across the world as quickly as possible. How should a solutions architect design the application to ensure the LEAST amount of latency for all users?",
+    options: [
+      "Deploy the application stack in a single AWS Region. Use Amazon CloudFront to serve all static and dynamic content by specifying the ALB as an origin.",
+      "Deploy the application stack in two AWS Regions. Use an Amazon Route 53 latency routing policy to serve all content from the ALB in the closest Region.",
+      "Deploy the application stack in a single AWS Region. Use Amazon CloudFront to serve the static content. Serve the dynamic content directly from the ALB.",
+      "Deploy the application stack in two AWS Regions. Use an Amazon Route 53 geolocation routing policy to serve all content from the ALB in the closest Region.",
+    ],
+    answer: 0,
+    explanation:
+      "Amazon CloudFront provides the lowest latency by caching and serving both static and dynamic content through a global network of edge locations. CloudFront can use an Application Load Balancer as an origin and optimize delivery over AWS's global infrastructure. Deploying multiple Regions adds operational complexity and is not necessary because CloudFront already provides global content distribution.",
+  },
+
+  // question 142
+  {
+    question:
+      "A gaming company is designing a highly available architecture. The application runs on a modified Linux kernel and supports only UDP-based traffic. The company needs the front-end tier to provide the best possible user experience. That tier must have low latency, route traffic to the nearest edge location, and provide static IP addresses for entry into the application endpoints. What should a solutions architect do to meet these requirements?",
+    options: [
+      "Configure Amazon Route 53 to forward requests to an Application Load Balancer. Use AWS Lambda for the application in AWS Application Auto Scaling.",
+      "Configure Amazon CloudFront to forward requests to a Network Load Balancer. Use AWS Lambda for the application in an AWS Application Auto Scaling group.",
+      "Configure AWS Global Accelerator to forward requests to a Network Load Balancer. Use Amazon EC2 instances for the application in an EC2 Auto Scaling group.",
+      "Configure Amazon API Gateway to forward requests to an Application Load Balancer. Use Amazon EC2 instances for the application in an EC2 Auto Scaling group.",
+    ],
+    answer: 2,
+    explanation:
+      "AWS Global Accelerator is designed for low-latency global applications by routing user traffic to the nearest AWS edge location and providing static anycast IP addresses. It supports TCP and UDP protocols and can route traffic to Network Load Balancers, which are optimized for high-performance UDP workloads. EC2 Auto Scaling provides scalability and high availability for the application tier.",
+  },
+
+  // question 143
+  {
+    question:
+      "A company wants to migrate its existing on-premises monolithic application to AWS. The company wants to keep as much of the front-end code and the backend code as possible. However, the company wants to break the application into smaller applications. A different team will manage each application. The company needs a highly scalable solution that minimizes operational overhead. Which solution will meet these requirements?",
+    options: [
+      "Host the application on AWS Lambda. Integrate the application with Amazon API Gateway.",
+      "Host the application with AWS Amplify. Connect the application to an Amazon API Gateway API that is integrated with AWS Lambda.",
+      "Host the application on Amazon EC2 instances. Set up an Application Load Balancer with EC2 instances in an Auto Scaling group as targets.",
+      "Host the application on Amazon Elastic Container Service (Amazon ECS). Set up an Application Load Balancer with Amazon ECS as the target.",
+    ],
+    answer: 3,
+    explanation:
+      "Amazon ECS allows the company to break the monolithic application into smaller containerized services (microservices) while keeping much of the existing application code. Each team can manage separate services independently. ECS with an Application Load Balancer provides high scalability and reduces operational overhead compared with managing EC2 instances directly. Lambda would require significant code changes because applications must be redesigned into functions.",
+  },
+
+  // question 144
+  {
+    question:
+      "A company recently started using Amazon Aurora as the data store for its global ecommerce application. When large reports are run, developers report that the ecommerce application is performing poorly. After reviewing metrics in Amazon CloudWatch, a solutions architect finds that the ReadIOPS and CPUUtilization metrics are spiking when monthly reports run. What is the MOST cost-effective solution?",
+    options: [
+      "Migrate the monthly reporting to Amazon Redshift.",
+      "Migrate the monthly reporting to an Aurora Replica.",
+      "Migrate the Aurora database to a larger instance class.",
+      "Increase the Provisioned IOPS on the Aurora instance.",
+    ],
+    answer: 1,
+    explanation:
+      "Aurora Replicas are designed to offload read-heavy workloads from the primary Aurora database. Since the performance issue is caused by reporting queries increasing ReadIOPS and CPU utilization, moving monthly reports to an Aurora Replica reduces the load on the primary database with minimal cost and operational overhead. Increasing instance size or IOPS increases cost, while Redshift would be unnecessary for this requirement.",
+  },
+
+  // question 145
+  {
+    question:
+      "A company hosts a website analytics application on a single Amazon EC2 On-Demand Instance. The analytics software is written in PHP and uses a MySQL database. The analytics software, the web server that provides PHP, and the database server are all hosted on the EC2 instance. The application is showing signs of performance degradation during busy times and is presenting 5xx errors. The company needs to make the application scale seamlessly. Which solution will meet these requirements MOST cost-effectively?",
+    options: [
+      "Migrate the database to an Amazon RDS for MySQL DB instance. Create an AMI of the web application. Use the AMI to launch a second EC2 On-Demand Instance. Use an Application Load Balancer to distribute the load to each EC2 instance.",
+      "Migrate the database to an Amazon RDS for MySQL DB instance. Create an AMI of the web application. Use the AMI to launch a second EC2 On-Demand Instance. Use Amazon Route 53 weighted routing to distribute the load across the two EC2 instances.",
+      "Migrate the database to an Amazon Aurora MySQL DB instance. Create an AWS Lambda function to stop the EC2 instance and change the instance type. Create an Amazon CloudWatch alarm to invoke the Lambda function when CPU utilization surpasses 75%.",
+      "Migrate the database to an Amazon Aurora MySQL DB instance. Create an AMI of the web application. Apply the AMI to a launch template. Create an Auto Scaling group with the launch template. Configure the launch template to use a Spot Fleet. Attach an Application Load Balancer to the Auto Scaling group.",
+    ],
+    answer: 0,
+    explanation:
+      "The best solution is to separate the database from the application layer by moving MySQL to Amazon RDS and then create multiple EC2 instances behind an Application Load Balancer. This provides horizontal scaling and distributes traffic across instances. Option D introduces Spot Instances, which can be interrupted and are not ideal for a website requiring seamless scaling and availability. Route 53 weighted routing is not a replacement for a load balancer, and changing instance size does not provide true scalability.",
+  },
+
+  // question 146
+  {
+    question:
+      "A company runs a stateless web application in production on a group of Amazon EC2 On-Demand Instances behind an Application Load Balancer. The application experiences heavy usage during an 8-hour period each business day. Application usage is moderate and steady overnight. Application usage is low during weekends. The company wants to minimize its EC2 costs without affecting the availability of the application. Which solution will meet these requirements?",
+    options: [
+      "Use Spot Instances for the entire workload.",
+      "Use Reserved Instances for the baseline level of usage. Use Spot Instances for any additional capacity that the application needs.",
+      "Use On-Demand Instances for the baseline level of usage. Use Spot Instances for any additional capacity that the application needs.",
+      "Use Dedicated Instances for the baseline level of usage. Use On-Demand Instances for any additional capacity that the application needs.",
+    ],
+    answer: 1,
+    explanation:
+      "Reserved Instances provide a cost discount for predictable baseline usage, such as the application's steady overnight traffic. Spot Instances are suitable for additional capacity during peak periods because the application is stateless and can tolerate interruptions. Using this combination minimizes costs while maintaining availability through the Auto Scaling group and Load Balancer.",
+  },
+
+  // question 147
+  {
+    question:
+      "A company needs to retain application log files for a critical application for 10 years. The application team regularly accesses logs from the past month for troubleshooting, but logs older than 1 month are rarely accessed. The application generates more than 10 TB of logs per month. Which storage option meets these requirements MOST cost-effectively?",
+    options: [
+      "Store the logs in Amazon S3. Use AWS Backup to move logs more than 1 month old to S3 Glacier Deep Archive.",
+      "Store the logs in Amazon S3. Use S3 Lifecycle policies to move logs more than 1 month old to S3 Glacier Deep Archive.",
+      "Store the logs in Amazon CloudWatch Logs. Use AWS Backup to move logs more than 1 month old to S3 Glacier Deep Archive.",
+      "Store the logs in Amazon CloudWatch Logs. Use Amazon S3 Lifecycle policies to move logs more than 1 month old to S3 Glacier Deep Archive.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon S3 with S3 Lifecycle policies is the most cost-effective solution. S3 is suitable for storing large amounts of log data, and lifecycle rules can automatically transition objects older than one month to S3 Glacier Deep Archive for long-term, low-cost retention. AWS Backup is not needed for this use case, and CloudWatch Logs is more expensive for storing 10 TB+ of long-term log data.",
+  },
+
+  // question 148
+  {
+    question:
+      "A company has a data ingestion workflow that includes the following components: An Amazon Simple Notification Service (Amazon SNS) topic that receives notifications about new data deliveries. An AWS Lambda function that processes and stores the data. The ingestion workflow occasionally fails because of network connectivity issues. When failure occurs, the corresponding data is not ingested unless the company manually reruns the job. What should a solutions architect do to ensure that all notifications are eventually processed?",
+    options: [
+      "Configure the Lambda function for deployment across multiple Availability Zones.",
+      "Modify the Lambda function's configuration to increase the CPU and memory allocations for the function.",
+      "Configure the SNS topic’s retry strategy to increase both the number of retries and the wait time between retries.",
+      "Configure an Amazon Simple Queue Service (Amazon SQS) queue as the on-failure destination. Modify the Lambda function to process messages in the queue.",
+    ],
+    answer: 3,
+    explanation:
+      "Using Amazon SQS as an on-failure destination provides durable storage for failed notifications. If the Lambda function fails because of temporary network issues, the failed messages are stored in the SQS queue and can be processed later, ensuring that no notifications are lost. SNS retries alone are not sufficient because if all retries fail, the message can still be lost unless a dead-letter queue or failure destination is configured.",
+  },
+
+  // question 149
+  {
+    question:
+      "A company has a service that produces event data. The company wants to use AWS to process the event data as it is received. The data is written in a specific order that must be maintained throughout processing. The company wants to implement a solution that minimizes operational overhead. How should a solutions architect accomplish this?",
+    options: [
+      "Create an Amazon Simple Queue Service (Amazon SQS) FIFO queue to hold messages. Set up an AWS Lambda function to process messages from the queue.",
+      "Create an Amazon Simple Notification Service (Amazon SNS) topic to deliver notifications containing payloads to process. Configure an AWS Lambda function as a subscriber.",
+      "Create an Amazon Simple Queue Service (Amazon SQS) standard queue to hold messages. Set up an AWS Lambda function to process messages from the queue independently.",
+      "Create an Amazon Simple Notification Service (Amazon SNS) topic to deliver notifications containing payloads to process. Configure an Amazon Simple Queue Service (Amazon SQS) queue as a subscriber.",
+    ],
+    answer: 0,
+    explanation:
+      "Amazon SQS FIFO queues preserve the exact order of messages and provide exactly-once processing, making them suitable when event order must be maintained. Lambda can consume messages directly from the FIFO queue, providing a serverless and low-operational-overhead processing solution. Standard SQS queues do not guarantee ordering, and SNS alone does not provide message ordering.",
+  },
+
+  // question 150
+  {
+    question:
+      "A company is migrating an application from on-premises servers to Amazon EC2 instances. As part of the migration design requirements, a solutions architect must implement infrastructure metric alarms. The company does not need to take action if CPU utilization increases to more than 50% for a short burst of time. However, if the CPU utilization increases to more than 50% and read IOPS on the disk are high at the same time, the company needs to act as soon as possible. The solutions architect also must reduce false alarms. What should the solutions architect do to meet these requirements?",
+    options: [
+      "Create Amazon CloudWatch composite alarms where possible.",
+      "Create Amazon CloudWatch dashboards to visualize the metrics and react to issues quickly.",
+      "Create Amazon CloudWatch Synthetics canaries to monitor the application and raise an alarm.",
+      "Create single Amazon CloudWatch metric alarms with multiple metric thresholds where possible.",
+    ],
+    answer: 0,
+    explanation:
+      "Amazon CloudWatch composite alarms allow multiple CloudWatch alarms to be combined using logical operators such as AND and OR. In this scenario, the company only wants an alarm when both CPU utilization is high and disk read IOPS are high at the same time. A composite alarm reduces false alarms by requiring multiple conditions to be true before triggering an action.",
+  },
+
+  // question 151
 ];

@@ -1956,4 +1956,156 @@ const questions = [
   },
 
   // question 131
+  {
+    question:
+      "A company is developing a file-sharing application that will use an Amazon S3 bucket for storage. The company wants to serve all the files through an Amazon CloudFront distribution. The company does not want the files to be accessible through direct navigation to the S3 URL. What should a solutions architect do to meet these requirements?",
+    options: [
+      "Write individual policies for each S3 bucket to grant read permission for only CloudFront access.",
+      "Create an IAM user. Grant the user read permission to objects in the S3 bucket. Assign the user to CloudFront.",
+      "Write an S3 bucket policy that assigns the CloudFront distribution ID as the Principal and assigns the target S3 bucket as the Amazon Resource Name (ARN).",
+      "Create an origin access identity (OAI). Assign the OAI to the CloudFront distribution. Configure the S3 bucket permissions so that only the OAI has read permission.",
+    ],
+    answer: 3,
+    explanation:
+      "An Origin Access Identity (OAI) allows CloudFront to access private S3 bucket content while preventing users from accessing objects directly through the S3 URL. The S3 bucket policy grants read access only to the OAI, forcing all requests to go through CloudFront. This provides secure content delivery while maintaining the required architecture.",
+  },
+
+  // question 132
+  {
+    question:
+      "A company’s website provides users with downloadable historical performance reports. The website needs a solution that will scale to meet the company’s website demands globally. The solution should be cost-effective, limit the provisioning of infrastructure resources, and provide the fastest possible response time. Which combination should a solutions architect recommend to meet these requirements?",
+    options: [
+      "Amazon CloudFront and Amazon S3",
+      "AWS Lambda and Amazon DynamoDB",
+      "Application Load Balancer with Amazon EC2 Auto Scaling",
+      "Amazon Route 53 with internal Application Load Balancers",
+    ],
+    answer: 0,
+    explanation:
+      "Amazon S3 provides highly scalable, durable, and cost-effective storage for static files such as historical performance reports. Amazon CloudFront provides a global content delivery network (CDN) that caches files at edge locations close to users, reducing latency and improving response times worldwide. This serverless solution requires no infrastructure provisioning or management.",
+  },
+
+  // question 133
+  {
+    question:
+      "A company runs an Oracle database on premises. As part of the company’s migration to AWS, the company wants to upgrade the database to the most recent available version. The company also wants to set up disaster recovery (DR) for the database. The company needs to minimize the operational overhead for normal operations and DR setup. The company also needs to maintain access to the database's underlying operating system. Which solution will meet these requirements?",
+    options: [
+      "Migrate the Oracle database to an Amazon EC2 instance. Set up database replication to a different AWS Region.",
+      "Migrate the Oracle database to Amazon RDS for Oracle. Activate Cross-Region automated backups to replicate the snapshots to another AWS Region.",
+      "Migrate the Oracle database to Amazon RDS Custom for Oracle. Create a read replica for the database in another AWS Region.",
+      "Migrate the Oracle database to Amazon RDS for Oracle. Create a standby database in another Availability Zone.",
+    ],
+    answer: 2,
+    explanation:
+      "Amazon RDS Custom for Oracle is designed for workloads that require both managed database capabilities and access to the underlying operating system. It reduces operational overhead compared with managing Oracle on EC2 while still allowing OS-level customization. A cross-Region read replica provides a disaster recovery option. Standard Amazon RDS for Oracle does not provide operating system access, and EC2 would require much more operational management.",
+  },
+
+  // question 134
+  {
+    question:
+      "A company wants to move its application to a serverless solution. The serverless solution needs to analyze existing and new data by using SQL. The company stores the data in an Amazon S3 bucket. The data requires encryption and must be replicated to a different AWS Region. Which solution will meet these requirements with the LEAST operational overhead?",
+    options: [
+      "Create a new S3 bucket. Load the data into the new S3 bucket. Use S3 Cross-Region Replication (CRR) to replicate encrypted objects to an S3 bucket in another Region. Use server-side encryption with AWS KMS multi-Region keys (SSE-KMS). Use Amazon Athena to query the data.",
+      "Create a new S3 bucket. Load the data into the new S3 bucket. Use S3 Cross-Region Replication (CRR) to replicate encrypted objects to an S3 bucket in another Region. Use server-side encryption with AWS KMS multi-Region keys (SSE-KMS). Use Amazon RDS to query the data.",
+      "Load the data into the existing S3 bucket. Use S3 Cross-Region Replication (CRR) to replicate encrypted objects to an S3 bucket in another Region. Use server-side encryption with Amazon S3 managed encryption keys (SSE-S3). Use Amazon Athena to query the data.",
+      "Load the data into the existing S3 bucket. Use S3 Cross-Region Replication (CRR) to replicate encrypted objects to an S3 bucket in another Region. Use server-side encryption with Amazon S3 managed encryption keys (SSE-S3). Use Amazon RDS to query the data.",
+    ],
+    answer: 0,
+    explanation:
+      "Amazon Athena is a serverless, SQL-based query service that can analyze data directly in Amazon S3 without requiring database infrastructure. SSE-KMS with AWS KMS multi-Region keys provides encryption with centralized key management and allows encrypted objects to be replicated across Regions using S3 Cross-Region Replication. This solution provides the required encryption, replication, SQL analysis, and the least operational overhead.",
+  },
+
+  // question 135
+  {
+    question:
+      "A company runs workloads on AWS. The company needs to connect to a service from an external provider. The service is hosted in the provider's VPC. According to the company’s security team, the connectivity must be private and must be restricted to the target service. The connection must be initiated only from the company’s VPC. Which solution will meet these requirements?",
+    options: [
+      "Create a VPC peering connection between the company's VPC and the provider's VPC. Update the route table to connect to the target service.",
+      "Ask the provider to create a virtual private gateway in its VPC. Use AWS PrivateLink to connect to the target service.",
+      "Create a NAT gateway in a public subnet of the company's VPC. Update the route table to connect to the target service.",
+      "Ask the provider to create a VPC endpoint for the target service. Use AWS PrivateLink to connect to the target service.",
+    ],
+    answer: 3,
+    explanation:
+      "AWS PrivateLink is designed for private connectivity between a consumer VPC and a service provider's VPC. The provider creates an endpoint service, and the consumer creates a VPC endpoint to access only that specific service. Traffic stays on the AWS private network, and communication is initiated from the company's VPC only. VPC peering provides broader network access between VPCs and is not restricted to a single service.",
+  },
+
+  // question 136
+  {
+    question:
+      "A company is migrating its on-premises PostgreSQL database to Amazon Aurora PostgreSQL. The on-premises database must remain online and accessible during the migration. The Aurora database must remain synchronized with the on-premises database. Which combination of actions must a solutions architect take to meet these requirements? (Choose two.)",
+    options: [
+      "Create an ongoing replication task.",
+      "Create a database backup of the on-premises database.",
+      "Create an AWS Database Migration Service (AWS DMS) replication server.",
+      "Convert the database schema by using the AWS Schema Conversion Tool (AWS SCT).",
+      "Create an Amazon EventBridge (Amazon CloudWatch Events) rule to monitor the database synchronization.",
+    ],
+    answer: 2,
+    explanation:
+      "AWS Database Migration Service (AWS DMS) supports continuous database migration with minimal downtime. The solution requires creating a DMS replication server to handle the migration process and an ongoing replication task to continuously capture changes from the on-premises PostgreSQL database and apply them to Aurora PostgreSQL. Backups do not provide synchronization, AWS SCT is mainly for schema conversion between different database engines, and EventBridge is not required for replication.",
+  },
+
+  // question 137
+  {
+    question:
+      "A company uses AWS Organizations to create dedicated AWS accounts for each business unit to manage each business unit's account independently upon request. The root email recipient missed a notification that was sent to the root user email address of one account. The company wants to ensure that all future notifications are not missed. Future notifications must be limited to account administrators. Which solution will meet these requirements?",
+    options: [
+      "Configure the company’s email server to forward notification email messages that are sent to the AWS account root user email address to all users in the organization.",
+      "Configure all AWS account root user email addresses as distribution lists that go to a few administrators who can respond to alerts. Configure AWS account alternate contacts in the AWS Organizations console or programmatically.",
+      "Configure all AWS account root user email messages to be sent to one administrator who is responsible for monitoring alerts and forwarding those alerts to the appropriate groups.",
+      "Configure all existing AWS accounts and all newly created accounts to use the same root user email address. Configure AWS account alternate contacts in the AWS Organizations console or programmatically.",
+    ],
+    answer: 1,
+    explanation:
+      "AWS recommends that the root user email address be a distribution list controlled by multiple administrators rather than a single person's email. This prevents missing important AWS notifications. AWS Organizations also allows administrators to configure alternate contacts (such as billing, operations, and security contacts) so notifications can be directed to the appropriate account administrators without sharing root access.",
+  },
+
+  // question 138
+  {
+    question:
+      "A company runs its ecommerce application on AWS. Every new order is published as a message in a RabbitMQ queue that runs on an Amazon EC2 instance in a single Availability Zone. These messages are processed by a different application that runs on a separate EC2 instance. This application stores the details in a PostgreSQL database on another EC2 instance. All the EC2 instances are in the same Availability Zone. The company needs to redesign its architecture to provide the highest availability with the least operational overhead. What should a solutions architect do to meet these requirements?",
+    options: [
+      "Migrate the queue to a redundant pair (active/standby) of RabbitMQ instances on Amazon MQ. Create a Multi-AZ Auto Scaling group for EC2 instances that host the application. Create another Multi-AZ Auto Scaling group for EC2 instances that host the PostgreSQL database.",
+      "Migrate the queue to a redundant pair (active/standby) of RabbitMQ instances on Amazon MQ. Create a Multi-AZ Auto Scaling group for EC2 instances that host the application. Migrate the database to run on a Multi-AZ deployment of Amazon RDS for PostgreSQL.",
+      "Create a Multi-AZ Auto Scaling group for EC2 instances that host the RabbitMQ queue. Create another Multi-AZ Auto Scaling group for EC2 instances that host the application. Migrate the database to run on a Multi-AZ deployment of Amazon RDS for PostgreSQL.",
+      "Create a Multi-AZ Auto Scaling group for EC2 instances that host the RabbitMQ queue. Create another Multi-AZ Auto Scaling group for EC2 instances that host the application. Create a third Multi-AZ Auto Scaling group for EC2 instances that host the PostgreSQL database.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon MQ for RabbitMQ provides managed message brokers with active/standby deployment across multiple Availability Zones, reducing operational overhead compared with managing RabbitMQ on EC2. EC2 Auto Scaling across multiple AZs improves application availability. Amazon RDS for PostgreSQL Multi-AZ provides managed database high availability with automatic failover. This combination provides the highest availability with the least operational effort.",
+  },
+
+  // question 139
+  {
+    question:
+      "A reporting team receives files each day in an Amazon S3 bucket. The reporting team manually reviews and copies the files from this initial S3 bucket to an analysis S3 bucket each day at the same time to use with Amazon QuickSight. Additional teams are starting to send more files in larger sizes to the initial S3 bucket. The reporting team wants to move the files automatically to the analysis S3 bucket as the files enter the initial S3 bucket. The reporting team also wants to use AWS Lambda functions to run pattern-matching code on the copied data. In addition, the reporting team wants to send the data files to a pipeline in Amazon SageMaker Pipelines. What should a solutions architect do to meet these requirements with the LEAST operational overhead?",
+    options: [
+      "Create a Lambda function to copy the files to the analysis S3 bucket. Create an S3 event notification for the analysis S3 bucket. Configure Lambda and SageMaker Pipelines as destinations of the event notification. Configure s3:ObjectCreated:Put as the event type.",
+      "Create a Lambda function to copy the files to the analysis S3 bucket. Configure the analysis S3 bucket to send event notifications to Amazon EventBridge (Amazon CloudWatch Events). Configure an ObjectCreated rule in EventBridge (CloudWatch Events). Configure Lambda and SageMaker Pipelines as targets for the rule.",
+      "Configure S3 replication between the S3 buckets. Create an S3 event notification for the analysis S3 bucket. Configure Lambda and SageMaker Pipelines as destinations of the event notification. Configure s3:ObjectCreated:Put as the event type.",
+      "Configure S3 replication between the S3 buckets. Configure the analysis S3 bucket to send event notifications to Amazon EventBridge (Amazon CloudWatch Events). Configure an ObjectCreated rule in EventBridge (CloudWatch Events). Configure Lambda and SageMaker Pipelines as targets for the rule.",
+    ],
+    answer: 3,
+    explanation:
+      "Amazon S3 Cross-Region Replication (CRR) or Same-Region Replication (SRR) can automatically copy objects between S3 buckets without requiring custom code. After replication creates objects in the analysis bucket, Amazon EventBridge can detect ObjectCreated events and invoke multiple targets such as AWS Lambda and SageMaker Pipelines. This provides the least operational overhead because S3 handles the file movement automatically and EventBridge provides flexible event routing to multiple services.",
+  },
+
+  // question 140
+  {
+    question:
+      "A solutions architect needs to help a company optimize the cost of running an application on AWS. The application will use Amazon EC2 instances, AWS Fargate, and AWS Lambda for compute within the architecture. The EC2 instances will run the data ingestion layer of the application. EC2 usage will be sporadic and unpredictable. Workloads that run on EC2 instances can be interrupted at any time. The application front end will run on Fargate, and Lambda will serve the API layer. The front-end utilization and API layer utilization will be predictable over the course of the next year. Which combination of purchasing options will provide the MOST cost-effective solution for hosting this application? (Choose two.)",
+    options: [
+      "Use Spot Instances for the data ingestion layer",
+      "Use On-Demand Instances for the data ingestion layer",
+      "Purchase a 1-year Compute Savings Plan for the front end and API layer.",
+      "Purchase 1-year All Upfront Reserved Instances for the data ingestion layer.",
+      "Purchase a 1-year EC2 instance Savings Plan for the front end and API layer.",
+    ],
+    answer: 0,
+    explanation:
+      "Spot Instances are the most cost-effective choice for the EC2 data ingestion layer because the workload is unpredictable and can tolerate interruptions. Reserved Instances are not suitable because the EC2 usage is sporadic. For Fargate and Lambda, a Compute Savings Plan provides discounts across multiple compute services including Amazon EC2, AWS Fargate, and AWS Lambda, making it more appropriate than an EC2 Instance Savings Plan.",
+  },
+
+  // question 141
 ];

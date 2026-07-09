@@ -2863,5 +2863,155 @@ const questions = [
       "AWS Elastic Beanstalk is a managed platform service that supports Java and PHP applications. It automatically handles infrastructure provisioning, load balancing, scaling, and application health monitoring. Elastic Beanstalk environments allow developers to create separate environments and use URL swapping to test new features and deploy changes with minimal operational overhead.",
   },
 
-  // question 191 
+  // question 191
+  {
+    question:
+      "A company has an ordering application that stores customer information in Amazon RDS for MySQL. During regular business hours, employees run one-time queries for reporting purposes. Timeouts are occurring during order processing because the reporting queries are taking a long time to run. The company needs to eliminate the timeouts without preventing employees from performing queries. What should a solutions architect do to meet these requirements?",
+    options: [
+      "Create a read replica. Move reporting queries to the read replica.",
+      "Create a read replica. Distribute the ordering application to the primary DB instance and the read replica.",
+      "Migrate the ordering application to Amazon DynamoDB with on-demand capacity.",
+      "Schedule the reporting queries for non-peak hours.",
+    ],
+    answer: 0,
+    explanation:
+      "Amazon RDS read replicas are designed to offload read-heavy workloads from the primary database instance. Moving reporting queries to a read replica separates the reporting workload from the transactional ordering workload, preventing performance degradation and reducing timeouts while allowing employees to continue running reports.",
+  },
+
+  // question 192
+  {
+    question:
+      "A hospital wants to create digital copies for its large collection of historical written records. The hospital will continue to add hundreds of new documents each day. The hospital’s data team will scan the documents and will upload the documents to the AWS Cloud. A solutions architect must implement a solution to analyze the documents, extract the medical information, and store the documents so that an application can run SQL queries on the data. The solution must maximize scalability and operational efficiency. Which combination of steps should the solutions architect take to meet these requirements? (Choose two.)",
+    options: [
+      "Write the document information to an Amazon EC2 instance that runs a MySQL database.",
+      "Write the document information to an Amazon S3 bucket. Use Amazon Athena to query the data.",
+      "Create an AWS Lambda function that runs when new documents are uploaded. Use Amazon Rekognition to convert the documents to raw text. Use Amazon Transcribe Medical to detect and extract relevant medical information from the text.",
+      "Create an AWS Lambda function that runs when new documents are uploaded. Use Amazon Textract to convert the documents to raw text. Use Amazon Comprehend Medical to detect and extract relevant medical information from the text.",
+    ],
+    answer: 3,
+    explanation:
+      "Amazon Textract is designed to extract text from scanned documents, while Amazon Comprehend Medical can identify and extract medical information from the text. Using Lambda triggered by S3 uploads provides automatic scaling with minimal operational overhead. Storing the processed documents in Amazon S3 and querying them with Amazon Athena provides a serverless SQL query capability without managing databases.",
+  },
+
+  // question 193
+  {
+    question:
+      "A company is running a batch application on Amazon EC2 instances. The application consists of a backend with multiple Amazon RDS databases. The application is causing a high number of reads on the databases. A solutions architect must reduce the number of database reads while ensuring high availability. What should the solutions architect do to meet this requirement?",
+    options: [
+      "Add Amazon RDS read replicas.",
+      "Use Amazon ElastiCache for Redis.",
+      "Use Amazon Route 53 DNS caching.",
+      "Use Amazon ElastiCache for Memcached.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon ElastiCache for Redis reduces database read load by caching frequently accessed data in memory. Redis provides high availability features such as replication and Multi-AZ support with automatic failover. RDS read replicas can offload reads but require application changes to direct read traffic, while DNS caching does not reduce database queries and Memcached does not provide the same high availability capabilities as Redis.",
+  },
+
+  // question 194
+  {
+    question:
+      "A company needs to run a critical application on AWS. The company needs to use Amazon EC2 for the application’s database. The database must be highly available and must fail over automatically if a disruptive event occurs. Which solution will meet these requirements?",
+    options: [
+      "Launch two EC2 instances, each in a different Availability Zone in the same AWS Region. Install the database on both EC2 instances. Configure the EC2 instances as a cluster. Set up database replication.",
+      "Launch an EC2 instance in an Availability Zone. Install the database on the EC2 instance. Use an Amazon Machine Image (AMI) to back up the data. Use AWS CloudFormation to automate provisioning of the EC2 instance if a disruptive event occurs.",
+      "Launch two EC2 instances, each in a different AWS Region. Install the database on both EC2 instances. Set up database replication. Fail over the database to a second Region.",
+      "Launch an EC2 instance in an Availability Zone. Install the database on the EC2 instance. Use an Amazon Machine Image (AMI) to back up the data. Use EC2 automatic recovery to recover the instance if a disruptive event occurs.",
+    ],
+    answer: 0,
+    explanation:
+      "For a database running on EC2 that requires high availability and automatic failover, deploying database instances across multiple Availability Zones with replication and clustering provides continuous availability. A Multi-AZ design within the same Region provides lower failover time and protects against Availability Zone failures. A single EC2 instance with backups or automatic recovery does not provide database-level automatic failover.",
+  },
+
+  // question 195
+  {
+    question:
+      "A company’s order system sends requests from clients to Amazon EC2 instances. The EC2 instances process the orders and then store the orders in a database on Amazon RDS. Users report that they must reprocess orders when the system fails. The company wants a resilient solution that can process orders automatically if a system outage occurs. What should a solutions architect do to meet these requirements?",
+    options: [
+      "Move the EC2 instances into an Auto Scaling group. Create an Amazon EventBridge (Amazon CloudWatch Events) rule to target an Amazon Elastic Container Service (Amazon ECS) task.",
+      "Move the EC2 instances into an Auto Scaling group behind an Application Load Balancer (ALB). Update the order system to send messages to the ALB endpoint.",
+      "Move the EC2 instances into an Auto Scaling group. Configure the order system to send messages to an Amazon Simple Queue Service (Amazon SQS) queue. Configure the EC2 instances to consume messages from the queue.",
+      "Create an Amazon Simple Notification Service (Amazon SNS) topic. Create an AWS Lambda function, and subscribe the function to the SNS topic. Configure the order system to send messages to the SNS topic. Send a command to the EC2 instances to process the messages by using AWS Systems Manager Run Command.",
+    ],
+    answer: 2,
+    explanation:
+      "Amazon SQS provides a durable message queue that decouples the order system from the EC2 processing instances. Messages remain in the queue until they are successfully processed, allowing the application to recover from failures without losing orders or requiring users to resubmit requests. An Auto Scaling group ensures processing capacity can recover and scale automatically.",
+  },
+
+  // question 196
+  {
+    question:
+      "A company runs an application on a large fleet of Amazon EC2 instances. The application reads and writes entries into an Amazon DynamoDB table. The size of the DynamoDB table continuously grows, but the application needs only data from the last 30 days. The company needs a solution that minimizes cost and development effort. Which solution meets these requirements?",
+    options: [
+      "Use an AWS CloudFormation template to deploy the complete solution. Redeploy the CloudFormation stack every 30 days, and delete the original stack.",
+      "Use an EC2 instance that runs a monitoring application from AWS Marketplace. Configure the monitoring application to use Amazon DynamoDB Streams to store the timestamp when a new item is created in the table. Use a script that runs on the EC2 instance to delete items that have a timestamp that is older than 30 days.",
+      "Configure Amazon DynamoDB Streams to invoke an AWS Lambda function when a new item is created in the table. Configure the Lambda function to delete items in the table that are older than 30 days.",
+      "Extend the application to add an attribute that has a value of the current timestamp plus 30 days to each new item that is created. Configure DynamoDB to use the attribute as the TTL attribute.",
+    ],
+    answer: 3,
+    explanation:
+      "Amazon DynamoDB Time to Live (TTL) is designed to automatically delete expired items with minimal operational overhead. The application should add a timestamp attribute that represents when the item should expire (current time plus 30 days) and configure that attribute as the TTL attribute. DynamoDB will automatically remove expired items, reducing storage costs without requiring additional servers, Lambda functions, or maintenance.",
+  },
+
+  // question 197
+  {
+    question:
+      "A company has a Microsoft .NET application that runs on an on-premises Windows Server. The application stores data by using an Oracle Database Standard Edition server. The company is planning a migration to AWS and wants to minimize development changes while moving the application. The AWS application environment should be highly available. Which combination of actions should the company take to meet these requirements? (Choose two.)",
+    options: [
+      "Refactor the application as serverless with AWS Lambda functions running .NET Core.",
+      "Rehost the application in AWS Elastic Beanstalk with the .NET platform in a Multi-AZ deployment.",
+      "Replatform the application to run on Amazon EC2 with the Amazon Linux Amazon Machine Image (AMI).",
+      "Use AWS Database Migration Service (AWS DMS) to migrate from the Oracle database to Oracle on Amazon RDS in a Multi-AZ deployment.",
+    ],
+    answer: 3,
+    explanation:
+      "AWS Elastic Beanstalk supports .NET applications and provides a managed platform with built-in deployment, scaling, and Multi-AZ high availability capabilities, requiring minimal application changes. Amazon RDS for Oracle supports Oracle databases with Multi-AZ deployments, allowing the company to migrate the database while maintaining compatibility and reducing development effort. Refactoring to Lambda or migrating to DynamoDB would require significant application changes.",
+  },
+
+  // question 198
+  {
+    question:
+      "A company runs a containerized application on a Kubernetes cluster in an on-premises data center. The company is using a MongoDB database for data storage. The company wants to migrate some of these environments to AWS, but no code changes or deployment method changes are possible at this time. The company needs a solution that minimizes operational overhead. Which solution meets these requirements?",
+    options: [
+      "Use Amazon Elastic Container Service (Amazon ECS) with Amazon EC2 worker nodes for compute and MongoDB on EC2 for data storage.",
+      "Use Amazon Elastic Container Service (Amazon ECS) with AWS Fargate for compute and Amazon DynamoDB for data storage.",
+      "Use Amazon Elastic Kubernetes Service (Amazon EKS) with Amazon EC2 worker nodes for compute and Amazon DynamoDB for data storage.",
+      "Use Amazon Elastic Kubernetes Service (Amazon EKS) with AWS Fargate for compute and Amazon DocumentDB (with MongoDB compatibility) for data storage.",
+    ],
+    answer: 3,
+    explanation:
+      "Amazon EKS is the best choice because the company is already using Kubernetes and cannot change the deployment method. AWS Fargate reduces operational overhead by removing the need to manage worker nodes. Amazon DocumentDB is MongoDB-compatible, allowing the company to migrate the database with minimal or no code changes. ECS and DynamoDB would require changes to the container orchestration and database access patterns.",
+  },
+
+  // question 199
+  {
+    question:
+      "A telemarketing company is designing its customer call center functionality on AWS. The company needs a solution that provides multiple speaker recognition and generates transcript files. The company wants to query the transcript files to analyze the business patterns. The transcript files must be stored for 7 years for auditing purposes. Which solution will meet these requirements?",
+    options: [
+      "Use Amazon Rekognition for multiple speaker recognition. Store the transcript files in Amazon S3. Use machine learning models for transcript file analysis.",
+      "Use Amazon Transcribe for multiple speaker recognition. Use Amazon Athena for transcript file analysis.",
+      "Use Amazon Translate for multiple speaker recognition. Store the transcript files in Amazon Redshift. Use SQL queries for transcript file analysis.",
+      "Use Amazon Rekognition for multiple speaker recognition. Store the transcript files in Amazon S3. Use Amazon Textract for transcript file analysis.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon Transcribe supports speech-to-text conversion and can identify multiple speakers through speaker diarization. The generated transcript files can be stored in Amazon S3 for long-term retention, and Amazon Athena can run SQL queries directly on data stored in S3 for analysis without requiring database infrastructure. Amazon Rekognition is for image and video analysis, Amazon Translate is for language translation, and Amazon Textract is for document text extraction.",
+  },
+
+  // question 200
+  {
+    question:
+      "A company hosts its application on AWS. The company uses Amazon Cognito to manage users. When users log in to the application, the application fetches required data from Amazon DynamoDB by using a REST API that is hosted in Amazon API Gateway. The company wants an AWS managed solution that will control access to the REST API to reduce development efforts. Which solution will meet these requirements with the LEAST operational overhead?",
+    options: [
+      "Configure an AWS Lambda function to be an authorizer in API Gateway to validate which user made the request.",
+      "For each user, create and assign an API key that must be sent with each request. Validate the key by using an AWS Lambda function.",
+      "Send the user’s email address in the header with every request. Invoke an AWS Lambda function to validate that the user with that email address has proper access.",
+      "Configure an Amazon Cognito user pool authorizer in API Gateway to allow Amazon Cognito to validate each request.",
+    ],
+    answer: 3,
+    explanation:
+      "Amazon API Gateway has built-in integration with Amazon Cognito user pools through a Cognito user pool authorizer. API Gateway can automatically validate Cognito-issued JSON Web Tokens (JWTs) and control access to the REST API without requiring custom Lambda authorization logic. This provides the least operational overhead.",
+  },
+
+  // question 201 
 ];

@@ -2713,4 +2713,155 @@ const questions = [
   },
 
   // question 181
+  {
+    question:
+      "A company has a legacy data processing application that runs on Amazon EC2 instances. Data is processed sequentially, but the order of results does not matter. The application uses a monolithic architecture. The only way that the company can scale the application to meet increased demand is to increase the size of the instances. The company’s developers have decided to rewrite the application to use a microservices architecture on Amazon Elastic Container Service (Amazon ECS). What should a solutions architect recommend for communication between the microservices?",
+    options: [
+      "Create an Amazon Simple Queue Service (Amazon SQS) queue. Add code to the data producers, and send data to the queue. Add code to the data consumers to process data from the queue.",
+      "Create an Amazon Simple Notification Service (Amazon SNS) topic. Add code to the data producers, and publish notifications to the topic. Add code to the data consumers to subscribe to the topic.",
+      "Create an AWS Lambda function to pass messages. Add code to the data producers to call the Lambda function with a data object. Add code to the data consumers to receive a data object that is passed from the Lambda function.",
+      "Create an Amazon DynamoDB table. Enable DynamoDB Streams. Add code to the data producers to insert data into the table. Add code to the data consumers to use the DynamoDB Streams API to detect new table entries and retrieve the data.",
+    ],
+    answer: 0,
+    explanation:
+      "Amazon SQS is the best choice for communication between microservices when processing can happen asynchronously and the order of results does not matter. SQS decouples producers and consumers, allows independent scaling of microservices, and provides reliable message delivery with minimal operational overhead. SNS is mainly for pub/sub fan-out, while DynamoDB Streams and Lambda are not appropriate for general microservice communication.",
+  },
+
+  // question 182
+  {
+    question:
+      "A company wants to migrate its MySQL database from on premises to AWS. The company recently experienced a database outage that significantly impacted the business. To ensure this does not happen again, the company wants a reliable database solution on AWS that minimizes data loss and stores every transaction on at least two nodes. Which solution meets these requirements?",
+    options: [
+      "Create an Amazon RDS DB instance with synchronous replication to three nodes in three Availability Zones.",
+      "Create an Amazon RDS MySQL DB instance with Multi-AZ functionality enabled to synchronously replicate the data.",
+      "Create an Amazon RDS MySQL DB instance and then create a read replica in a separate AWS Region that synchronously replicates the data.",
+      "Create an Amazon EC2 instance with a MySQL engine installed that triggers an AWS Lambda function to synchronously replicate the data to an Amazon RDS MySQL DB instance.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon RDS for MySQL with Multi-AZ enabled provides synchronous replication to a standby database in another Availability Zone. This ensures that every transaction is stored on multiple nodes and provides automatic failover with minimal data loss. Read replicas use asynchronous replication and are mainly for scaling read workloads, not high availability.",
+  },
+
+  // question 183
+  {
+    question:
+      "A company is building a new dynamic ordering website. The company wants to minimize server maintenance and patching. The website must be highly available and must scale read and write capacity as quickly as possible to meet changes in user demand. Which solution will meet these requirements?",
+    options: [
+      "Host static content in Amazon S3. Host dynamic content by using Amazon API Gateway and AWS Lambda. Use Amazon DynamoDB with on-demand capacity for the database. Configure Amazon CloudFront to deliver the website content.",
+      "Host static content in Amazon S3. Host dynamic content by using Amazon API Gateway and AWS Lambda. Use Amazon Aurora with Aurora Auto Scaling for the database. Configure Amazon CloudFront to deliver the website content.",
+      "Host all the website content on Amazon EC2 instances. Create an Auto Scaling group to scale the EC2 instances. Use an Application Load Balancer to distribute traffic. Use Amazon DynamoDB with provisioned write capacity for the database.",
+      "Host all the website content on Amazon EC2 instances. Create an Auto Scaling group to scale the EC2 instances. Use an Application Load Balancer to distribute traffic. Use Amazon Aurora with Aurora Auto Scaling for the database.",
+    ],
+    answer: 0,
+    explanation:
+      "Amazon S3, API Gateway, Lambda, DynamoDB on-demand capacity, and CloudFront provide a fully serverless architecture with minimal server maintenance and patching. DynamoDB on-demand automatically scales read and write capacity based on traffic demand without capacity planning, while Lambda and API Gateway provide built-in high availability and automatic scaling.",
+  },
+
+  // question 184
+  {
+    question:
+      "A company has an AWS account used for software engineering. The AWS account has access to the company’s on-premises data center through a pair of AWS Direct Connect connections. All non-VPC traffic routes to the virtual private gateway. A development team recently created an AWS Lambda function through the console. The development team needs to allow the function to access a database that runs in a private subnet in the company’s data center. Which solution will meet these requirements?",
+    options: [
+      "Configure the Lambda function to run in the VPC with the appropriate security group.",
+      "Set up a VPN connection from AWS to the data center. Route the traffic from the Lambda function through the VPN.",
+      "Update the route tables in the VPC to allow the Lambda function to access the on-premises data center through Direct Connect.",
+      "Create an Elastic IP address. Configure the Lambda function to send traffic through the Elastic IP address without an elastic network interface.",
+    ],
+    answer: 0,
+    explanation:
+      "A Lambda function must be configured to run inside the VPC to access resources in a private subnet or on-premises network through Direct Connect. When Lambda is connected to the VPC, it uses elastic network interfaces in the selected subnets and follows the VPC routing configuration, allowing it to reach the on-premises database through the existing Direct Connect connection.",
+  },
+
+  // question 185
+  {
+    question:
+      "A company runs an application using Amazon ECS. The application creates resized versions of an original image and then makes Amazon S3 API calls to store the resized images in Amazon S3. How can a solutions architect ensure that the application has permission to access Amazon S3?",
+    options: [
+      "Update the S3 role in AWS IAM to allow read/write access from Amazon ECS, and then relaunch the container.",
+      "Create an IAM role with S3 permissions, and then specify that role as the taskRoleArn in the task definition.",
+      "Create a security group that allows access from Amazon ECS to Amazon S3, and update the launch configuration used by the ECS cluster.",
+      "Create an IAM user with S3 permissions, and then relaunch the Amazon EC2 instances for the ECS cluster while logged in as this account.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon ECS task roles allow containers to securely access AWS services. The solutions architect should create an IAM role with the required Amazon S3 permissions and specify it as the taskRoleArn in the ECS task definition. The ECS agent then provides temporary credentials to the running container. Security groups do not control IAM permissions to S3, and using IAM users inside applications is not recommended.",
+  },
+
+  // question 186
+  {
+    question:
+      "A company has a Windows-based application that must be migrated to AWS. The application requires the use of a shared Windows file system attached to multiple Amazon EC2 Windows instances that are deployed across multiple Availability Zones. What should a solutions architect do to meet this requirement?",
+    options: [
+      "Configure AWS Storage Gateway in volume gateway mode. Mount the volume to each Windows instance.",
+      "Configure Amazon FSx for Windows File Server. Mount the Amazon FSx file system to each Windows instance.",
+      "Configure a file system by using Amazon Elastic File System (Amazon EFS). Mount the EFS file system to each Windows instance.",
+      "Configure an Amazon Elastic Block Store (Amazon EBS) volume with the required size. Attach each EC2 instance to the volume. Mount the file system within the volume to each Windows instance.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon FSx for Windows File Server provides a fully managed native Windows file system that supports SMB protocol, Active Directory integration, and shared access from multiple Windows EC2 instances across Availability Zones. Amazon EFS is designed for Linux workloads using NFS, EBS volumes cannot be attached and shared across multiple EC2 instances in this way, and Storage Gateway is intended mainly for hybrid storage use cases.",
+  },
+
+  // question 187
+  {
+    question:
+      "A company is developing an ecommerce application that will consist of a load-balanced front end, a container-based application, and a relational database. A solutions architect needs to create a highly available solution that operates with as little manual intervention as possible. Which solutions meet these requirements? (Choose two.)",
+    options: [
+      "Create an Amazon RDS DB instance in Multi-AZ mode.",
+      "Create an Amazon RDS DB instance and one or more replicas in another Availability Zone.",
+      "Create an Amazon EC2 instance-based Docker cluster to handle the dynamic application load.",
+      "Create an Amazon Elastic Container Service (Amazon ECS) cluster with a Fargate launch type to handle the dynamic application load.",
+      "Create an Amazon Elastic Container Service (Amazon ECS) cluster with an Amazon EC2 launch type to handle the dynamic application load.",
+    ],
+    answer: 0,
+    explanation:
+      "Amazon RDS Multi-AZ provides high availability through synchronous replication and automatic failover with minimal administration. Amazon ECS with the Fargate launch type is fully managed, removing the need to provision and maintain EC2 instances while allowing containers to scale automatically. ECS with EC2 launch type requires more infrastructure management, and read replicas are primarily for scaling reads rather than providing automatic failover.",
+  },
+
+  // question 188
+  {
+    question:
+      "A company uses Amazon S3 as its data lake. The company has a new partner that must use SFTP to upload data files. A solutions architect needs to implement a highly available SFTP solution that minimizes operational overhead. Which solution will meet these requirements?",
+    options: [
+      "Use AWS Transfer Family to configure an SFTP-enabled server with a publicly accessible endpoint. Choose the S3 data lake as the destination.",
+      "Use Amazon S3 File Gateway as an SFTP server. Expose the S3 File Gateway endpoint URL to the new partner. Share the S3 File Gateway endpoint with the new partner.",
+      "Launch an Amazon EC2 instance in a private subnet in a VPC. Instruct the new partner to upload files to the EC2 instance by using a VPN. Run a cron job script on the EC2 instance to upload files to the S3 data lake.",
+      "Launch Amazon EC2 instances in a private subnet in a VPC. Place a Network Load Balancer (NLB) in front of the EC2 instances. Create an SFTP listener port for the NLB. Share the NLB hostname with the new partner. Run a cron job script on the EC2 instances to upload files to the S3 data lake.",
+    ],
+    answer: 0,
+    explanation:
+      "AWS Transfer Family provides a fully managed SFTP service that integrates directly with Amazon S3. It provides high availability, eliminates the need to manage servers, and minimizes operational overhead. The partner can upload files using SFTP while the data is stored directly in the S3 data lake.",
+  },
+
+  // question 189
+  {
+    question:
+      "A company needs to store contract documents. A contract lasts for 5 years. During the 5-year period, the company must ensure that the documents cannot be overwritten or deleted. The company needs to encrypt the documents at rest and rotate the encryption keys automatically every year. Which combination of steps should a solutions architect take to meet these requirements with the LEAST operational overhead? (Choose two.)",
+    options: [
+      "Store the documents in Amazon S3. Use S3 Object Lock in governance mode.",
+      "Store the documents in Amazon S3. Use S3 Object Lock in compliance mode.",
+      "Use server-side encryption with Amazon S3 managed encryption keys (SSE-S3). Configure key rotation.",
+      "Use server-side encryption with AWS Key Management Service (AWS KMS) customer managed keys. Configure key rotation.",
+    ],
+    answer: 1,
+    explanation:
+      "S3 Object Lock in compliance mode prevents objects from being overwritten or deleted during the retention period, even by users with administrative privileges, making it suitable for regulatory and immutable document storage. AWS KMS customer managed keys support automatic annual key rotation, providing encryption at rest with minimal operational overhead. SSE-S3 does not allow customer-controlled key rotation, and imported keys require manual management.",
+  },
+
+  // question 190
+  {
+    question:
+      "A company has a web application that is based on Java and PHP. The company plans to move the application from on premises to AWS. The company needs the ability to test new site features frequently. The company also needs a highly available and managed solution that requires minimum operational overhead. Which solution will meet these requirements?",
+    options: [
+      "Create an Amazon S3 bucket. Enable static web hosting on the S3 bucket. Upload the static content to the S3 bucket. Use AWS Lambda to process all dynamic content.",
+      "Deploy the web application to an AWS Elastic Beanstalk environment. Use URL swapping to switch between multiple Elastic Beanstalk environments for feature testing.",
+      "Deploy the web application to Amazon EC2 instances that are configured with Java and PHP. Use Auto Scaling groups and an Application Load Balancer to manage the website’s availability.",
+      "Containerize the web application. Deploy the web application to Amazon EC2 instances. Use the AWS Load Balancer Controller to dynamically route traffic between containers that contain the new site features for testing.",
+    ],
+    answer: 1,
+    explanation:
+      "AWS Elastic Beanstalk is a managed platform service that supports Java and PHP applications. It automatically handles infrastructure provisioning, load balancing, scaling, and application health monitoring. Elastic Beanstalk environments allow developers to create separate environments and use URL swapping to test new features and deploy changes with minimal operational overhead.",
+  },
+
+  // question 191 
 ];

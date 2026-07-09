@@ -2560,4 +2560,157 @@ const questions = [
     explanation:
       "AWS WAF supports geographic (geo match) rules that can allow or block requests based on the country where the request originates. Associating AWS WAF with the Application Load Balancer allows filtering before traffic reaches the EC2 instances. Security groups and network ACLs operate at the network level and cannot identify user countries.",
   },
+
+  // question 171
+  {
+    question:
+      "A company provides an API to its users that automates inquiries for tax computations based on item prices. The company experiences a larger number of inquiries during the holiday season only that cause slower response times. A solutions architect needs to design a solution that is scalable and elastic. What should the solutions architect do to accomplish this?",
+    options: [
+      "Provide an API hosted on an Amazon EC2 instance. The EC2 instance performs the required computations when the API request is made.",
+      "Design a REST API using Amazon API Gateway that accepts the item names. API Gateway passes item names to AWS Lambda for tax computations.",
+      "Create an Application Load Balancer that has two Amazon EC2 instances behind it. The EC2 instances will compute the tax on the received item names.",
+      "Design a REST API using Amazon API Gateway that connects with an API hosted on an Amazon EC2 instance. API Gateway accepts and passes the item names to the EC2 instance for tax computations.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon API Gateway combined with AWS Lambda provides a fully serverless architecture that automatically scales to handle seasonal spikes in traffic. Lambda runs the tax computation only when requests arrive, eliminating server management and minimizing costs during periods of low demand while providing virtually unlimited scalability.",
+  },
+
+  // question 172
+  {
+    question:
+      "A solutions architect is creating a new Amazon CloudFront distribution for an application. Some of the information submitted by users is sensitive. The application uses HTTPS but needs another layer of security. The sensitive information should be protected throughout the entire application stack, and access to the information should be restricted to certain applications. Which action should the solutions architect take?",
+    options: [
+      "Configure a CloudFront signed URL.",
+      "Configure a CloudFront signed cookie.",
+      "Configure a CloudFront field-level encryption profile.",
+      "Configure CloudFront and set the Origin Protocol Policy setting to HTTPS Only for the Viewer Protocol Policy.",
+    ],
+    answer: 2,
+    explanation:
+      "CloudFront field-level encryption provides an additional layer of security by encrypting specific sensitive fields in user requests before they are forwarded through the application stack. Only designated applications with the appropriate private key can decrypt the protected fields. Signed URLs and signed cookies control access to content, while HTTPS only encrypts data in transit but does not provide field-level protection.",
+  },
+
+  // question 173
+  {
+    question:
+      "A gaming company hosts a browser-based application on AWS. The users of the application consume a large number of videos and images that are stored in Amazon S3. This content is the same for all users. The application has increased in popularity, and millions of users worldwide accessing these media files. The company wants to provide the files to the users while reducing the load on the origin. Which solution meets these requirements MOST cost-effectively?",
+    options: [
+      "Deploy an AWS Global Accelerator accelerator in front of the web servers.",
+      "Deploy an Amazon CloudFront web distribution in front of the S3 bucket.",
+      "Deploy an Amazon ElastiCache for Redis instance in front of the web servers.",
+      "Deploy an Amazon ElastiCache for Memcached instance in front of the web servers.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon CloudFront is a content delivery network (CDN) designed to cache and deliver static content such as videos and images from edge locations around the world. This reduces requests directly reaching the S3 origin, improves performance for global users, and is more cost-effective than using caching services designed for application data.",
+  },
+
+  // question 174
+  {
+    question:
+      "A company has a multi-tier application that runs six front-end web servers in an Amazon EC2 Auto Scaling group in a single Availability Zone behind an Application Load Balancer (ALB). A solutions architect needs to modify the infrastructure to be highly available without modifying the application. Which architecture should the solutions architect choose that provides high availability?",
+    options: [
+      "Create an Auto Scaling group that uses three instances across each of two Regions.",
+      "Modify the Auto Scaling group to use three instances across each of two Availability Zones.",
+      "Create an Auto Scaling template that can be used to quickly create more instances in another Region.",
+      "Change the ALB in front of the Amazon EC2 instances in a round-robin configuration to balance traffic to the web tier.",
+    ],
+    answer: 1,
+    explanation:
+      "Deploying the EC2 instances across multiple Availability Zones within the same Region provides high availability by allowing the application to continue running if one Availability Zone fails. An Auto Scaling group can automatically distribute instances across the selected Availability Zones, and the Application Load Balancer can route traffic to healthy instances.",
+  },
+
+  // question 175
+  {
+    question:
+      "An ecommerce company has an order-processing application that uses Amazon API Gateway and an AWS Lambda function. The application stores data in an Amazon Aurora PostgreSQL database. During a recent sales event, a sudden surge in customer orders occurred. Some customers experienced timeouts, and the application did not process the orders of those customers. A solutions architect determined that the CPU utilization and memory utilization were high on the database because of a large number of open connections. The solutions architect needs to prevent the timeout errors while making the least possible changes to the application. Which solution will meet these requirements?",
+    options: [
+      "Configure provisioned concurrency for the Lambda function. Modify the database to be a global database in multiple AWS Regions.",
+      "Use Amazon RDS Proxy to create a proxy for the database. Modify the Lambda function to use the RDS Proxy endpoint instead of the database endpoint.",
+      "Create a read replica for the database in a different AWS Region. Use query string parameters in API Gateway to route traffic to the read replica.",
+      "Migrate the data from Aurora PostgreSQL to Amazon DynamoDB by using AWS Database Migration Service (AWS DMS). Modify the Lambda function to use the DynamoDB table.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon RDS Proxy is designed to handle large numbers of database connections from applications such as AWS Lambda. It pools and reuses database connections, reducing the connection overhead on Aurora PostgreSQL and improving application scalability during traffic spikes. This requires minimal application changes because only the database endpoint used by Lambda needs to be changed.",
+  },
+
+  // question 176
+  {
+    question:
+      "An application runs on Amazon EC2 instances in private subnets. The application needs to access an Amazon DynamoDB table. What is the MOST secure way to access the table while ensuring that the traffic does not leave the AWS network?",
+    options: [
+      "Use a VPC endpoint for DynamoDB.",
+      "Use a NAT gateway in a public subnet.",
+      "Use a NAT instance in a private subnet.",
+      "Use the internet gateway attached to the VPC.",
+    ],
+    answer: 0,
+    explanation:
+      "A VPC endpoint for DynamoDB allows resources in private subnets to access DynamoDB directly through the AWS network without requiring internet access. This keeps traffic private and avoids routing through NAT gateways or internet gateways, providing the most secure and efficient solution.",
+  },
+
+  // question 177
+  {
+    question:
+      "An entertainment company is using Amazon DynamoDB to store media metadata. The application is read intensive and experiencing delays. The company does not have staff to handle additional operational overhead and needs to improve the performance efficiency of DynamoDB without reconfiguring the application. What should a solutions architect recommend to meet this requirement?",
+    options: [
+      "Use Amazon ElastiCache for Redis.",
+      "Use Amazon DynamoDB Accelerator (DAX).",
+      "Replicate data by using DynamoDB global tables.",
+      "Use Amazon ElastiCache for Memcached with Auto Discovery enabled.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon DynamoDB Accelerator (DAX) is a fully managed, in-memory cache specifically designed for DynamoDB. It improves read performance by reducing latency from milliseconds to microseconds and requires minimal application changes because it is API-compatible with DynamoDB. ElastiCache solutions would require application changes to integrate caching logic.",
+  },
+
+  // question 178
+  {
+    question:
+      "A company’s infrastructure consists of Amazon EC2 instances and an Amazon RDS DB instance in a single AWS Region. The company wants to back up its data in a separate Region. Which solution will meet these requirements with the LEAST operational overhead?",
+    options: [
+      "Use AWS Backup to copy EC2 backups and RDS backups to the separate Region.",
+      "Use Amazon Data Lifecycle Manager (Amazon DLM) to copy EC2 backups and RDS backups to the separate Region.",
+      "Create Amazon Machine Images (AMIs) of the EC2 instances. Copy the AMIs to the separate Region. Create a read replica for the RDS DB instance in the separate Region.",
+      "Create Amazon Elastic Block Store (Amazon EBS) snapshots. Copy the EBS snapshots to the separate Region. Create RDS snapshots. Export the RDS snapshots to Amazon S3. Configure S3 Cross-Region Replication (CRR) to the separate Region.",
+    ],
+    answer: 0,
+    explanation:
+      "AWS Backup provides a centralized, managed backup solution that supports both Amazon EC2 and Amazon RDS resources and can automatically copy backups across AWS Regions. It requires the least operational overhead because backup policies and cross-Region copy rules can be managed from a single service.",
+  },
+
+  // question 179
+  {
+    question:
+      "A solutions architect needs to securely store a database user name and password that an application uses to access an Amazon RDS DB instance. The application that accesses the database runs on an Amazon EC2 instance. The solutions architect wants to create a secure parameter in AWS Systems Manager Parameter Store. What should the solutions architect do to meet this requirement?",
+    options: [
+      "Create an IAM role that has read access to the Parameter Store parameter. Allow Decrypt access to an AWS Key Management Service (AWS KMS) key that is used to encrypt the parameter. Assign this IAM role to the EC2 instance.",
+      "Create an IAM policy that allows read access to the Parameter Store parameter. Allow Decrypt access to an AWS Key Management Service (AWS KMS) key that is used to encrypt the parameter. Assign this IAM policy to the EC2 instance.",
+      "Create an IAM trust relationship between the Parameter Store parameter and the EC2 instance. Specify Amazon RDS as a principal in the trust policy.",
+      "Create an IAM trust relationship between the DB instance and the EC2 instance. Specify Systems Manager as a principal in the trust policy.",
+    ],
+    answer: 0,
+    explanation:
+      "The recommended approach is to attach an IAM role to the EC2 instance that grants permission to read the SecureString parameter in AWS Systems Manager Parameter Store and allows decrypt access to the AWS KMS key used to encrypt the parameter. IAM roles are preferred over attaching policies directly to instances because they provide temporary credentials and better security management.",
+  },
+
+  // question 180
+  {
+    question:
+      "A company is designing a cloud communications platform that is driven by APIs. The application is hosted on Amazon EC2 instances behind a Network Load Balancer (NLB). The company uses Amazon API Gateway to provide external users with access to the application through APIs. The company wants to protect the platform against web exploits like SQL injection and also wants to detect and mitigate large, sophisticated DDoS attacks. Which combination of solutions provides the MOST protection? (Choose two.)",
+    options: [
+      "Use AWS WAF to protect the NLB.",
+      "Use AWS Shield Advanced with the NLB.",
+      "Use AWS WAF to protect Amazon API Gateway.",
+      "Use Amazon GuardDuty with AWS Shield Standard.",
+      "Use AWS Shield Standard with Amazon API Gateway.",
+    ],
+    answer: 2,
+    explanation:
+      "AWS WAF protects Amazon API Gateway from web exploits such as SQL injection and cross-site scripting by filtering malicious HTTP requests. AWS Shield Advanced provides enhanced DDoS protection and mitigation against large and sophisticated attacks for resources such as Network Load Balancers. AWS WAF cannot be directly associated with an NLB, and Shield Standard does not provide the advanced DDoS protection required.",
+  },
+
+  // question 181
 ];

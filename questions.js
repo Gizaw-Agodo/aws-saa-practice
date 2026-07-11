@@ -4213,4 +4213,301 @@ const questions = [
     explanation:
       "Amazon Athena can query CloudFront logs stored in Amazon S3 using standard SQL without loading the data into a database. Amazon QuickSight integrates with Athena to create dashboards and visualizations. AWS Glue is used for data cataloging and ETL, not visualization, and DynamoDB is not a SQL analytics service for S3 logs.",
   },
+
+  // question 281
+  {
+    question:
+      "A company runs a fleet of web servers using an Amazon RDS for PostgreSQL DB instance. After a routine compliance check, the company sets a standard that requires a recovery point objective (RPO) of less than 1 second for all its production databases. Which solution meets these requirements?",
+    options: [
+      "Enable a Multi-AZ deployment for the DB instance.",
+      "Enable auto scaling for the DB instance in one Availability Zone.",
+      "Configure the DB instance in one Availability Zone, and create multiple read replicas in a separate Availability Zone.",
+      "Configure the DB instance in one Availability Zone, and configure AWS Database Migration Service (AWS DMS) change data capture (CDC) tasks.",
+    ],
+    answer: 0,
+    explanation:
+      "Amazon RDS Multi-AZ uses synchronous replication to a standby instance in another Availability Zone, providing an RPO that is typically close to zero (less than 1 second). Read replicas and AWS DMS use asynchronous replication and cannot guarantee such a low RPO. Auto Scaling does not provide disaster recovery.",
+  },
+
+  // question 282
+  {
+    question:
+      "A company runs a web application that is deployed on Amazon EC2 instances in the private subnet of a VPC. An Application Load Balancer (ALB) that extends across the public subnets directs web traffic to the EC2 instances. The company wants to implement new security measures to restrict inbound traffic from the ALB to the EC2 instances while preventing access from any other source inside or outside the private subnet of the EC2 instances. Which solution will meet these requirements?",
+    options: [
+      "Configure a route in a route table to direct traffic from the internet to the private IP addresses of the EC2 instances.",
+      "Configure the security group for the EC2 instances to only allow traffic that comes from the security group for the ALB.",
+      "Move the EC2 instances into the public subnet. Give the EC2 instances a set of Elastic IP addresses.",
+      "Configure the security group for the ALB to allow any TCP traffic on any port.",
+    ],
+    answer: 1,
+    explanation:
+      "Configure the EC2 instances' security group to allow inbound traffic only from the ALB's security group. This ensures that only requests forwarded by the ALB can reach the EC2 instances, blocking all other traffic from inside or outside the VPC. This is the AWS best practice for securing private application instances behind a load balancer.",
+  },
+
+  // question 283
+  {
+    question:
+      "A research company runs experiments that are powered by a simulation application and a visualization application. The simulation application runs on Linux and outputs intermediate data to an NFS share every 5 minutes. The visualization application is a Windows desktop application that displays the simulation output and requires an SMB file system. The company maintains two synchronized file systems. This strategy is causing data duplication and inefficient resource usage. The company needs to migrate the applications to AWS without making code changes to either application. Which solution will meet these requirements?",
+    options: [
+      "Migrate both applications to AWS Lambda. Create an Amazon S3 bucket to exchange data between the applications.",
+      "Migrate both applications to Amazon Elastic Container Service (Amazon ECS). Configure Amazon FSx File Gateway for storage.",
+      "Migrate the simulation application to Linux Amazon EC2 instances. Migrate the visualization application to Windows EC2 instances. Configure Amazon Simple Queue Service (Amazon SQS) to exchange data between the applications.",
+      "Migrate the simulation application to Linux Amazon EC2 instances. Migrate the visualization application to Windows EC2 instances. Configure Amazon FSx for NetApp ONTAP for storage.",
+    ],
+    answer: 3,
+    explanation:
+      "Amazon FSx for NetApp ONTAP supports both NFS and SMB access to the same file system, allowing Linux and Windows applications to share the same data without duplication or code changes. This eliminates the need to maintain synchronized file systems while providing native protocol support for both applications.",
+  },
+
+  // question 284
+  {
+    question:
+      "As part of budget planning, management wants a report of AWS billed items listed by user. The data will be used to create department budgets. A solutions architect needs to determine the most efficient way to obtain this report information. Which solution meets these requirements?",
+    options: [
+      "Run a query with Amazon Athena to generate the report.",
+      "Create a report in Cost Explorer and download the report.",
+      "Access the bill details from the billing dashboard and download the bill.",
+      "Modify a cost budget in AWS Budgets to alert with Amazon Simple Email Service (Amazon SES).",
+    ],
+    answer: 2,
+    explanation:
+      "The AWS Billing Dashboard provides detailed billing reports that can be grouped by user (when IAM user access and cost allocation are available) and downloaded directly. This is the simplest and most efficient way to obtain billed items by user. Athena requires additional setup, Cost Explorer focuses on cost analysis rather than detailed billing records, and AWS Budgets is used for monitoring and alerts, not reporting.",
+  },
+
+  // question 285
+  {
+    question:
+      "A company hosts its static website by using Amazon S3. The company wants to add a contact form to its webpage. The contact form will have dynamic server-side components for users to input their name, email address, phone number, and user message. The company anticipates that there will be fewer than 100 site visits each month. Which solution will meet these requirements MOST cost-effectively?",
+    options: [
+      "Host a dynamic contact form page in Amazon Elastic Container Service (Amazon ECS). Set up Amazon Simple Email Service (Amazon SES) to connect to any third-party email provider.",
+      "Create an Amazon API Gateway endpoint with an AWS Lambda backend that makes a call to Amazon Simple Email Service (Amazon SES).",
+      "Convert the static webpage to dynamic by deploying Amazon Lightsail. Use client-side scripting to build the contact form. Integrate the form with Amazon WorkMail.",
+      "Create a t2.micro Amazon EC2 instance. Deploy a LAMP (Linux, Apache, MySQL, PHP/Perl/Python) stack to host the webpage. Use client-side scripting to build the contact form. Integrate the form with Amazon WorkMail.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon API Gateway with AWS Lambda provides a fully serverless backend for the contact form. Lambda can process the form submission and use Amazon SES to send emails. With fewer than 100 site visits per month, this solution has very low cost because you pay only for requests and execution time, with no servers or containers to manage.",
+  },
+
+  // question 286
+  {
+    question:
+      "A company has a static website that is hosted on Amazon CloudFront in front of Amazon S3. The static website uses a database backend. The company notices that the website does not reflect updates that have been made in the website’s Git repository. The company checks the continuous integration and continuous delivery (CI/CD) pipeline between the Git repository and Amazon S3. The company verifies that the webhooks are configured properly and that the CI/CD pipeline is sending messages that indicate successful deployments. A solutions architect needs to implement a solution that displays the updates on the website. Which solution will meet these requirements?",
+    options: [
+      "Add an Application Load Balancer.",
+      "Add Amazon ElastiCache for Redis or Memcached to the database layer of the web application.",
+      "Invalidate the CloudFront cache.",
+      "Use AWS Certificate Manager (ACM) to validate the website’s SSL certificate.",
+    ],
+    answer: 2,
+    explanation:
+      "CloudFront caches content at edge locations. Even though the updated files have been successfully deployed to Amazon S3, users may still receive cached versions until the cache expires. Invalidating the CloudFront cache forces CloudFront to fetch the latest objects from the S3 origin immediately.",
+  },
+
+  // question 287
+  {
+    question:
+      "A company wants to migrate a Windows-based application from on premises to the AWS Cloud. The application has three tiers: an application tier, a business tier, and a database tier with Microsoft SQL Server. The company wants to use specific features of SQL Server such as native backups and Data Quality Services. The company also needs to share files for processing between the tiers. How should a solutions architect design the architecture to meet these requirements?",
+    options: [
+      "Host all three tiers on Amazon EC2 instances. Use Amazon FSx File Gateway for file sharing between the tiers.",
+      "Host all three tiers on Amazon EC2 instances. Use Amazon FSx for Windows File Server for file sharing between the tiers.",
+      "Host the application tier and the business tier on Amazon EC2 instances. Host the database tier on Amazon RDS. Use Amazon Elastic File System (Amazon EFS) for file sharing between the tiers.",
+      "Host the application tier and the business tier on Amazon EC2 instances. Host the database tier on Amazon RDS. Use a Provisioned IOPS SSD (io2) Amazon Elastic Block Store (Amazon EBS) volume for file sharing between the tiers.",
+    ],
+    answer: 1,
+    explanation:
+      "Because the application requires SQL Server features such as native backups and Data Quality Services, Amazon RDS for SQL Server is not suitable since it does not support all SQL Server features. Therefore, SQL Server must run on Amazon EC2. For Windows-based file sharing between tiers, Amazon FSx for Windows File Server provides a fully managed SMB file system that integrates natively with Windows workloads.",
+  },
+
+  // question 288
+  {
+    question:
+      "A company is migrating a Linux-based web server group to AWS. The web servers must access files in a shared file store for some content. The company must not make any changes to the application. What should a solutions architect do to meet these requirements?",
+    options: [
+      "Create an Amazon S3 Standard bucket with access to the web servers.",
+      "Configure an Amazon CloudFront distribution with an Amazon S3 bucket as the origin.",
+      "Create an Amazon Elastic File System (Amazon EFS) file system. Mount the EFS file system on all web servers.",
+      "Configure a General Purpose SSD (gp3) Amazon Elastic Block Store (Amazon EBS) volume. Mount the EBS volume to all web servers.",
+    ],
+    answer: 2,
+    explanation:
+      "Amazon EFS provides a shared, managed NFS file system that can be mounted simultaneously by multiple Linux EC2 instances without requiring application changes. Amazon S3 is object storage and would require application modifications. An EBS volume cannot be mounted read/write by multiple EC2 instances in the general case.",
+  },
+
+  // question 289
+  {
+    question:
+      "A company has an AWS Lambda function that needs read access to an Amazon S3 bucket that is located in the same AWS account. Which solution will meet these requirements in the MOST secure manner?",
+    options: [
+      "Apply an S3 bucket policy that grants read access to the S3 bucket.",
+      "Apply an IAM role to the Lambda function. Apply an IAM policy to the role to grant read access to the S3 bucket.",
+      "Embed an access key and a secret key in the Lambda function’s code to grant the required IAM permissions for read access to the S3 bucket.",
+      "Apply an IAM role to the Lambda function. Apply an IAM policy to the role to grant read access to all S3 buckets in the account.",
+    ],
+    answer: 1,
+    explanation:
+      "Assign an IAM execution role to the Lambda function and attach a least-privilege IAM policy that grants read access only to the required S3 bucket. This follows AWS security best practices by using temporary credentials and granting only the minimum permissions necessary. Embedding access keys is insecure, and granting access to all S3 buckets violates the principle of least privilege.",
+  },
+
+  // question 290
+  {
+    question:
+      "A company hosts a web application on multiple Amazon EC2 instances. The EC2 instances are in an Auto Scaling group that scales in response to user demand. The company wants to optimize cost savings without making a long-term commitment. Which EC2 instance purchasing option should a solutions architect recommend to meet these requirements?",
+    options: [
+      "Dedicated Instances only",
+      "On-Demand Instances only",
+      "A mix of On-Demand Instances and Spot Instances",
+      "A mix of On-Demand Instances and Reserved Instances",
+    ],
+    answer: 2,
+    explanation:
+      "A mix of On-Demand and Spot Instances provides the best balance of cost savings and availability without requiring a long-term commitment. On-Demand Instances ensure baseline capacity, while Spot Instances handle scalable workloads at significant discounts. Reserved Instances require a long-term commitment, and Dedicated Instances are more expensive and intended for compliance or licensing requirements.",
+  },
+
+  // question 291
+  {
+    question:
+      "A media company uses Amazon CloudFront for its publicly available streaming video content. The company wants to secure the video content that is hosted in Amazon S3 by controlling who has access. Some of the company’s users are using a custom HTTP client that does not support cookies. Some of the company’s users are unable to change the hardcoded URLs that they are using for access. Which services or methods will meet these requirements with the LEAST impact to the users? (Choose two.)",
+    options: [
+      "Signed cookies",
+      "Signed URLs",
+      "AWS AppSync",
+      "JSON Web Token (JWT)",
+      "AWS Secrets Manager",
+    ],
+    answer: 1,
+    explanation:
+      "CloudFront provides two native mechanisms for restricting access to private content:\n\n• Signed URLs are ideal for clients that do not support cookies because the authorization information is embedded in the URL.\n• Signed cookies are useful when clients access multiple restricted files without modifying each URL.\n\nAlthough some users cannot change hardcoded URLs, the question asks which services or methods meet the different client requirements with the least impact overall. AWS AppSync, JWT, and Secrets Manager are not CloudFront mechanisms for securing access to private S3 content.",
+  },
+
+  // question 292
+  {
+    question:
+      "A company is preparing a new data platform that will ingest real-time streaming data from multiple sources. The company needs to transform the data before writing the data to Amazon S3. The company needs the ability to use SQL to query the transformed data. Which solutions will meet these requirements? (Choose two.)",
+    options: [
+      "Use Amazon Kinesis Data Streams to stream the data. Use Amazon Kinesis Data Analytics to transform the data. Use Amazon Kinesis Data Firehose to write the data to Amazon S3. Use Amazon Athena to query the transformed data from Amazon S3.",
+      "Use Amazon Managed Streaming for Apache Kafka (Amazon MSK) to stream the data. Use AWS Glue to transform the data and to write the data to Amazon S3. Use Amazon Athena to query the transformed data from Amazon S3.",
+      "Use AWS Database Migration Service (AWS DMS) to ingest the data. Use Amazon EMR to transform the data and to write the data to Amazon S3. Use Amazon Athena to query the transformed data from Amazon S3.",
+      "Use Amazon Managed Streaming for Apache Kafka (Amazon MSK) to stream the data. Use Amazon Kinesis Data Analytics to transform the data and to write the data to Amazon S3. Use the Amazon RDS query editor to query the transformed data from Amazon S3.",
+      "Use Amazon Kinesis Data Streams to stream the data. Use AWS Glue to transform the data. Use Amazon Kinesis Data Firehose to write the data to Amazon S3. Use the Amazon RDS query editor to query the transformed data from Amazon S3.",
+    ],
+    answer: 0,
+    explanation:
+      "The requirements are: (1) real-time streaming ingestion, (2) transform data, (3) store in Amazon S3, and (4) query the transformed data using SQL.\n\nOption A uses Kinesis Data Streams for ingestion, Kinesis Data Analytics for real-time transformation, Firehose to deliver to S3, and Athena for SQL queries. This is a standard AWS streaming analytics architecture.\n\nOption B also satisfies all requirements. Amazon MSK provides the streaming platform, AWS Glue can perform ETL and write the transformed data to S3, and Athena provides SQL queries over the S3 data.\n\nOptions D and E are incorrect because the Amazon RDS Query Editor cannot query data stored in Amazon S3. Option C uses AWS DMS, which is intended for database migration and replication, not general-purpose real-time streaming ingestion.",
+  },
+
+  // question 293
+  {
+    question:
+      "A company has an on-premises volume backup solution that has reached its end of life. The company wants to use AWS as part of a new backup solution and wants to maintain local access to all the data while it is backed up on AWS. The company wants to ensure that the data backed up on AWS is automatically and securely transferred. Which solution meets these requirements?",
+    options: [
+      "Use AWS Snowball to migrate data out of the on-premises solution to Amazon S3. Configure on-premises systems to mount the Snowball S3 endpoint to provide local access to the data.",
+      "Use AWS Snowball Edge to migrate data out of the on-premises solution to Amazon S3. Use the Snowball Edge file interface to provide on-premises systems with local access to the data.",
+      "Use AWS Storage Gateway and configure a cached volume gateway. Run the Storage Gateway software appliance on premises and configure a percentage of data to cache locally. Mount the gateway storage volumes to provide local access to the data.",
+      "Use AWS Storage Gateway and configure a stored volume gateway. Run the Storage Gateway software appliance on premises and map the gateway storage volumes to on-premises storage. Mount the gateway storage volumes to provide local access to the data.",
+    ],
+    answer: 3,
+    explanation:
+      "AWS Storage Gateway Stored Volume stores the entire dataset on premises while asynchronously and securely backing up the data to AWS as EBS snapshots. This allows applications to maintain low-latency local access to all data while automatically creating durable off-site backups in AWS. Cached Volume is intended when the primary data resides in AWS, and Snowball/Snowball Edge are migration devices rather than continuous backup solutions.",
+  },
+
+  // question 294
+  {
+    question:
+      "An application that is hosted on Amazon EC2 instances needs to access an Amazon S3 bucket. Traffic must not traverse the internet. How should a solutions architect configure access to meet these requirements?",
+    options: [
+      "Create a private hosted zone by using Amazon Route 53.",
+      "Set up a gateway VPC endpoint for Amazon S3 in the VPC.",
+      "Configure the EC2 instances to use a NAT gateway to access the S3 bucket.",
+      "Establish an AWS Site-to-Site VPN connection between the VPC and the S3 bucket.",
+    ],
+    answer: 1,
+    explanation:
+      "A Gateway VPC Endpoint for Amazon S3 enables EC2 instances in a VPC to access S3 privately over the AWS network without using an internet gateway, NAT gateway, or VPN. This is the recommended, most secure, and cost-effective solution for private S3 access.",
+  },
+
+  // question 295
+  {
+    question:
+      "An ecommerce company stores terabytes of customer data in the AWS Cloud. The data contains personally identifiable information (PII). The company wants to use the data in three applications. Only one of the applications needs to process the PII. The PII must be removed before the other two applications process the data. Which solution will meet these requirements with the LEAST operational overhead?",
+    options: [
+      "Store the data in an Amazon DynamoDB table. Create a proxy application layer to intercept and process the data that each application requests.",
+      "Store the data in an Amazon S3 bucket. Process and transform the data by using S3 Object Lambda before returning the data to the requesting application.",
+      "Process the data and store the transformed data in three separate Amazon S3 buckets so that each application has its own custom dataset. Point each application to its respective S3 bucket.",
+      "Process the data and store the transformed data in three separate Amazon DynamoDB tables so that each application has its own custom dataset. Point each application to its respective DynamoDB table.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon S3 Object Lambda can transform S3 objects as they are retrieved, allowing PII to be removed dynamically for applications that should not see it, while returning the original data to the application that requires PII. This avoids storing multiple copies of the data and requires the least operational overhead. The other options either require maintaining duplicate datasets or building and managing custom application logic.",
+  },
+
+  // question 296
+  {
+    question:
+      "A development team has launched a new application that is hosted on Amazon EC2 instances inside a development VPC. A solutions architect needs to create a new VPC in the same account. The new VPC will be peered with the development VPC. The VPC CIDR block for the development VPC is 192.168.0.0/24. The solutions architect needs to create a CIDR block for the new VPC. The CIDR block must be valid for a VPC peering connection to the development VPC. What is the SMALLEST CIDR block that meets these requirements?",
+    options: ["10.0.1.0/32", "192.168.0.0/24", "192.168.1.0/32", "10.0.1.0/24"],
+    answer: 3,
+    explanation:
+      "A VPC CIDR block must be between /16 and /28 (IPv4). A /32 is not a valid VPC CIDR block. Additionally, VPC peering requires non-overlapping CIDR ranges. The development VPC already uses 192.168.0.0/24, so that range cannot be reused. Therefore, 10.0.1.0/24 is the smallest valid, non-overlapping CIDR block among the options.",
+  },
+
+  // question 297
+  {
+    question:
+      "A company deploys an application on five Amazon EC2 instances. An Application Load Balancer (ALB) distributes traffic to the instances by using a target group. The average CPU usage on each of the instances is below 10% most of the time, with occasional surges to 65%. A solutions architect needs to implement a solution to automate the scalability of the application. The solution must optimize the cost of the architecture and must ensure that the application has enough CPU resources when surges occur. Which solution will meet these requirements?",
+    options: [
+      "Create an Amazon CloudWatch alarm that enters the ALARM state when the CPUUtilization metric is less than 20%. Create an AWS Lambda function that the CloudWatch alarm invokes to terminate one of the EC2 instances in the ALB target group.",
+      "Create an EC2 Auto Scaling group. Select the existing ALB as the load balancer and the existing target group as the target group. Set a target tracking scaling policy that is based on the ASGAverageCPUUtilization metric. Set the minimum instances to 2, the desired capacity to 3, the maximum instances to 6, and the target value to 50%. Add the EC2 instances to the Auto Scaling group.",
+      "Create an EC2 Auto Scaling group. Select the existing ALB as the load balancer and the existing target group as the target group. Set the minimum instances to 2, the desired capacity to 3, and the maximum instances to 6. Add the EC2 instances to the Auto Scaling group.",
+      "Create two Amazon CloudWatch alarms. Configure the first CloudWatch alarm to enter the ALARM state when the average CPUUtilization metric is below 20%. Configure the second CloudWatch alarm to enter the ALARM state when the average CPUUtilization metric is above 50%. Configure the alarms to publish to an Amazon Simple Notification Service (Amazon SNS) topic to send an email message. After receiving the message, log in to decrease or increase the number of EC2 instances that are running.",
+    ],
+    answer: 1,
+    explanation:
+      "An EC2 Auto Scaling group with a target tracking scaling policy based on ASGAverageCPUUtilization automatically scales in and out to maintain the target CPU utilization (50% in this case). Setting the minimum to 2 reduces costs during low usage, while allowing the group to scale out to a maximum of 6 during traffic surges. This is the most operationally efficient and cost-effective solution. Option C lacks a scaling policy, while A and D require manual or custom management.",
+  },
+
+  // question 298
+  {
+    question:
+      "A company is running a critical business application on Amazon EC2 instances behind an Application Load Balancer. The EC2 instances run in an Auto Scaling group and access an Amazon RDS DB instance. The design did not pass an operational review because the EC2 instances and the DB instance are all located in a single Availability Zone. A solutions architect must update the design to use a second Availability Zone. Which solution will make the application highly available?",
+    options: [
+      "Provision a subnet in each Availability Zone. Configure the Auto Scaling group to distribute the EC2 instances across both Availability Zones. Configure the DB instance with connections to each network.",
+      "Provision two subnets that extend across both Availability Zones. Configure the Auto Scaling group to distribute the EC2 instances across both Availability Zones. Configure the DB instance with connections to each network.",
+      "Provision a subnet in each Availability Zone. Configure the Auto Scaling group to distribute the EC2 instances across both Availability Zones. Configure the DB instance for Multi-AZ deployment.",
+      "Provision a subnet that extends across both Availability Zones. Configure the Auto Scaling group to distribute the EC2 instances across both Availability Zones. Configure the DB instance for Multi-AZ deployment.",
+    ],
+    answer: 2,
+    explanation:
+      "Each subnet belongs to only one Availability Zone, so you must create one subnet in each AZ. Configure the Auto Scaling group to launch EC2 instances across both subnets for high availability. For the database, enable Amazon RDS Multi-AZ deployment, which creates a synchronous standby instance in another Availability Zone and provides automatic failover. Options B and D are invalid because subnets cannot span multiple AZs. Option A does not provide a highly available RDS deployment.",
+  },
+
+  // question 299
+  {
+    question:
+      "A research laboratory needs to process approximately 8 TB of data. The laboratory requires sub-millisecond latencies and a minimum throughput of 6 GBps for the storage subsystem. Hundreds of Amazon EC2 instances that run Amazon Linux will distribute and process the data. Which solution will meet the performance requirements?",
+    options: [
+      "Create an Amazon FSx for NetApp ONTAP file system. Set each volume's tiering policy to ALL. Import the raw data into the file system. Mount the file system on the EC2 instances.",
+      "Create an Amazon S3 bucket to store the raw data. Create an Amazon FSx for Lustre file system that uses persistent SSD storage. Select the option to import data from and export data to Amazon S3. Mount the file system on the EC2 instances.",
+      "Create an Amazon S3 bucket to store the raw data. Create an Amazon FSx for Lustre file system that uses persistent HDD storage. Select the option to import data from and export data to Amazon S3. Mount the file system on the EC2 instances.",
+      "Create an Amazon FSx for NetApp ONTAP file system. Set each volume's tiering policy to NONE. Import the raw data into the file system. Mount the file system on the EC2 instances.",
+    ],
+    answer: 1,
+    explanation:
+      "Amazon FSx for Lustre is purpose-built for high-performance computing (HPC), machine learning, and analytics workloads. It delivers sub-millisecond latency and throughput measured in hundreds of GBps, making it ideal for hundreds of EC2 instances processing large datasets. Using persistent SSD storage provides the required performance, and native integration with Amazon S3 allows data to be imported from and exported back to S3. HDD-backed Lustre cannot meet the required latency and throughput, and FSx for NetApp ONTAP is designed for general-purpose enterprise file storage rather than HPC workloads.",
+  },
+
+  // question 300
+  {
+    question:
+      "A company needs to migrate a legacy application from an on-premises data center to the AWS Cloud because of hardware capacity constraints. The application runs 24 hours a day, 7 days a week. The application’s database storage continues to grow over time. What should a solutions architect do to meet these requirements MOST cost-effectively?",
+    options: [
+      "Migrate the application layer to Amazon EC2 Spot Instances. Migrate the data storage layer to Amazon S3.",
+      "Migrate the application layer to Amazon EC2 Reserved Instances. Migrate the data storage layer to Amazon RDS On-Demand Instances.",
+      "Migrate the application layer to Amazon EC2 Reserved Instances. Migrate the data storage layer to Amazon Aurora Reserved Instances.",
+      "Migrate the application layer to Amazon EC2 On-Demand Instances. Migrate the data storage layer to Amazon RDS Reserved Instances.",
+    ],
+    answer: 2,
+    explanation:
+      "The application runs continuously (24x7), making Reserved Instances the most cost-effective choice for compute. Because the database storage will continue to grow, Amazon Aurora is a better choice than a traditional RDS engine because Aurora automatically scales storage up to 128 TiB without requiring manual provisioning. Purchasing Reserved Instances for Aurora further reduces costs for a long-running workload.",
+  },
 ];

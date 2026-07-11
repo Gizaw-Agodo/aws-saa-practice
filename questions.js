@@ -3462,4 +3462,304 @@ const questions = [
     explanation:
       "NAT Gateways are managed services that automatically scale and provide high availability within an Availability Zone. Deploying one NAT Gateway in each Availability Zone provides fault tolerance and follows AWS best practices. Using the same AZ creates a single point of failure, while NAT instances require ongoing management and do not scale automatically.",
   },
+
+  // question 231
+  {
+    question:
+      "An application runs on an Amazon EC2 instance that has an Elastic IP address in VPC A. The application requires access to a database in VPC B. Both VPCs are in the same AWS account. Which solution will provide the required access MOST securely?",
+    options: [
+      "Create a DB instance security group that allows all traffic from the public IP address of the application server in VPC A.",
+      "Configure a VPC peering connection between VPC A and VPC B.",
+      "Make the DB instance publicly accessible. Assign a public IP address to the DB instance.",
+      "Launch an EC2 instance with an Elastic IP address into VPC B. Proxy all requests through the new EC2 instance.",
+    ],
+    answer: 1,
+    explanation:
+      "A VPC peering connection enables private communication between VPCs without routing traffic over the public internet, making it the most secure solution. Allowing access through public IPs or making the database publicly accessible increases security risk, and adding a proxy EC2 instance introduces unnecessary complexity and operational overhead.",
+  },
+
+  // question 232
+  {
+    question:
+      "A company runs demonstration environments for its customers on Amazon EC2 instances. Each environment is isolated in its own VPC. The company’s operations team needs to be notified when RDP or SSH access to an environment has been established.",
+    options: [
+      "Configure Amazon CloudWatch Application Insights to create AWS Systems Manager OpsItems when RDP or SSH access is detected.",
+      "Configure the EC2 instances with an IAM instance profile that has an IAM role with the AmazonSSMManagedInstanceCore policy attached.",
+      "Publish VPC flow logs to Amazon CloudWatch Logs. Create required metric filters. Create an Amazon CloudWatch metric alarm with a notification action for when the alarm is in the ALARM state.",
+      "Configure an Amazon EventBridge rule to listen for events of type EC2 Instance State-change Notification. Configure an Amazon Simple Notification Service (Amazon SNS) topic as a target. Subscribe the operations team to the topic.",
+    ],
+    answer: 2,
+    explanation:
+      "VPC Flow Logs capture network traffic, including SSH (port 22) and RDP (port 3389) connections. By sending the logs to CloudWatch Logs, creating metric filters for these ports, and configuring a CloudWatch alarm with an SNS notification, the operations team can be alerted whenever SSH or RDP access is established. The other options do not detect remote access sessions.",
+  },
+
+  // question 233
+  {
+    question:
+      "A solutions architect has created a new AWS account and must secure AWS account root user access. Which combination of actions will accomplish this? (Choose two.)",
+    options: [
+      "Ensure the root user uses a strong password.",
+      "Enable multi-factor authentication to the root user.",
+      "Store root user access keys in an encrypted Amazon S3 bucket.",
+      "Apply the required permissions to the root user with an inline policy document.",
+    ],
+    answer: 1,
+    explanation:
+      "The AWS root user should be protected with a strong password and multi-factor authentication (MFA). These are AWS security best practices. Avoid creating or using root access keys whenever possible. The root user cannot be added to IAM groups or have IAM policies attached because it already has full permissions.",
+  },
+
+  // question 234
+  {
+    question:
+      "A company is building a new web-based customer relationship management application. The application will use several Amazon EC2 instances that are backed by Amazon Elastic Block Store (Amazon EBS) volumes behind an Application Load Balancer (ALB). The application will also use an Amazon Aurora database. All data for the application must be encrypted at rest and in transit. Which solution will meet these requirements?",
+    options: [
+      "Use AWS Key Management Service (AWS KMS) certificates on the ALB to encrypt data in transit. Use AWS Certificate Manager (ACM) to encrypt the EBS volumes and Aurora database storage at rest.",
+      "Use the AWS root account to log in to the AWS Management Console. Upload the company’s encryption certificates. While in the root account, select the option to turn on encryption for all data at rest and in transit for the account.",
+      "Use AWS Key Management Service (AWS KMS) to encrypt the EBS volumes and Aurora database storage at rest. Attach an AWS Certificate Manager (ACM) certificate to the ALB to encrypt data in transit.",
+      "Use BitLocker to encrypt all data at rest. Import the company’s TLS certificate keys to AWS Key Management Service (AWS KMS) Attach the KMS keys to the ALB to encrypt data in transit.",
+    ],
+    answer: 2,
+    explanation:
+      "AWS KMS is used to encrypt EBS volumes and Amazon Aurora storage at rest. AWS Certificate Manager (ACM) provides SSL/TLS certificates that are attached to the Application Load Balancer (ALB) to encrypt data in transit. The other options incorrectly swap the roles of KMS and ACM or describe unsupported approaches.",
+  },
+
+  // question 235
+  {
+    question:
+      "A company is moving its on-premises Oracle database to Amazon Aurora PostgreSQL. The database has several applications that write to the same tables. The applications need to be migrated one by one with a month in between each migration. Management has expressed concerns that the database has a high number of reads and writes. The data must be kept in sync across both databases throughout the migration. What should a solutions architect recommend?",
+    options: [
+      "Use AWS DataSync for the initial migration. Use AWS Database Migration Service (AWS DMS) to create a change data capture (CDC) replication task and a table mapping to select all tables.",
+      "Use AWS DataSync for the initial migration. Use AWS Database Migration Service (AWS DMS) to create a full load plus change data capture (CDC) replication task and a table mapping to select all tables.",
+      "Use the AWS Schema Conversion Tool with AWS Database Migration Service (AWS DMS) using a memory optimized replication instance. Create a full load plus change data capture (CDC) replication task and a table mapping to select all tables.",
+      "Use the AWS Schema Conversion Tool with AWS Database Migration Service (AWS DMS) using a compute optimized replication instance. Create a full load plus change data capture (CDC) replication task and a table mapping to select the largest tables.",
+    ],
+    answer: 2,
+    explanation:
+      "Because the migration is from Oracle to Aurora PostgreSQL, use the AWS Schema Conversion Tool (SCT) to convert the database schema. Then use AWS DMS with a full load plus CDC task to perform the initial migration and continuously replicate changes so both databases stay synchronized during the phased application migration. A memory-optimized DMS replication instance is recommended for workloads with high volumes of reads and writes.",
+  },
+
+  // question 236
+  {
+    question:
+      "A company has a three-tier application for image sharing. The application uses an Amazon EC2 instance for the front-end layer, another EC2 instance for the application layer, and a third EC2 instance for a MySQL database. A solutions architect must design a scalable and highly available solution that requires the least amount of change to the application. Which solution meets these requirements?",
+    options: [
+      "Use Amazon S3 to host the front-end layer. Use AWS Lambda functions for the application layer. Move the database to an Amazon DynamoDB table. Use Amazon S3 to store and serve users’ images.",
+      "Use load-balanced Multi-AZ AWS Elastic Beanstalk environments for the front-end layer and the application layer. Move the database to an Amazon RDS DB instance with multiple read replicas to serve users’ images.",
+      "Use Amazon S3 to host the front-end layer. Use a fleet of EC2 instances in an Auto Scaling group for the application layer. Move the database to a memory optimized instance type to store and serve users’ images.",
+      "Use load-balanced Multi-AZ AWS Elastic Beanstalk environments for the front-end layer and the application layer. Move the database to an Amazon RDS Multi-AZ DB instance. Use Amazon S3 to store and serve users’ images.",
+    ],
+    answer: 3,
+    explanation:
+      "AWS Elastic Beanstalk provides a highly available, load-balanced environment for the existing EC2-based application with minimal code changes. Amazon RDS Multi-AZ provides high availability for the MySQL database, and Amazon S3 is the best place to store and serve user images. The other options require major application changes or use services that are not appropriate for the workload.",
+  },
+
+  // question 237
+  {
+    question:
+      "An application running on an Amazon EC2 instance in VPC-A needs to access files in another EC2 instance in VPC-B. Both VPCs are in separate AWS accounts. The network administrator needs to design a solution to configure secure access to EC2 instance in VPC-B from VPC-A. The connectivity should not have a single point of failure or bandwidth concerns. Which solution will meet these requirements?",
+    options: [
+      "Set up a VPC peering connection between VPC-A and VPC-B.",
+      "Set up VPC gateway endpoints for the EC2 instance running in VPC-B.",
+      "Attach a virtual private gateway to VPC-B and set up routing from VPC-A.",
+      "Create a private virtual interface (VIF) for the EC2 instance running in VPC-B and add appropriate routes from VPC-A.",
+    ],
+    answer: 0,
+    explanation:
+      "VPC peering provides secure, private connectivity between VPCs, including across different AWS accounts. It uses the AWS backbone network, has no single point of failure, and does not introduce bandwidth bottlenecks beyond the limits of the VPC infrastructure. Gateway endpoints are only for supported AWS services such as S3 and DynamoDB, a virtual private gateway is for VPN/Direct Connect, and a private VIF is used with AWS Direct Connect, not for EC2-to-EC2 communication between VPCs.",
+  },
+
+  // question 238
+  {
+    question:
+      "A company wants to experiment with individual AWS accounts for its engineer team. The company wants to be notified as soon as the Amazon EC2 instance usage for a given month exceeds a specific threshold for each account. What should a solutions architect do to meet this requirement MOST cost-effectively?",
+    options: [
+      "Use Cost Explorer to create a daily report of costs by service. Filter the report by EC2 instances. Configure Cost Explorer to send an Amazon Simple Email Service (Amazon SES) notification when a threshold is exceeded.",
+      "Use Cost Explorer to create a monthly report of costs by service. Filter the report by EC2 instances. Configure Cost Explorer to send an Amazon Simple Email Service (Amazon SES) notification when a threshold is exceeded.",
+      "Use AWS Budgets to create a cost budget for each account. Set the period to monthly. Set the scope to EC2 instances. Set an alert threshold for the budget. Configure an Amazon Simple Notification Service (Amazon SNS) topic to receive a notification when a threshold is exceeded.",
+      "Use AWS Cost and Usage Reports to create a report with hourly granularity. Integrate the report data with Amazon Athena. Use Amazon EventBridge to schedule an Athena query. Configure an Amazon Simple Notification Service (Amazon SNS) topic to receive a notification when a threshold is exceeded.",
+    ],
+    answer: 2,
+    explanation:
+      "AWS Budgets is the simplest and most cost-effective service for monitoring monthly AWS costs and usage. It can track EC2 costs per account, compare them against a defined threshold, and automatically send notifications through Amazon SNS when the threshold is exceeded. The other options require more operational effort or do not provide built-in budget alerts.",
+  },
+
+  // question 239
+  {
+    question:
+      "A solutions architect needs to design a new microservice for a company’s application. Clients must be able to call an HTTPS endpoint to reach the microservice. The microservice also must use AWS Identity and Access Management (IAM) to authenticate calls. The solutions architect will write the logic for this microservice by using a single AWS Lambda function that is written in Go 1.x. Which solution will deploy the function in the MOST operationally efficient way?",
+    options: [
+      "Create an Amazon API Gateway REST API. Configure the method to use the Lambda function. Enable IAM authentication on the API.",
+      "Create a Lambda function URL for the function. Specify AWS_IAM as the authentication type.",
+      "Create an Amazon CloudFront distribution. Deploy the function to Lambda@Edge. Integrate IAM authentication logic into the Lambda@Edge function.",
+      "Create an Amazon CloudFront distribution. Deploy the function to CloudFront Functions. Specify AWS_IAM as the authentication type.",
+    ],
+    answer: 1,
+    explanation:
+      "A Lambda function URL provides a built-in HTTPS endpoint for a single Lambda function with minimal configuration. By setting the authentication type to AWS_IAM, the function can be securely invoked using IAM authentication without the additional management overhead of API Gateway. Lambda@Edge and CloudFront Functions are not designed for this use case.",
+  },
+
+  // question 240
+  {
+    question:
+      "A company previously migrated its data warehouse solution to AWS. The company also has an AWS Direct Connect connection. Corporate office users query the data warehouse using a visualization tool. The average size of a query returned by the data warehouse is 50 MB and each webpage sent by the visualization tool is approximately 500 KB. Result sets returned by the data warehouse are not cached. Which solution provides the LOWEST data transfer egress cost for the company?",
+    options: [
+      "Host the visualization tool on premises and query the data warehouse directly over the internet.",
+      "Host the visualization tool in the same AWS Region as the data warehouse. Access it over the internet.",
+      "Host the visualization tool on premises and query the data warehouse directly over a Direct Connect connection at a location in the same AWS Region.",
+      "Host the visualization tool in the same AWS Region as the data warehouse and access it over a Direct Connect connection at a location in the same Region.",
+    ],
+    answer: 1,
+    explanation:
+      "Hosting the visualization tool in the same AWS Region as the data warehouse keeps the large 50 MB query results within AWS, avoiding data transfer charges for those results. Only the much smaller 500 KB web pages are sent over the internet to users, minimizing egress costs. The other options transfer the large query results outside AWS, resulting in higher data transfer charges.",
+  },
+
+  // question 241
+  {
+    question:
+      "An online learning company is migrating to the AWS Cloud. The company maintains its student records in a PostgreSQL database. The company needs a solution in which its data is available and online across multiple AWS Regions at all times. Which solution will meet these requirements with the LEAST amount of operational overhead?",
+    options: [
+      "Migrate the PostgreSQL database to a PostgreSQL cluster on Amazon EC2 instances.",
+      "Migrate the PostgreSQL database to an Amazon RDS for PostgreSQL DB instance with the Multi-AZ feature turned on.",
+      "Migrate the PostgreSQL database to an Amazon RDS for PostgreSQL DB instance. Create a read replica in another Region.",
+      "Migrate the PostgreSQL database to an Amazon RDS for PostgreSQL DB instance. Set up DB snapshots to be copied to another Region.",
+    ],
+    answer: 2,
+    explanation:
+      "An Amazon RDS for PostgreSQL cross-Region read replica keeps the database online in another AWS Region with minimal operational effort. Multi-AZ provides high availability only within a single Region, snapshots are not continuously available, and managing PostgreSQL on EC2 requires significantly more administration.",
+  },
+
+  // question 242
+  {
+    question:
+      "A company hosts its web application on AWS using seven Amazon EC2 instances. The company requires that the IP addresses of all healthy EC2 instances be returned in response to DNS queries. Which policy should be used to meet this requirement?",
+    options: [
+      "Simple routing policy",
+      "Latency routing policy",
+      "Multivalue routing policy",
+      "Geolocation routing policy",
+    ],
+    answer: 2,
+    explanation:
+      "A Route 53 multivalue routing policy returns multiple healthy IP addresses in response to DNS queries and performs health checks to ensure only healthy endpoints are returned. Simple routing does not perform health-based filtering, latency routing chooses the lowest-latency endpoint, and geolocation routing routes users based on their geographic location.",
+  },
+
+  // question 243
+  {
+    question:
+      "A medical research lab produces data that is related to a new study. The lab wants to make the data available with minimum latency to clinics across the country for their on-premises, file-based applications. The data files are stored in an Amazon S3 bucket that has read-only permissions for each clinic. What should a solutions architect recommend to meet these requirements?",
+    options: [
+      "Deploy an AWS Storage Gateway file gateway as a virtual machine (VM) on premises at each clinic",
+      "Migrate the files to each clinic’s on-premises applications by using AWS DataSync for processing.",
+      "Deploy an AWS Storage Gateway volume gateway as a virtual machine (VM) on premises at each clinic.",
+      "Attach an Amazon Elastic File System (Amazon EFS) file system to each clinic’s on-premises servers",
+    ],
+    answer: 0,
+    explanation:
+      "AWS Storage Gateway File Gateway provides on-premises applications with low-latency access to files stored in Amazon S3 by caching frequently accessed data locally. It presents a standard file interface (NFS/SMB), making it ideal for file-based applications. AWS DataSync is for data transfer, Volume Gateway provides block storage rather than file storage, and Amazon EFS is not designed for direct on-premises access in this scenario.",
+  },
+
+  // question 244
+  {
+    question:
+      "A company is using a content management system that runs on a single Amazon EC2 instance. The EC2 instance contains both the web server and the database software. The company must make its website platform highly available and must enable the website to scale to meet user demand. What should a solutions architect recommend to meet these requirements?",
+    options: [
+      "Move the database to Amazon RDS, and enable automatic backups. Manually launch another EC2 instance in the same Availability Zone. Configure an Application Load Balancer in the Availability Zone, and set the two instances as targets.",
+      "Migrate the database to an Amazon Aurora instance with a read replica in the same Availability Zone as the existing EC2 instance. Manually launch another EC2 instance in the same Availability Zone. Configure an Application Load Balancer, and set the two EC2 instances as targets.",
+      "Move the database to Amazon Aurora with a read replica in another Availability Zone. Create an Amazon Machine Image (AMI) from the EC2 instance. Configure an Application Load Balancer in two Availability Zones. Attach an Auto Scaling group that uses the AMI across two Availability Zones.",
+      "Move the database to a separate EC2 instance, and schedule backups to Amazon S3. Create an Amazon Machine Image (AMI) from the original EC2 instance. Configure an Application Load Balancer in two Availability Zones. Attach an Auto Scaling group that uses the AMI across two Availability Zones.",
+    ],
+    answer: 2,
+    explanation:
+      "Moving the database to Amazon Aurora improves availability and durability, while a read replica in another Availability Zone provides additional resilience. Creating an AMI of the web server and using an Auto Scaling group behind an Application Load Balancer across two Availability Zones makes the application highly available and scalable. The other options keep resources in a single Availability Zone or continue to rely on self-managed databases.",
+  },
+
+  // question 245
+  {
+    question:
+      "A company is launching an application on AWS. The application uses an Application Load Balancer (ALB) to direct traffic to at least two Amazon EC2 instances in a single target group. The instances are in an Auto Scaling group for each environment. The company requires a development environment and a production environment. The production environment will have periods of high traffic. Which solution will configure the development environment MOST cost-effectively?",
+    options: [
+      "Reconfigure the target group in the development environment to have only one EC2 instance as a target.",
+      "Change the ALB balancing algorithm to least outstanding requests.",
+      "Reduce the size of the EC2 instances in both environments.",
+      "Reduce the maximum number of EC2 instances in the development environment’s Auto Scaling group.",
+    ],
+    answer: 3,
+    explanation:
+      "Reducing the maximum size of the Auto Scaling group in the development environment limits the number of EC2 instances that can be launched, reducing costs while still allowing Auto Scaling to operate. Keeping at least two instances maintains high availability. Reducing the target group to one instance removes redundancy, changing the load-balancing algorithm does not reduce costs, and reducing instance sizes in production could affect performance during high traffic.",
+  },
+
+  // question 246
+  {
+    question:
+      "A company runs a web application on Amazon EC2 instances in multiple Availability Zones. The EC2 instances are in private subnets. A solutions architect implements an internet-facing Application Load Balancer (ALB) and specifies the EC2 instances as the target group. However, the internet traffic is not reaching the EC2 instances. How should the solutions architect reconfigure the architecture to resolve this issue?",
+    options: [
+      "Replace the ALB with a Network Load Balancer. Configure a NAT gateway in a public subnet to allow internet traffic.",
+      "Move the EC2 instances to public subnets. Add a rule to the EC2 instances’ security groups to allow outbound traffic to 0.0.0.0/0.",
+      "Update the route tables for the EC2 instances’ subnets to send 0.0.0.0/0 traffic through the internet gateway route. Add a rule to the EC2 instances’ security groups to allow outbound traffic to 0.0.0.0/0.",
+      "Create public subnets in each Availability Zone. Associate the public subnets with the ALB. Update the route tables for the public subnets with a route to the private subnets.",
+    ],
+    answer: 3,
+    explanation:
+      "An internet-facing Application Load Balancer must be deployed in public subnets that have a route to an Internet Gateway. The EC2 instances should remain in private subnets, where they receive traffic from the ALB. A NAT Gateway provides outbound internet access only, EC2 instances do not need to be in public subnets, and private subnets should not have a route to an Internet Gateway.",
+  },
+
+  // question 247
+  {
+    question:
+      "A company has deployed a database in Amazon RDS for MySQL. Due to increased transactions, the database support team is reporting slow reads against the DB instance and recommends adding a read replica. Which combination of actions should a solutions architect take before implementing this change? (Choose two.)",
+    options: [
+      "Enable binlog replication on the RDS primary node.",
+      "Choose a failover priority for the source DB instance.",
+      "Create a global table and specify the AWS Regions where the table will be available.",
+      "Enable automatic backups on the source instance by setting the backup retention period to a value other than 0",
+    ],
+    answer: 3,
+    explanation:
+      "MySQL read replicas use binary log (binlog) replication, so binary logging must be enabled. In Amazon RDS, enabling automated backups (backup retention period greater than 0) is also required before creating a read replica. Failover priority is for Multi-AZ deployments, global tables are a DynamoDB feature, and long-running transactions do not need to complete before creating a read replica.",
+  },
+
+  // question 248
+  {
+    question:
+      "A company runs analytics software on Amazon EC2 instances. The software accepts job requests from users to process data that has been uploaded to Amazon S3. Users report that some submitted data is not being processed. Amazon CloudWatch reveals that the EC2 instances have a consistent CPU utilization at or near 100%. The company wants to improve system performance and scale the system based on user load. What should a solutions architect do to meet these requirements?",
+    options: [
+      "Create a copy of the instance. Place all instances behind an Application Load Balancer.",
+      "Create an S3 VPC endpoint for Amazon S3. Update the software to reference the endpoint.",
+      "Stop the EC2 instances. Modify the instance type to one with a more powerful CPU and more memory. Restart the instances.",
+      "Route incoming requests to Amazon Simple Queue Service (Amazon SQS). Configure an EC2 Auto Scaling group based on queue size. Update the software to read from the queue.",
+    ],
+    answer: 3,
+    explanation:
+      "Using Amazon SQS decouples job submission from processing, ensuring requests are not lost during periods of high load. Scaling the EC2 Auto Scaling group based on the SQS queue size matches compute capacity to demand. An ALB does not solve asynchronous job processing, a VPC endpoint only changes network routing, and increasing the instance size provides only temporary vertical scaling.",
+  },
+
+  // question 249
+  {
+    question:
+      "A company is implementing a shared storage solution for a media application that is hosted in the AWS Cloud. The company needs the ability to use SMB clients to access data. The solution must be fully managed. Which AWS solution meets these requirements?",
+    options: [
+      "Create an AWS Storage Gateway volume gateway. Create a file share that uses the required client protocol. Connect the application server to the file share.",
+      "Create an AWS Storage Gateway tape gateway. Configure tapes to use Amazon S3. Connect the application server to the tape gateway.",
+      "Create an Amazon EC2 Windows instance. Install and configure a Windows file share role on the instance. Connect the application server to the file share.",
+      "Create an Amazon FSx for Windows File Server file system. Attach the file system to the origin server. Connect the application server to the file system.",
+    ],
+    answer: 3,
+    explanation:
+      "Amazon FSx for Windows File Server is a fully managed SMB file storage service that provides native Windows file shares with high availability and scalability. Storage Gateway is primarily for hybrid storage scenarios, Tape Gateway is for backup workloads, and running a Windows file server on EC2 requires ongoing management.",
+  },
+
+  // question 250
+  {
+    question:
+      "A company’s security team requests that network traffic be captured in VPC Flow Logs. The logs will be frequently accessed for 90 days and then accessed intermittently. What should a solutions architect do to meet these requirements when configuring the logs?",
+    options: [
+      "Use Amazon CloudWatch as the target. Set the CloudWatch log group with an expiration of 90 days",
+      "Use Amazon Kinesis as the target. Configure the Kinesis stream to always retain the logs for 90 days.",
+      "Use AWS CloudTrail as the target. Configure CloudTrail to save to an Amazon S3 bucket, and enable S3 Intelligent-Tiering.",
+      "Use Amazon S3 as the target. Enable an S3 Lifecycle policy to transition the logs to S3 Standard-Infrequent Access (S3 Standard-IA) after 90 days.",
+    ],
+    answer: 3,
+    explanation:
+      "Storing VPC Flow Logs in Amazon S3 with a lifecycle policy to transition them to S3 Standard-IA after 90 days is the most cost-effective solution. S3 is ideal for long-term log storage, and Standard-IA reduces storage costs for data that is accessed infrequently while remaining immediately available. CloudWatch log expiration would delete the logs, Kinesis is not a long-term storage solution, and CloudTrail does not store VPC Flow Logs.",
+  },
 ];
